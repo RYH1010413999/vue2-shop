@@ -5,8 +5,10 @@ import router from './router'
 import store from '@/vuex/store.js'   //vuex
 import api from '@/http/api.js'       //http请求
 import less from 'less'
+import 'lib-flexible';
 import Mint from 'mint-ui';    //移动端UI
 import 'mint-ui/lib/style.css'
+import './mintui.less' //修改mint ui 样式
 Vue.use(Mint);
 Vue.config.productionTip = false
 Vue.prototype.$api = api;

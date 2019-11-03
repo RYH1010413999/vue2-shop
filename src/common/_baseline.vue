@@ -1,5 +1,10 @@
 <template lang="html">
-  <div>人家是有底线的 -.-</div>
+  <div class="main">
+    <h3>H O R U S &nbsp 1 9 2 4</h3>
+    <div>
+      QRcode
+    </div>
+  </div>
 
 </template>
 
@@ -8,13 +13,28 @@
 </script>
 
 <style lang="less" scoped>
-  div {
-    padding: 8vw 0;
+  .main {
+    width: 295px;
+    margin:0 auto;
     text-align: center;
-    letter-spacing: .2vw;
-    color: rgb(158, 158, 158);
+    color: #000;
     font-family: Lato, "Microsoft Jhenghei", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    font-weight: 600;
-    font-size: 14px;
+    font-size: 15px;
+    border-top:1px solid #000000;
+    margin-top: 40px;
+    h3{
+      font-weight: 700;
+      margin-bottom:30px;
+      margin-top:5px;
+      letter-spacing: .5px;
+    }
+
+    &>div {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto;
+      line-height: 80px;
+      background: #d8d8d8;
+    }
   }
 </style>

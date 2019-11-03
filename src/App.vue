@@ -23,9 +23,10 @@ export default {
 html,body,#app{
   width: 100%;
   height: 100%;
-  -webkit-tap-highlight-color:rgba(0,0,0,0)
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+  background-color: #fff;
 }
-
+div,
 body,
 dd,
 dl,
@@ -47,6 +48,7 @@ p,
 ul {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     -moz-user-select:none;-webkit-user-select:none;
     -webkit-tap-highlight-color:transparent;
 }

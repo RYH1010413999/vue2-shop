@@ -1,24 +1,31 @@
 <template lang="html">
-
-  <mt-header title="电商联盟">
-
-  <router-link :to="{name:''}" slot="right">
-    <mt-button icon="search"></mt-button>
-  </router-link>
-</mt-header>
+    <div class = "header">
+      <img src="../../assets/image/nevigation.png" alt="">
+      <img src="../../assets/image/research.png" alt="" style="float:right">
+    </div>
 </template>
 
 <script>
-export default {}
+  export default {};
 </script>
 
 <style lang="less" scoped>
-@import '../../assets/fz.less';
-@import '../../assets/index/style.css';
-.mint-header {
-    padding: 6.8vw 4.8vw;
-    background-color: #fff;
-    color: #333!important;
-    .fz(font-size, 40)!important;
-}
+  @import "../../assets/fz.less";
+  @import "../../assets/index/style.css";
+
+  .header {
+    width: 100%;
+    height: 100px;
+    z-index: 10;
+    position: absolute;
+    background-color: none;
+    padding: 20px 30px;
+    &>img{
+      width: 32px;
+      height: 32px;
+      float: left;
+      display: block;
+    }
+    
+  }
 </style>
