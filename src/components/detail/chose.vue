@@ -1,34 +1,47 @@
 <template lang="html">
-  <section class="chose" v-if="view">
+  <section class="chose">
     <div class="chose-view">
       <h1 class="chose-view-title">
-        {{view.title}} ~~
-        <span>(已选 {{colText}} - {{sizeText}})</span>
+        Planet-戒指
       </h1>
-      <span>{{view.price}}元</span>
-      <p class="chose-view-intro">{{view.intro}}</p>
-    </div>
-  <!-- 添加空函数 解决Safari浏览器 :active无效 -->
-    <div class="chose-mychosed" ontouchstart="">
-      <div class="colChose">
-        <span
-           v-for="(k,i) in view.chose"
-           :class="{active:colSelected==i}"
-           @click="colChose(i)"
-         >{{k.col}}</span>
+      <div class="chose-view-price">¥ 5，000元</div>
+      <div class="chose-view-model">
+        <div class="chose-view-model-name">
+          <div>型号：00000000</div>
+          <div>
+            <img src="../../assets/image/like.png" alt="">
+            <img src="../../assets/image/share.png" alt="">
+          </div>
+        </div>
+        <div class="chose-view-model-detail">
+          细节描述：18K金，宝石
+        </div>
+        <div class="chose-view-model-select">
+          <div>选择尺寸：</div>
+          <div>尺寸帮助？</div>
+        </div>
+        <div class="chose-view-model-select-number">
+          <div style="text-align: center;margin-bottom: 10px;">{{rangeValue}}</div>
+          <mt-range v-model="rangeValue" :min="40" :max="60" :step="1" :bar-height="2">
+            <div slot="start" class="left">40</div>
+            <div slot="end" class="left">60</div>
+          </mt-range>
+        </div>
+        <div class="chose-view-model-careful">
+          <div>
+            <div>使用注意</div>
+            <img src="../../assets/image/add.png" alt="">
+          </div>
+          <div>
+            <div>销售条款</div>
+            <img src="../../assets/image/add.png" alt="">
+          </div>
+        </div>
+        <div class="chose-view-model-end">
+    <img src="../../assets/image/logo_center.png" alt="">
+        </div>
       </div>
-      <div class="sizeChose" >
-        <span
-          v-for="(k,i) in view.chose"
-          :class="{active:sizeSelected==i}"
-          @click="sizeChose(i)"
-        >
-          {{k.size}}
-        </span>
-      </div>
     </div>
-
-
 
   </section>
 
@@ -36,175 +49,129 @@
 </template>
 
 <script>
-import {
-  MessageBox
-} from 'mint-ui';
-import {
-  mapState
-} from 'vuex'
+  import { MessageBox } from "mint-ui";
+  import { mapState } from "vuex";
 
-
-export default {
-
-  computed: mapState({
-
-    view: state => state.detail.productDatas.view,
-    colSelected: state => state.detail.colSelected,
-    sizeSelected: state => state.detail.sizeSelected,
-    // 返回当前选择颜色的值(innerText)
-    colText() {
-      return this.view.chose[this.colSelected].col
+  export default {
+    data() {
+      return {
+        rangeValue: 55
+      };
     },
-    // 返回当前选择规格的值(innerText)
-    sizeText() {
-      return this.view.chose[this.sizeSelected].size
-    }
-
-  }),
-  methods: {
-
-    //点击后把i赋值给colSelected,再通过判断决定是否添加选中样式 (active)
-    colChose(i) {
-      this.$store.commit('CHANGE_COL_SELECTED', i);
-    },
-    sizeChose(i) {
-      this.$store.commit('CHANGE_SIZE_SELECTED', i);
-    }
-
-  }
-}
+    computed: mapState({}),
+    methods: {}
+  };
 </script>
 
 <style lang="less" scoped>
-@import '../../assets/fz.less';
-.chose {
-    padding: 3vw;
+  @import "../../assets/fz.less";
 
+  .chose {
     .chose-view {
-        > h1 {
-            .fz(font-size,36);
-            color: #2c3e50;
-            > span {
-                color: rgb(238, 113, 80);
-            }
-        }
-        > span {
-            line-height: 10vw;
-            color: @cl;
-            .fz(font-size,34);
-            font-weight: 600;
-        }
+      width: 312px;
+      margin: 0 auto;
 
-    }
+      &-title {
+        text-align: center;
+        font-size: 17px;
+        margin-top: 20px;
+        margin-bottom: 5px;
+      }
 
-    .chose-mychosed {
+      &-price {
+        text-align: center;
+        font-size: 17px;
+        color: #d00202;
+      }
 
-        background-color: #fff;
-        > div {
-            padding-top: 20px;
-            display: -ms-flex;
-            display: -webkit-box;
-            display: -ms-flexbox;
+      &-model {
+        margin-top: 20px;
+
+        &-name {
+          font-size: 12px;
+          color: #9b9b9b;
+          display: flex;
+          justify-content: space-between;
+          border-bottom: 1px solid #000000;
+          height: 30px;
+          align-items: flex-end;
+          padding-bottom: 8px;
+
+          &>div:last-child {
             display: flex;
+            align-items: center;
 
-            span {
-                .fz(font-size,26);
-                padding: 6px 10px;
-                border: 1px solid rgb(111, 111,111);
-                margin-right: 6vw;
-                color: rgb(111, 111, 111);
-                &.active,
-                &:active {
-                    color: @cl;
-                    border-color: @cl;
-                    -webkit-transform: scale(1.1);
-                    transform: scale(1.1);
-                }
-
+            &>img:first-child {
+              width: 19px;
+              height: 18px;
+              margin-right: 22px;
             }
-        }
-    }
 
-    .footer {
-        width: 100%;
-        display: -webkit-flex;
-        display: -ms-flex;
-        display: flex;
-        height: 14vw;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        background-color: #ffffff;
-        -moz-user-select: none;
-        -webkit-user-select: none;
-        .bt();
-        .footer-addcar,
-        .footer-gocar,
-        .footer-index {
+            &>img:last-child {
+              width: 20px;
+              height: 19px;
+            }
+          }
+        }
+
+        &-detail {
+          height: 26px;
+          font-size: 12px;
+          line-height: 26px;
+        }
+
+        &-select {
+          font-size: 12px;
+          display: flex;
+          justify-content: space-between;
+
+          &>div:last-child {
+            color: #9b9b9b;
+            border-bottom: 1px solid #9b9b9b;
             text-align: center;
+          }
         }
 
-        .footer-index {
-            -webkit-flex: 3;
-            -ms-flex: 3;
-            flex: 3;
-            line-height: 14vw;
-            height: 14vw;
-            padding-top: 1.5vw;
-            border-right-color: #f7f7f7;
-            border-right-style: solid;
-            .fz(border-right-width,1);
+        &-select-number {
+          width: 100%;
+          height: 100px;
+          font-size: 14px;
+          padding-top: 30px;
 
-            i {
-                .fz(font-size,45);
-            }
-            &:active {
-                background-color: #f1f1f1;
-            }
+          & .left {
+            padding: 0 5px;
+            color: #9b9b9b;
+            font-size: 12px;
+
+          }
         }
 
-        .footer-gocar {
-            position: relative;
-            -webkit-flex: 3;
-            -ms-flex: 3;
-            flex: 3;
-            height: 14vw;
-            line-height: 14vw;
-            padding-top: 1.6vw;
-            span {
-                height: 5.5vw;
-                width: 5.5vw;
-                line-height: 5.5vw;
-                position: absolute;
-                top: 0.5vw;
-                right: 5.5vw;
-                background-color: @cl;
-                border-radius: 50%;
-                color: #fff;
-                .fz(font-size,24);
+        &-careful {
+          width: 100%;
+          margin-top:20px;
+          & >div{
+            border-bottom: 1px solid #9b9b9b;
+            display: flex;
+            justify-content:space-between;
+            height:20px;
+            margin-bottom:30px;
+            &>img{
+              width:10px;
+              height:10px;
             }
-            &:active {
-                background-color: #f1f1f1;
-            }
-            i {
-                .fz(font-size,48);
-            }
+          }
         }
 
-        .footer-addcar {
-            -webkit-flex: 6;
-            -ms-flex: 6;
-            flex: 6;
-            line-height: 14vw;
-            height: 14vw;
-
-            color: #fff;
-            background-color: @cl;
-            letter-spacing: 0.2vw;
-            &:active {
-                background-color: #ff7d00;
-            }
+        &-end{
+          display: flex;
+          justify-content: center;
+          padding:20px;
+          &>img{
+            width: 38px;
+            height: 24px;
+          }
         }
+      }
     }
-}
+  }
 </style>

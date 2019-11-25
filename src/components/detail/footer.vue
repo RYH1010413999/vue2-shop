@@ -14,65 +14,65 @@
 </template>
 
 <script>
-import { MessageBox } from 'mint-ui';
-import { Toast } from 'mint-ui';
+import { MessageBox } from "mint-ui";
+import { Toast } from "mint-ui";
 export default {
   computed: {
-
-    count () {
+    count() {
       //页面刷新后 数据会消失,解决:加判断
-      if (this.$store.state.detail.count == '') {
-        this.$store.commit('CHANGE_COUNT');
+      if (this.$store.state.detail.count == "") {
+        this.$store.commit("CHANGE_COUNT");
       }
-      return this.$store.state.detail.count
+      return this.$store.state.detail.count;
     },
-    productDatasView () {
-      return this.$store.state.detail.productDatas.view
+    productDatasView() {
+      return this.$store.state.detail.productDatas.view;
     },
-    colSelected () {
-      return this.$store.state.detail.colSelected
+    colSelected() {
+      return this.$store.state.detail.colSelected;
     },
-    sizeSelected () {
-      return this.$store.state.detail.sizeSelected
+    sizeSelected() {
+      return this.$store.state.detail.sizeSelected;
     }
   },
 
   methods: {
-    addIntoCar () {
+    addIntoCar() {
       //  mint-ui的弹出式提示框
-      const product = [{
-        title: this.productDatasView.title,
-        price: this.productDatasView.price,
-        size: this.productDatasView.chose[this.sizeSelected].size,
-        col: this.productDatasView.chose[this.colSelected].col,
-        id: this.productDatasView.id,
-        imgPath: this.$store.state.detail.productDatas.swiper[0].imgSrc,
-        choseBool: false
-      }];
+      const product = [
+        {
+          title: this.productDatasView.title,
+          price: this.productDatasView.price,
+          size: this.productDatasView.chose[this.sizeSelected].size,
+          col: this.productDatasView.chose[this.colSelected].col,
+          id: this.productDatasView.id,
+          imgPath: this.$store.state.detail.productDatas.swiper[0].imgSrc,
+          choseBool: false
+        }
+      ];
 
-
-      MessageBox
-        .confirm
-        (
+      MessageBox.confirm(
         `商品名称:${product[0].title}</br>` +
-        `价格:${product[0].price}</br>` +
-        `规格:${product[0].size}</br>` +
-        `颜色:${product[0].col}</br>` +
-        `商品ID:${product[0].id}</br>`
-        )
-        .then(action => {      //点击成功执行这里的函数
-          this.$store.dispatch('setLocalCount', true);
-          this.$store.dispatch('addCarList', product);
+          `价格:${product[0].price}</br>` +
+          `规格:${product[0].size}</br>` +
+          `颜色:${product[0].col}</br>` +
+          `商品ID:${product[0].id}</br>`
+      ).then(
+        action => {
+          //点击成功执行这里的函数
+          this.$store.dispatch("setLocalCount", true);
+          this.$store.dispatch("addCarList", product);
 
           Toast({
-            message: '添加成功',
+            message: "添加成功",
             duration: 1000
           });
-        }, function (err) {
-        });
+        },
+        function(err) {}
+      );
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -107,10 +107,10 @@ export default {
     padding-top: 1.5vw;
     border-right-color: #f7f7f7;
     border-right-style: solid;
-    .fz(border-right-width,1);
+    .fz(border-right-width, 1);
 
     i {
-      .fz(font-size,45);
+      .fz(font-size, 45);
     }
     &:active {
       background-color: #f1f1f1;
@@ -135,14 +135,14 @@ export default {
       background-color: @cl;
       border-radius: 50%;
       color: #fff;
-      .fz(font-size,24);
+      .fz(font-size, 24);
     }
 
     &:active {
       background-color: #f1f1f1;
     }
     i {
-      .fz(font-size,48);
+      .fz(font-size, 48);
     }
   }
 

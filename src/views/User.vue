@@ -85,25 +85,23 @@
                     <span>F码通道</span><i class="icon-go"></i>
                   </p>
               </router-link>
-              <router-link :to="{ name: ''}" class="my-settle-bottom">
+              <router-link :to="{ name: '收货地址'}" class="my-settle-bottom">
                 <div>
                   <span class="icon2-settle"></span>
                 </div>
                 <p>
-                  <span>设置</span><i class="icon-go"></i>
+                  <span>收获地址</span><i class="icon-go"></i>
                 </p>
               </router-link>
           </section>
 
       </div>
-      <v-baseline></v-baseline>
+      <!-- <v-baseline></v-baseline> -->
       <v-footer></v-footer>
     </div>
 </template>
 
 <script>
-  // import * as mockData from '@/http/mock.js' //模拟数据
-
   import Baseline from '@/common/_baseline.vue'
   import Footer from '@/common/_footer.vue'
   export default {

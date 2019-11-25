@@ -32,7 +32,7 @@ export default {
 
   .mint-swipe {
     width: 100%;
-    height: 100vw;
+    height: 384px;
     img {
       display: block;
       width: 100%;

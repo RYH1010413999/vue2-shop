@@ -2,26 +2,26 @@
   <div class="detail">
     <v-swiper/>
     <v-chose/>
-    <v-content/>
-    <v-baseline/>
-    <v-footer/>>
+    <!-- <v-content/> -->
+    <!-- <v-baseline/> -->
+    <v-footer/>
   </div>
 </template>
 
 <script>
 import Swiper from '@/components/detail/swiper.vue'
 import Chose from '@/components/detail/chose.vue'
-import Content from '@/components/detail/content.vue'
+// import Content from '@/components/detail/content.vue' //商品内容
 import Footer from '@/components/detail/footer.vue'
-import Baseline from '@/common/_baseline.vue'
+// import Baseline from '@/common/_baseline.vue'  // 通用页尾
 import detail from '@/http/mock.js' //模拟数据
 export default {
   components:{
     'v-swiper':Swiper,
     'v-chose':Chose,
-    'v-content':Content,
+    // 'v-content':Content,
     'v-footer':Footer,
-    'v-baseline':Baseline
+    // 'v-baseline':Baseline
   },
 
   beforeCreate(){

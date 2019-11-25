@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="main">
-    <h3>H O R U S &nbsp 1 9 2 4</h3>
+    <img src="../assets/image/logo.png" alt="">
     <div>
       QRcode
     </div>
@@ -22,19 +22,18 @@
     font-size: 15px;
     border-top:1px solid #000000;
     margin-top: 40px;
-    h3{
-      font-weight: 700;
-      margin-bottom:30px;
-      margin-top:5px;
-      letter-spacing: .5px;
-    }
-
     &>div {
       width: 80px;
       height: 80px;
       margin: 0 auto;
       line-height: 80px;
       background: #d8d8d8;
+    }
+    &>img{
+      width: 155px;
+      height: 17px;
+      margin-top: 10px;
+      margin-bottom: 30px;
     }
   }
 </style>

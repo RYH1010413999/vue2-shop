@@ -7,11 +7,11 @@
     <v-commodityType :commodityTypeData="datas.commodityType"/>
 
     <v-baseline/>
-    <!-- <v-section1 :list="datas.section1.list" :banner='datas.section1.banner'/>
-    <v-section2 :list="datas.section2.list" :banner='datas.section2.banner'/>
-    <v-section3/>
-    <v-section4 :list="datas.section4.list" :banner='datas.section4.banner'/> -->
-    <!-- <v-footer/> -->
+    <!-- <v-section1 :list="datas.section1.list" :banner='datas.section1.banner'/> -->
+    <!-- <v-section2 :list="datas.section2.list" :banner='datas.section2.banner'/> -->
+    <!-- <v-section3/> -->
+    <!-- <v-section4 :list="datas.section4.list" :banner='datas.section4.banner'/> -->
+    <v-footer/>
   </div>
 </template>
 
@@ -21,11 +21,11 @@ import Swiper from "@/components/index/swiper.vue";
 import Classification from "@/components/index/classification.vue"; // 分类模块
 import CommodityType from "@/components/index/commodityType.vue"; // 商品属性
 import Baseline from "@/common/_baseline.vue";
-// import Section1 from '@/components/index/section1.vue' //  热推模块
+import Section1 from '@/components/index/section1.vue' //  热推模块
 // import Section2 from '@/components/index/section2.vue' //  横向滑动模块
 // import Section3 from '@/components/index/section3.vue' //  秒杀模块
 // import Section4 from '@/components/index/section4.vue' //  猜你喜欢
-// import Footer from '@/common/_footer.vue'
+import Footer from '@/common/_footer.vue'
 import index from "@/http/mock.js"; //模拟数据
 export default {
   components: {
@@ -33,12 +33,12 @@ export default {
     "v-swiper": Swiper,
     "v-classification": Classification,
     "v-commodityType": CommodityType,
-    "v-baseline": Baseline
+    "v-baseline": Baseline,
     // 'v-section1': Section1,
     // 'v-section2': Section2,
     // 'v-section3': Section3,
     // 'v-section4': Section4,
-    // 'v-footer': Footer,
+    'v-footer': Footer,
   },
   data() {
     return {
