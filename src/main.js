@@ -4,6 +4,7 @@ import App from './App'
 import router from './router'
 import store from '@/vuex/store.js'   //vuex
 import api from '@/http/api.js'       //http请求
+import axios from '@/servers.js';
 import less from 'less'
 import 'lib-flexible';
 import Mint from 'mint-ui';    //移动端UI
@@ -12,6 +13,7 @@ import './mintui.less' //修改mint ui 样式
 Vue.use(Mint);
 Vue.config.productionTip = false
 Vue.prototype.$api = api;
+Vue.prototype.$axios = axios;
 
 
 // 用钩子函数beforeEach()对路由进行判断
