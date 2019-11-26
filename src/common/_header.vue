@@ -5,8 +5,9 @@
      :to="{ name: '首页'}"
      v-if="$route.matched[0].path=='/category'">
     </router-link>
-    <span class="icon-go" @click="$router.go(-1)" v-else></span>
-    <slot name="title"></slot>
+    
+    <span class="icon-go"  @click="$router.go(-1)" v-else></span>
+    <img src="../assets/image/logo.png" alt="">
   </header>
 </template>
 
@@ -21,13 +22,15 @@ header {
   height: 12vw;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 4vw;
-  h1 {
-    .fz(font-size,34);
-    letter-spacing: .2vw;
-    font-weight: 600;
-    margin-right: 36vw;
+  justify-content: center;
+  padding: 0 20px;
+  img{
+    width: 155px;
+    height: 17px;
+  }
+  .icon-go{
+    position: absolute;
+    left: 20px;
   }
   span,a {
     display: inline-block;
