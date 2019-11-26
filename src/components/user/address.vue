@@ -2,27 +2,19 @@
   <div>
     <div @click="popupVisible=true">qqq</div>
     <mt-popup v-model="popupVisible" position="bottom">
-      <mt-picker :slots="slots" @change="onValuesChange" :showToolbar="true"></mt-picker>
+      <mt-picker :slots="slots" @change="onValuesChange" :showToolbar="true" valueKey="label"></mt-picker>
     </mt-popup>
   </div>
 </template>
 <script>
 import city from "./city.js";
-console.log(city);
 export default {
   data() {
     return {
       slots: [
         {
           flex: 1,
-          values: [
-            "2015-01",
-            "2015-02",
-            "2015-03",
-            "2015-04",
-            "2015-05",
-            "2015-06"
-          ],
+          values: city.city,
           className: "slot1",
           textAlign: "right"
         },
@@ -34,12 +26,10 @@ export default {
         {
           flex: 1,
           values: [
-            "2015-01",
-            "2015-02",
-            "2015-03",
-            "2015-04",
-            "2015-05",
-            "2015-06"
+            {
+              value: "110101",
+              label: "北京市"
+            }
           ],
           className: "slot3",
           textAlign: "left"
@@ -47,32 +37,31 @@ export default {
         {
           divider: true,
           content: "-",
-          className: "slot2"
+          className: "slot4"
         },
         {
           flex: 1,
           values: [
-            "2015-01",
-            "2015-02",
-            "2015-03",
-            "2015-04",
-            "2015-05",
-            "2015-06"
+            {
+              value: "110101",
+              label: "东城区"
+            }
           ],
-          className: "slot3",
+          className: "slot5",
           textAlign: "left"
         }
       ],
       popupVisible: false
     };
   },
-  mounted() {
-    
-  },
+  mounted() {},
   methods: {
     onValuesChange(picker, values) {
-      if (values[0] > values[1]) {
-        picker.setSlotValue(1, values[0]);
+      if (values[0]) {
+        this.slots[2].values = values[0].children;
+        if (values[1]) {
+          this.slots[4].values = values[1].children;
+        }
       }
     }
   }
