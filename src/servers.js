@@ -7,6 +7,6 @@ const patientReport = (data) => axios.axiosPost(api_patient_report, data);
 const patientReport2 = (data) => axios.axiosPost(api_patient_report2, data);
 
 export default {
-    patientReport,
-    patientReport2
-  }
+  patientReport,
+  patientReport2
+}
