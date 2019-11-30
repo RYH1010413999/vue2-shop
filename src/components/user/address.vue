@@ -1,12 +1,29 @@
 <template>
   <div class="main">
-    <v-header>
-    </v-header>
-    <div @click="popupVisible=true">点击</div>
+    <v-header></v-header>
+    <div class="content">
+      <div class="content-list">
+        <input type="text" placeholder="收货人" />
+      </div>
+      <div class="content-list">
+        <input type="text" placeholder="手机号" />
+      </div>
+      <div class="content-list" @click="popupVisible=true">
+        <input type="text" placeholder="选择地区" />
+        <img src="../../assets/image/back.png" alt />
+      </div>
+      <div class="content-list">
+        <input type="text" placeholder="详细地址" />
+      </div>
+    </div>
+    <div class="default">
+      <mt-checklist v-model="value" :options="['设为默认地址']"></mt-checklist>
+    </div>
+    <div class="save">保存</div>
     <mt-popup v-model="popupVisible" position="bottom">
       <mt-picker :slots="slots" @change="onValuesChange" :showToolbar="true" valueKey="label">
         <div class="tool-bar">
-          <div>取消</div>
+          <div @click="popupVisible=false">取消</div>
           <div>确定</div>
         </div>
       </mt-picker>
@@ -19,6 +36,7 @@ import Header from "@/common/_header.vue";
 export default {
   data() {
     return {
+      value: [],
       slots: [
         {
           flex: 1,
@@ -159,5 +177,74 @@ export default {
     margin-right: 120px;
     color: #9b9b9b;
   }
+}
+
+.content {
+  width: 100%;
+  padding: 0 30px;
+  &-list {
+    width: 100%;
+    border-bottom: 1px solid #9b9b9b;
+    height: 50px;
+    padding-bottom: 5px;
+    display: flex;
+    align-items: flex-end;
+    font-size: 12px;
+    input {
+      width: 100%;
+    }
+    img {
+      width: 20px;
+      height: 20px;
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+.default {
+  width: 100%;
+  padding: 0 30px;
+  /deep/ .mint-checklist {
+    &-title {
+      display: none;
+    }
+    .mint-cell {
+      background: none;
+      .mint-cell-wrapper {
+        padding: 0;
+        font-size: 12px;
+        color: #9b9b9b;
+        .mint-checklist-label {
+          padding: 0;
+        }
+        .mint-checklist-title {
+          display: none;
+        }
+        .mint-checkbox-core {
+          width: 11px;
+          height: 11px;
+        }
+        .mint-checkbox-input:checked + .mint-checkbox-core {
+          background-color: #9b9b9b;
+          border-color: #9b9b9b;
+        }
+        .mint-checkbox-core::after{
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.save {
+  background: #000000;
+  width: 311px;
+  height: 42px;
+  font-size: 14px;
+  color: #f2f2f2;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 42px;
+  margin-top: 10px;
 }
 </style>

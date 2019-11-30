@@ -3,13 +3,13 @@
     <div class="header-basics">
       <img src="../../assets/image/nevigation.png" alt="" @click="showAll(true)">
       <img class="header-center" src="../../assets/image/logo_white.png" alt="">
-      <img src="../../assets/image/shopping_cart_white.png" alt="">
+      <img src="../../assets/image/shopping_cart_white.png" alt="" @click="gitoCar">
     </div>
     <div class="header-all" v-if="show">
       <div class="header-basics">
         <img class="header-all-left" src="../../assets/image/nevigation_black.png" alt="" @click="showAll(false)">
         <img class="header-all-center" src="../../assets/image/logo_center.png" alt="">
-        <img src="../../assets/image/shopping_cart_black.png" alt="">
+        <img src="../../assets/image/shopping_cart_black.png" alt="" @click="gitoCar">
       </div>
       <div class="header-all-bottom">
         <div class="header-all-bottom-search">
@@ -49,7 +49,7 @@
             </div>
             <div>Planet</div>
           </div>
-          <div>
+          <div @click="gotoUser">
             <div>
               <img src="../../assets/image/all_list6.png" alt="">
             </div>
@@ -73,6 +73,12 @@
     methods: {
       showAll(bool) {
         this.show = bool;
+      },
+      gotoUser(){
+        this.$router.push({name:'用户页'})
+      },
+      gitoCar(){
+        this.$router.push({name:'购物车页'})
       }
     }
   };

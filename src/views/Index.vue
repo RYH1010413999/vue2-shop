@@ -11,7 +11,8 @@
     <!-- <v-section2 :list="datas.section2.list" :banner='datas.section2.banner'/> -->
     <!-- <v-section3/> -->
     <!-- <v-section4 :list="datas.section4.list" :banner='datas.section4.banner'/> -->
-    <v-footer/>
+    <!-- <v-footer/> -->
+    <v-customerServer/>
   </div>
 </template>
 
@@ -26,6 +27,7 @@ import Section1 from '@/components/index/section1.vue' //  热推模块
 // import Section3 from '@/components/index/section3.vue' //  秒杀模块
 // import Section4 from '@/components/index/section4.vue' //  猜你喜欢
 import Footer from '@/common/_footer.vue'
+import CustomerServer from '@/common/_customerServer.vue'
 import index from "@/http/mock.js"; //模拟数据
 export default {
   components: {
@@ -39,6 +41,7 @@ export default {
     // 'v-section3': Section3,
     // 'v-section4': Section4,
     'v-footer': Footer,
+    'v-customerServer': CustomerServer,
   },
   data() {
     return {

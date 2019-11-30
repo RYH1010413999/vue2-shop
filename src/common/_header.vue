@@ -1,12 +1,6 @@
 <template>
   <header>
-    <router-link
-     class="icon-go"
-     :to="{ name: '首页'}"
-     v-if="$route.matched[0].path=='/category'">
-    </router-link>
-    
-    <span class="icon-go"  @click="$router.go(-1)" v-else></span>
+    <img class="icon-go" src="../assets/image/back.png" @click="$router.go(-1)" alt="">
     <img src="../assets/image/logo.png" alt="">
   </header>
 </template>
@@ -16,29 +10,23 @@
 @import '../assets/fz.less';
 @import '../assets/index/style.css';
 header {
-  background-color: #F8FCFF;
+  background-color: white;
   text-align: center;
   position: relative;
-  height: 12vw;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 20px;
+  padding: 0 30px;
   img{
-    width: 155px;
-    height: 17px;
+    width: 125px;
+    height: 14px;
   }
   .icon-go{
     position: absolute;
-    left: 20px;
-  }
-  span,a {
-    display: inline-block;
-    .fz(font-size,46);
-    transform: rotate(-180deg);
-    &::before {
-      color:#333;
-    }
+    left: 30px;
+    width: 20px;
+    height: 20px;
   }
 }
 

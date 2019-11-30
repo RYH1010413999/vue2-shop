@@ -3,7 +3,7 @@
         <ul>
             <template v-for="k in commodityTypeData">
                 <li>
-                    <router-link :to="{ name: '详情页'}">
+                    <router-link :to="{ name: '搜索页'}">
                         <img :src="k.imgPath">
                     </router-link>
                 </li>
