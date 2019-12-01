@@ -14,9 +14,12 @@
 
 <script>
 export default {
-  computed: {
-    swiper () {
-      return this.$store.state.detail.productDatas.swiper
+  data(){
+    return{
+      swiper:[{
+        imgSrc:require("@/assets/image/banner2.png"),
+        id:1,
+      }]
     }
   }
 }

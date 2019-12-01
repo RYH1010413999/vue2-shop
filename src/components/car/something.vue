@@ -14,7 +14,7 @@
           </div>
           <div class="something-right">
             <p>{{k.title}}</p>
-            <p style="color:rgb(199, 108, 28)"> {{k.col}} - {{k.size}}</p>
+            <p style="color:rgb(199, 108, 28)">18K金，宝石</p>
             <p>售价：{{k.price}}元</p>
             <div class="something-right-bottom" @click="cut(i)">
               <span></span>
@@ -28,53 +28,55 @@
 
 <script>
 // 提示登录组件
-import Gologin from '@/components/car/gologin.vue'
-import Util from '../../util/common'
+import Gologin from "@/components/car/gologin.vue";
+import Util from "../../util/common";
 export default {
   components: {
-    'v-gologin': Gologin
+    "v-gologin": Gologin
   },
   computed: {
-
-    carList () {
-      return this.$store.state.detail.carList;
-    },
-
+    carList() {
+      return [
+        {
+          imgPath: require("@/assets/image/banner2.png"),
+          choseBool: true,
+          title: "Planet-戒指",
+          price:'5000'
+        }
+      ];
+    }
   },
   mounted() {
     // 初始化先获取购物车商品列表 否则 页面刷新出Bug
     if (this.$store.state.detail.carList == "") {
-      this.$store.commit('RESET_CARLIST')
-     }
+      this.$store.commit("RESET_CARLIST");
+    }
   },
 
   methods: {
-    cut (i) {
+    cut(i) {
       // 点击垃圾桶，删除当前商品，这里用splice和filter都会bug,只能重置数组
       let newCarList = [];
 
       for (let k = 0; k < this.carList.length; k++) {
         if (k !== i) {
-          newCarList.push(this.carList[k])
+          newCarList.push(this.carList[k]);
         }
       }
 
       //点击垃圾桶 把商品数量count-1
-      this.$store.dispatch('setLocalCount', false);
-      this.$store.dispatch('cutCarList', newCarList);
-
+      this.$store.dispatch("setLocalCount", false);
+      this.$store.dispatch("cutCarList", newCarList);
     },
-    toggle () {
+    toggle() {
       // 每点击一下都会改变choseBool的布尔值,所以要重置数组
       console.log(this.carList);
       // this.$nextTick(() => {
       //   this.$store.dispatch('cutCarList', this.carList)
       // })
-
     }
-
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -155,10 +157,10 @@ export default {
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
-          .fz(font-size,26);
+          .fz(font-size, 26);
         }
         p:last-of-type {
-          .fz(font-size,22);
+          .fz(font-size, 22);
           color: rgb(168, 168, 168);
         }
         .something-right-bottom {

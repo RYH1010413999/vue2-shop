@@ -50,7 +50,8 @@ export default {
   methods: {
     //点击跳转到支付页
     goPay () {
-
+      this.$router.push({ name: '支付页' })
+      return;
       // 如果有选择商品才能跳转
       if (this.$store.getters.selectedList.length) {
         // 保存+缓存选择的商品 ,在支付页能用到

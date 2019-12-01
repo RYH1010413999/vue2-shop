@@ -5,7 +5,7 @@
     </router-link>
     <router-link  :to="{name:'购物车页'}" class="footer-gocar">
       <i class="icon-car"></i>
-      <span v-if="count">{{count}}</span>
+      <!-- <span v-if="count">{{count}}</span> -->
     </router-link>
     <span class="footer-addcar" @click="addIntoCar">
       加入购物车
@@ -38,25 +38,14 @@ export default {
 
   methods: {
     addIntoCar() {
-      //  mint-ui的弹出式提示框
       const product = [
         {
-          title: this.productDatasView.title,
-          price: this.productDatasView.price,
-          size: this.productDatasView.chose[this.sizeSelected].size,
-          col: this.productDatasView.chose[this.colSelected].col,
-          id: this.productDatasView.id,
-          imgPath: this.$store.state.detail.productDatas.swiper[0].imgSrc,
-          choseBool: false
+          title: 'Planet-戒指',
+          price: 5000,
         }
       ];
-
       MessageBox.confirm(
-        `商品名称:${product[0].title}</br>` +
-          `价格:${product[0].price}</br>` +
-          `规格:${product[0].size}</br>` +
-          `颜色:${product[0].col}</br>` +
-          `商品ID:${product[0].id}</br>`
+        `商品名称:Planet-戒指</br>价格:5000</br>`
       ).then(
         action => {
           //点击成功执行这里的函数

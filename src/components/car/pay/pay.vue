@@ -10,7 +10,7 @@
         <p class="main-address-per">收货人:<span>王先生</span></p>
         <p class="main-address-tel">15985698749</p>
       </div>
-      <p>收货地址:<span>河南省郑州市中原区秦岭路8号院59号单元28层15号东户第三家</span></p>
+      <p>收货地址:<span>上海市闵行区莘庄镇报春1村12号楼 508</span></p>
     </div>
 
     <div class="pay-product">
@@ -19,7 +19,7 @@
           <a>
             <img :src="k.imgPath" alt="">
             <div>
-              <h2><span style="color:#ee7150"> {{k.size}} - {{k.col}} </span>- {{k.title}} -</h2>
+              <h2><span style="color:#ee7150"> </span>- {{k.title}} -</h2>
               <p>{{k.price}} 元</p>
             </div>
           </a>
@@ -29,8 +29,6 @@
       <!-- 支付成功后的提示 -->
       <div class="pay-confirm" v-else>
         支付成功!!!</br>
-        当页面数据清空</br>
-        购物车列表重新设置
       </div>
     </div>
     <h3 class="pay-allpay">总需要支付 : <i>￥</i><span>{{allpay}}</span></h3>
@@ -43,72 +41,76 @@
 </template>
 
 <script>
-import Util from '../../../util/common'
-import Header from '@/common/_header.vue'
-import {
-  MessageBox
-} from 'mint-ui';
+import Util from "../../../util/common";
+import Header from "@/common/_header.vue";
+import { MessageBox } from "mint-ui";
 export default {
   components: {
-    'v-header': Header
+    "v-header": Header
   },
-  data () {
+  data() {
     return {
-      confirm: ''
-    }
+      confirm: ""
+    };
   },
 
   computed: {
-
     //所有商品列表
-    carList () {
-
-      return this.$store.state.detail.selectedList
+    carList() {
+      return [
+        {
+          imgPath: require("@/assets/image/banner2.png"),
+          choseBool: true,
+          title: "Planet-戒指",
+          price: "5000"
+        }
+      ];
     },
 
     // 商品价格总和
-    allpay () {
-      let allpay = 0, selectedList = this.carList
+    allpay() {
+      let allpay = 0,
+        selectedList = this.carList;
       for (let i = 0; i < selectedList.length; i++) {
-        allpay += selectedList[i].price
+        allpay += selectedList[i].price;
       }
-      return allpay
+      return allpay;
     }
   },
-  mounted () {
+  mounted() {
     // 防止页面刷新后数据丢失
-    if (this.$store.state.detail.selectedList == '') {
-      this.$store.commit('SET_SELECTEDLIST')
+    if (this.$store.state.detail.selectedList == "") {
+      this.$store.commit("SET_SELECTEDLIST");
     }
   },
 
   methods: {
-    payConfirm () {
-      if (this.carList) { //还未提交了订单,数据还未清空
-        MessageBox
-          .confirm(
-            `确定支付${this.allpay}元`
-          )
-          .then(action => { //点击成功执行这里的函数
+    payConfirm() {
+      if (this.carList) {
+        //还未提交了订单,数据还未清空
+        MessageBox.confirm(`确定支付${this.allpay}元`).then(
+          action => {
+            //点击成功执行这里的函数
             this.confirm = false;
-            this.$store.commit('SET_LOADING', true);
-            this.$store.dispatch('resetCarList'); //重置购物车（用unSelectedList替换）
-            this.$store.dispatch('resetCount'); //重置购物车数量
+            this.$store.commit("SET_LOADING", true);
+            this.$store.dispatch("resetCarList"); //重置购物车（用unSelectedList替换）
+            this.$store.dispatch("resetCount"); //重置购物车数量
             setTimeout(() => {
-              this.$store.commit('SET_LOADING', false); //关闭loading
+              this.$store.commit("SET_LOADING", false); //关闭loading
               this.confirm = true; //支付完成后切换视图
-            }, 300)
-          }, function (err) {
+            }, 300);
+          },
+          function(err) {
             //点击取消执行这里的函数
-          });
-      } else { //提交了订单,数据清空
-        alert('请勿重复提交订单')
+          }
+        );
+      } else {
+        //提交了订单,数据清空
+        alert("请勿重复提交订单");
       }
-
     }
   }
-
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -130,12 +132,12 @@ export default {
 
       p {
         color: #868686;
-        .fz(font-size,32px);
+        .fz(font-size, 32px);
       }
     }
 
     > p {
-      .fz(font-size,28px);
+      .fz(font-size, 28px);
       color: #868686;
       padding-top: 30 * 10vw/75;
       letter-spacing: 3 * 10vw/75;
@@ -155,7 +157,7 @@ export default {
         box-sizing: border-box;
         padding: 20 * 10vw/75 30 * 10vw/75;
         color: #4d4d4d;
-        .fz(font-size,30px);
+        .fz(font-size, 30px);
         border-bottom: 1 * 10vw/75 solid #dedede;
 
         > img {
@@ -178,7 +180,7 @@ export default {
 
           p {
             text-align: right;
-            .fz(font-size,24px);
+            .fz(font-size, 24px);
             padding-top: 1.4 * 10vw;
           }
         }
@@ -190,7 +192,7 @@ export default {
     text-align: right;
     margin-top: 6vw;
     padding: 4vw 5vw;
-    .fz(font-size,32px);
+    .fz(font-size, 32px);
     color: #999999;
     background-color: #fff;
     i,
@@ -227,7 +229,7 @@ export default {
     text-align: center;
     color: #fff;
     line-height: 30px;
-    .fz(font-size,40);
+    .fz(font-size, 40);
   }
 }
 </style>

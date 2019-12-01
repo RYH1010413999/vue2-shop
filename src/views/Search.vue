@@ -11,10 +11,10 @@
         <div>Planet</div>
       </div>
       <div class="main-all">
-        <template v-for="item in 4">
+        <template v-for="item in 1">
           <div class="main-all-list" @click="gotoDetail" v-bind:key="item">
             <img class="main-all-list-item1" src="../assets/image/like.png" alt />
-            <img class="main-all-list-item2" src="../assets/image/banner1.png" alt />
+            <img class="main-all-list-item2" src="../assets/image/banner2.png" alt />
             <div class="main-all-list-item3">Planet-耳饰</div>
             <div class="main-all-list-item4">型号：00000000</div>
             <div class="main-all-list-item5">¥ 5000</div>
