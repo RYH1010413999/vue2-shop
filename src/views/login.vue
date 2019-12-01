@@ -32,63 +32,66 @@
      size="large"
      @click="logout"
      v-else>退出登录</mt-button>
+     <mt-button @click="wxLogin">微信授权</mt-button>
 
   </div>
 </template>
 
 <script>
-import Header from '@/common/_header.vue'
-import { Toast } from 'mint-ui'
+import Header from "@/common/_header.vue";
+import { Toast } from "mint-ui";
 export default {
-  components:{
-    'v-header':Header
+  components: {
+    "v-header": Header
   },
-  data(){
+  data() {
     return {
-      account:'',
-      password:'',
-      toggle:!this.$store.state.login.token
-    }
+      account: "",
+      password: "",
+      toggle: !this.$store.state.login.token
+    };
   },
-  methods:{
+  methods: {
     // 登录按钮
-    login(){
-      if(this.account!=="" && this.password!=="") {
-        Toast('登录成功,存储token,跳转网页');
+    login() {
+      if (this.account !== "" && this.password !== "") {
+        Toast("登录成功,存储token,跳转网页");
         this.toggle = false;
-        this.$store.commit('CHANGE_TOKEN',1);
-      }else {
-        Toast('账号密码不能为空');
+        this.$store.commit("CHANGE_TOKEN", 1);
+      } else {
+        Toast("账号密码不能为空");
       }
 
-      setTimeout(()=>{
+      setTimeout(() => {
         this.$router.replace({
-          path: 'user'
-        })
-      },1000);
+          path: "user"
+        });
+      }, 1000);
       // 登录成
     },
 
-    //退出登录按钮
-    logout(){
-      Toast('退出登录成功,清除token');
-      this.$store.commit('CHANGE_TOKEN',0);
-      this.toggle = true;
-      this.account = '';
-      this.password = '';
+    wxLogin() {
+      window.location.href = `https: //open.weixin.qq.com/connect/oauth2/authorize?appid=wx1f7e703a59621fce&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect`;
+    },
 
+    //退出登录按钮
+    logout() {
+      Toast("退出登录成功,清除token");
+      this.$store.commit("CHANGE_TOKEN", 0);
+      this.toggle = true;
+      this.account = "";
+      this.password = "";
     }
   }
-}
-
+};
 </script>
 
 <style lang="less" scoped>
 .login {
-  >section {
+  > section {
     .tip {
       padding: 6vw 3vw;
-      color:rgb(224, 145, 71);
+      color: rgb(224, 145, 71);
       letter-spacing: 2px;
       font-size: 16px;
     }

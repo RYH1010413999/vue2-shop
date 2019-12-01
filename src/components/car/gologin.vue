@@ -1,6 +1,6 @@
 <template lang="html">
 
-  <router-link :to="{ name: '用户页', params: {} }" class="gologin">
+  <router-link :to="{ name: '登录页', params: {} }" class="gologin">
       <span>登录后享受更多优惠</span>
       <span>去登陆</span>
   </router-link>
