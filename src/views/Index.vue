@@ -28,7 +28,6 @@ import Section1 from '@/components/index/section1.vue' //  热推模块
 // import Section4 from '@/components/index/section4.vue' //  猜你喜欢
 import Footer from '@/common/_footer.vue'
 import CustomerServer from '@/common/_customerServer.vue'
-import index from "@/http/mock.js"; //模拟数据
 export default {
   components: {
     "v-header": Header,

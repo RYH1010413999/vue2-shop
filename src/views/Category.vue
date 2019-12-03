@@ -16,7 +16,6 @@
 
 import Header from '@/common/_header.vue'
 import Aside from '@/components/category/aside.vue'
-import category from '@/http/mock.js' //模拟数据
 export default {
   components: {
     'v-header': Header,

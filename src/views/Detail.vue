@@ -14,7 +14,6 @@ import Chose from '@/components/detail/chose.vue'
 // import Content from '@/components/detail/content.vue' //商品内容
 import Footer from '@/components/detail/footer.vue'
 // import Baseline from '@/common/_baseline.vue'  // 通用页尾
-import detail from '@/http/mock.js' //模拟数据
 export default {
   components:{
     'v-swiper':Swiper,
