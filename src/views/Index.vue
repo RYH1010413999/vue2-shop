@@ -22,12 +22,12 @@ import Swiper from "@/components/index/swiper.vue";
 import Classification from "@/components/index/classification.vue"; // 分类模块
 import CommodityType from "@/components/index/commodityType.vue"; // 商品属性
 import Baseline from "@/common/_baseline.vue";
-import Section1 from '@/components/index/section1.vue' //  热推模块
+import Section1 from "@/components/index/section1.vue"; //  热推模块
 // import Section2 from '@/components/index/section2.vue' //  横向滑动模块
 // import Section3 from '@/components/index/section3.vue' //  秒杀模块
 // import Section4 from '@/components/index/section4.vue' //  猜你喜欢
-import Footer from '@/common/_footer.vue'
-import CustomerServer from '@/common/_customerServer.vue'
+import Footer from "@/common/_footer.vue";
+import CustomerServer from "@/common/_customerServer.vue";
 export default {
   components: {
     "v-header": Header,
@@ -39,8 +39,8 @@ export default {
     // 'v-section2': Section2,
     // 'v-section3': Section3,
     // 'v-section4': Section4,
-    'v-footer': Footer,
-    'v-customerServer': CustomerServer,
+    "v-footer": Footer,
+    "v-customerServer": CustomerServer
   },
   data() {
     return {
@@ -51,9 +51,9 @@ export default {
         section4: {},
         swiper: [
           { imgPath: require("@/assets/image/banner1.png") },
-          { imgPath: require("@/assets/image/banner2.png") },
-          { imgPath: require("@/assets/image/banner3.png") },
-          { imgPath: require("@/assets/image/banner4.png") }
+          { imgPath: require("@/assets/image/banner2.png") }
+          // { imgPath: require("@/assets/image/banner3.png") },
+          // { imgPath: require("@/assets/image/banner4.png") }
         ],
         classification: [
           { imgPath: require("@/assets/image/necklace.png") },
@@ -64,10 +64,22 @@ export default {
           { imgPath: require("@/assets/image/others.png") }
         ],
         commodityType: [
-          { imgPath: require("@/assets/image/commodityType1.png") },
-          { imgPath: require("@/assets/image/commodityType2.png") },
-          { imgPath: require("@/assets/image/commodityType3.png") },
-          { imgPath: require("@/assets/image/commodityType4.png") },
+          {
+            imgPath: require("@/assets/image/commodityType1.png"),
+            name: "Daydreaming"
+          },
+          {
+            imgPath: require("@/assets/image/commodityType2.png"),
+            name: "Gram"
+          },
+          {
+            imgPath: require("@/assets/image/commodityType3.png"),
+            name: "First Sign"
+          },
+          {
+            imgPath: require("@/assets/image/commodityType4.png"),
+            name: "Planet"
+          }
         ]
       },
       loading: true

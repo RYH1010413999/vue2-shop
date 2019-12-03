@@ -24,7 +24,6 @@ export default {
   },
 
   beforeCreate(){
-    this.$store.dispatch('setDatas');
   }
 }
 </script>

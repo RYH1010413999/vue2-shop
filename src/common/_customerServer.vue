@@ -1,6 +1,8 @@
-<template></template>
- <script type='text/javascript' src='https://ykf-webchat.7moor.com/javascripts/7moorInit.js?accessId=80277750-1346-11ea-8124-8f7b5eb1d4e8&autoShow=true&language=ZHCN' async='async'>
-  </script>
+<template>
+  <div>
+    <button onclick="qimoChatClick();">在线咨询</button>
+  </div>
+</template>
 <script>
 // let qimoClientId = {
 //   userId:

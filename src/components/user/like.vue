@@ -4,13 +4,13 @@
     <div class="main-content">
       <div class="main-content-title">我的收藏</div>
       <div class="main-content-all">
-        <template v-for="item in 5">
+        <template v-for="item in 1">
           <div class="main-content-all-list" :key="item">
             <div>
               <img src="../../assets/image/no_like.png" alt />
             </div>
             <div>
-              <img src alt />
+              <img src="../../assets/image/banner2.png" alt />
             </div>
             <div>Planet-项链</div>
             <div>型号：00000000</div>

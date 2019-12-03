@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
   <div class="header">
     <div class="header-basics">
       <img src="../../assets/image/nevigation.png" alt="" @click="showAll(true)">
@@ -18,43 +18,48 @@
         </div>
         <div class="header-all-bottom-list">
 
-          <div>
+          <div @click="gitoSearch('搜索页')">
             <div>
               <img src="../../assets/image/all_list1.png" alt="">
             </div>
             <div>所有系列</div>
           </div>
 
-          <div>
+          <div @click="gitoSearch('搜索页')">
             <div>
               <img src="../../assets/image/all_list2.png" alt="">
             </div>
             <div>Daydreaming</div>
           </div>
-          <div>
+
+          <div @click="gitoSearch('搜索页')">
             <div>
               <img src="../../assets/image/all_list3.png" alt="">
             </div>
             <div>Gram</div>
           </div>
-          <div>
+
+          <div @click="gitoSearch('搜索页')">
             <div>
               <img src="../../assets/image/all_list4.png" alt="">
             </div>
             <div>First Sign</div>
           </div>
-          <div>
+
+          <div @click="gitoSearch('搜索页')">
             <div>
               <img src="../../assets/image/all_list5.png" alt="">
             </div>
             <div>Planet</div>
           </div>
+
           <div @click="gotoUser">
             <div>
               <img src="../../assets/image/all_list6.png" alt="">
             </div>
             <div>个人中心</div>
           </div>
+
         </div>
       </div>
       <div class="header-all-service">拨打客服中心</div>
@@ -79,6 +84,9 @@
       },
       gitoCar(){
         this.$router.push({name:'购物车页'})
+      },
+      gitoSearch(name){
+        this.$router.push({name:name})
       }
     }
   };
@@ -140,6 +148,7 @@
         height: 100vh;
         background-color: black;
         opacity: 0.5;
+        z-index: 1;
       }
 
       &-bottom {
