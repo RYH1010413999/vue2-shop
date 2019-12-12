@@ -3,10 +3,10 @@
     <ul>
       <template v-for="(k,index) in commodityTypeData">
         <li :key="index">
-          <router-link :to="{ name: '搜索页'}">
+          <router-link :to="{ path: '/search/spectrum/'+k.id}">
             <div class="list-img">
-              <div>{{k.name}}</div>
-              <img :src="k.imgPath" />
+              <div>{{k.spectrum}}</div>
+              <img :src="k.image" />
             </div>
           </router-link>
         </li>
@@ -24,7 +24,10 @@ export default {
         return [];
       }
     }
-  }
+  },
+  created () {
+   console.log(this.commodityTypeData);
+  },
 };
 </script>
 

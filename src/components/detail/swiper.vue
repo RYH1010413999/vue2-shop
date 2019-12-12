@@ -1,8 +1,8 @@
 <template lang="html">
     <div class="swiper">
       <mt-swipe :auto="4000">
-        <mt-swipe-item v-for="k in swiper" :key="k.id">
-           <img :src="k.imgSrc">
+        <mt-swipe-item v-for="(item,index) in bannerImages" :key="index">
+           <img :src="item">
         </mt-swipe-item>
       </mt-swipe>
       <div class="back" @click="$router.go(-1)">
@@ -14,6 +14,14 @@
 
 <script>
 export default {
+  props: {
+    bannerImages: {
+      type: Array,
+      default: function() {
+        return [];
+      }
+    }
+  },
   data(){
     return{
       swiper:[{

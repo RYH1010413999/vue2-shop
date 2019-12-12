@@ -1,9 +1,9 @@
 <template lang="html">
   <!-- 在首页父组件发送http请求,后将数据通过props传递给子组件,可减少请求次数,减少服务器压力 -->
   <div class="index">
-    <v-header/>
+    <v-header :list="datas.commodityType"/>
     <v-swiper :swiperData="datas.swiper"/>
-    <v-classification :classificationData="datas.classification"/>
+    <v-classification/>
     <v-commodityType :commodityTypeData="datas.commodityType"/>
 
     <v-baseline/>
@@ -12,7 +12,7 @@
     <!-- <v-section3/> -->
     <!-- <v-section4 :list="datas.section4.list" :banner='datas.section4.banner'/> -->
     <!-- <v-footer/> -->
-    <v-customerServer/>
+    <!-- <v-customerServer/> -->
   </div>
 </template>
 
@@ -20,7 +20,7 @@
 import Header from "@/components/index/header.vue";
 import Swiper from "@/components/index/swiper.vue";
 import Classification from "@/components/index/classification.vue"; // 分类模块
-import CommodityType from "@/components/index/commodityType.vue"; // 商品属性
+import CommodityType from "@/components/index/commodityType.vue"; // 商品系列
 import Baseline from "@/common/_baseline.vue";
 import Section1 from "@/components/index/section1.vue"; //  热推模块
 // import Section2 from '@/components/index/section2.vue' //  横向滑动模块
@@ -55,47 +55,20 @@ export default {
           // { imgPath: require("@/assets/image/banner3.png") },
           // { imgPath: require("@/assets/image/banner4.png") }
         ],
-        classification: [
-          { imgPath: require("@/assets/image/necklace.png") },
-          { imgPath: require("@/assets/image/ring.png") },
-          { imgPath: require("@/assets/image/earring.png") },
-          { imgPath: require("@/assets/image/brooch.png") },
-          { imgPath: require("@/assets/image/bracelet.png") },
-          { imgPath: require("@/assets/image/others.png") }
-        ],
-        commodityType: [
-          {
-            imgPath: require("@/assets/image/commodityType1.png"),
-            name: "Daydreaming"
-          },
-          {
-            imgPath: require("@/assets/image/commodityType2.png"),
-            name: "Gram"
-          },
-          {
-            imgPath: require("@/assets/image/commodityType3.png"),
-            name: "First Sign"
-          },
-          {
-            imgPath: require("@/assets/image/commodityType4.png"),
-            name: "Planet"
-          }
-        ]
+        commodityType: []
       },
       loading: true
     };
   },
 
-  beforeCreate() {
-    // this.$api({
-    //   method: 'post',
-    //   url: '/index'
-    // }).then((response) => {
-    //   this.datas = response.data;
-    // }).catch(function(error) {
-    //   alert(error)
-    // })
-  }
+  async beforeCreate() {
+    const spectrum = await this.$axios.spectrum({});
+    if (spectrum.status === "20000") {
+      this.datas.commodityType = spectrum.data;
+    }
+  },
+
+  mounted() {}
 };
 </script>
 

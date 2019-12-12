@@ -3,28 +3,28 @@
     <v-header></v-header>
     <div class="content">
       <div class="content-list">
-        <input type="text" placeholder="收货人" />
+        <input type="text" placeholder="收货人" v-model="receiver" />
       </div>
       <div class="content-list">
-        <input type="text" placeholder="手机号" />
+        <input type="text" placeholder="手机号" v-model="mobile" />
       </div>
       <div class="content-list" @click="popupVisible=true">
-        <input type="text" placeholder="选择地区" />
+        <input type="text" placeholder="选择地区" v-model="province" />
         <img src="../../assets/image/back.png" alt />
       </div>
       <div class="content-list">
-        <input type="text" placeholder="详细地址" />
+        <input type="text" placeholder="详细地址" v-model="address_detail" />
       </div>
     </div>
     <div class="default">
       <mt-checklist v-model="value" :options="['设为默认地址']"></mt-checklist>
     </div>
-    <div class="save">保存</div>
+    <div class="save" @click="save">保存</div>
     <mt-popup v-model="popupVisible" position="bottom">
       <mt-picker :slots="slots" @change="onValuesChange" :showToolbar="true" valueKey="label">
         <div class="tool-bar">
           <div @click="popupVisible=false">取消</div>
-          <div>确定</div>
+          <div @click="popupVisible=false">确定</div>
         </div>
       </mt-picker>
     </mt-popup>
@@ -33,6 +33,7 @@
 <script>
 import city from "./city.js";
 import Header from "@/common/_header.vue";
+import { Toast } from "mint-ui";
 export default {
   data() {
     return {
@@ -138,10 +139,24 @@ export default {
           textAlign: "center"
         }
       ],
-      popupVisible: false
+      popupVisible: false,
+
+      receiver: "",
+      mobile: "",
+      province: "",
+      address_detail: ""
     };
   },
-  mounted() {},
+  mounted() {
+    if (this.$route.params.type === "edit") {
+      const item = JSON.parse(localStorage.addressinfo);
+      this.receiver = item.receiver;
+      this.mobile = item.mobile;
+      this.is_default = item.is_default
+      // this.province = `${item.province} - ${item.city} - ${item.area}`;
+      this.address_detail = item.address_detail;
+    }
+  },
   methods: {
     onValuesChange(picker, values) {
       if (values[0]) {
@@ -151,6 +166,33 @@ export default {
         values[0] = this.slots[0].values[0];
         values[1] = this.slots[0].values[0].children[0];
         values[2] = this.slots[0].values[0].children[0].children[0];
+      }
+      this.province = `${picker.values[0].label}-${picker.values[1].label}-${picker.values[2].label}`;
+    },
+    async save() {
+      const address = this.province.split("-");
+      console.log(address)
+      const data = {
+        receiver: this.receiver,
+        mobile: this.mobile,
+        province: address[0],
+        city: address[1],
+        area: address[2],
+        address_detail: this.address_detail,
+        is_default: this.value
+      };
+      if (this.$route.params.type === "edit") {
+        const res = await this.$axios.editAddress(`personal/address/${JSON.parse(localStorage.addressinfo).id}/modify/`,data);
+        if (res.status === "20000") {
+          Toast("保存成功");
+          this.$router.go(-1);
+        }
+      } else {
+        const res = await this.$axios.addressCreate(data);
+        if (res.status === "20000") {
+          Toast("创建成功");
+          this.$router.go(-1);
+        }
       }
     }
   },
@@ -228,7 +270,7 @@ export default {
           background-color: #9b9b9b;
           border-color: #9b9b9b;
         }
-        .mint-checkbox-core::after{
+        .mint-checkbox-core::after {
           display: none;
         }
       }

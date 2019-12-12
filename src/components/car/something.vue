@@ -1,27 +1,33 @@
-<template lang="html">
-
+<template>
   <div class="wrap">
-    <v-gologin></v-gologin>
-    <ul class="something" v-if='carList'>
-      <li v-for="(k,i) in carList">
-          <div class="something-left" @click="toggle">
-            <label class="true" :class="{false:!k.choseBool}">
-              <input type="checkbox" v-model="k.choseBool">
-            </label>
-          </div>
-          <div class="something-middle">
-            <img :src="k.imgPath">
-          </div>
-          <div class="something-right">
-            <p>{{k.title}}</p>
-            <p style="color:rgb(199, 108, 28)">18K金，宝石</p>
-            <p>售价：{{k.price}}元</p>
-            <div class="something-right-bottom" @click="cut(i)">
-              <span></span>
-            </div>
-          </div>
+    <!-- <v-gologin></v-gologin> -->
+    <ul class="something" v-if="carList">
+      <li>
+        <div class="something-left" @click="allToggle">
+          <label class="true" :class="{false:!allChoseBool}">
+            <input v-model="allChoseBool" />
+          </label>
+        </div>
+        <div class="something-middle">全部商品</div>
       </li>
-
+      <li v-for="(k,i) in carList" :key="i">
+        <div class="something-left" @click="toggle(i)">
+          <label class="true" :class="{false:!k.choseBool}">
+            <input v-model="k.choseBool" />
+          </label>
+        </div>
+        <div class="something-middle">
+          <img :src="k.imgPath" />
+        </div>
+        <div class="something-right">
+          <p>{{k.title}}</p>
+          <p style="color:rgb(199, 108, 28)">18K金，宝石</p>
+          <p>售价：{{k.price}}元</p>
+          <div class="something-right-bottom" @click="cut(i)">
+            <span></span>
+          </div>
+        </div>
+      </li>
     </ul>
   </div>
 </template>
@@ -31,29 +37,33 @@
 import Gologin from "@/components/car/gologin.vue";
 import Util from "../../util/common";
 export default {
+  data() {
+    return {
+      allChoseBool: false,
+      carList: [
+        {
+          imgPath: require("@/assets/image/banner2.png"),
+          choseBool: false,
+          title: "Planet-戒指",
+          price: "5000"
+        },
+        {
+          imgPath: require("@/assets/image/banner2.png"),
+          choseBool: false,
+          title: "Planet-戒指2",
+          price: "5000"
+        }
+      ]
+    };
+  },
   components: {
     "v-gologin": Gologin
   },
-  computed: {
-    carList() {
-      return [
-        {
-          imgPath: require("@/assets/image/banner2.png"),
-          choseBool: true,
-          title: "Planet-戒指",
-          price:'5000'
-        }
-      ];
-    }
-  },
-  mounted() {
-    // 初始化先获取购物车商品列表 否则 页面刷新出Bug
-    if (this.$store.state.detail.carList == "") {
-      this.$store.commit("RESET_CARLIST");
-    }
-  },
+
+  mounted() {},
 
   methods: {
+    /** 删除 */
     cut(i) {
       // 点击垃圾桶，删除当前商品，这里用splice和filter都会bug,只能重置数组
       let newCarList = [];
@@ -63,17 +73,36 @@ export default {
           newCarList.push(this.carList[k]);
         }
       }
-
-      //点击垃圾桶 把商品数量count-1
-      this.$store.dispatch("setLocalCount", false);
-      this.$store.dispatch("cutCarList", newCarList);
     },
-    toggle() {
-      // 每点击一下都会改变choseBool的布尔值,所以要重置数组
-      console.log(this.carList);
-      // this.$nextTick(() => {
-      //   this.$store.dispatch('cutCarList', this.carList)
-      // })
+
+    /** 单选 */
+    toggle(i) {
+      this.carList[i].choseBool = !this.carList[i].choseBool;
+      const every = this.carList.every(res => {
+        return res.choseBool;
+      });
+      this.allChoseBool = every;
+      this.allMoney();
+    },
+    /** 全选 */
+    allToggle() {
+      this.allChoseBool = !this.allChoseBool;
+      this.carList.forEach(element => {
+        element.choseBool = this.allChoseBool;
+      });
+      this.allMoney();
+    },
+
+    /** 计算购物车金额 */
+    allMoney(){
+      let money = 0;
+      this.carList.forEach(res=>{
+        if(res.choseBool){
+          money += Number(res.price);
+        }
+      })
+      this.$store.commit("updateMoney", money);
+      // this.$state.commit("updateNumber", money);
     }
   }
 };
@@ -85,7 +114,7 @@ export default {
   width: 100%;
   .something {
     width: 100%;
-    > li {
+    & > li {
       display: -ms-flex;
       display: -webkit-box;
       display: -ms-flexbox;
@@ -93,7 +122,7 @@ export default {
       -webkit-box-align: center;
       -ms-flex-align: center;
       align-items: center;
-      padding: 4vw 2vw;
+      padding: 10px;
       position: relative;
       height: 26vw;
       .bd();
@@ -122,7 +151,7 @@ export default {
         -ms-flex: 3;
         -webkit-box-flex: 3;
         flex: 3;
-        height: 26vw;
+        height: 100%;
         padding-left: 2vw;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
@@ -199,6 +228,13 @@ export default {
               center/50%;
           }
         }
+      }
+    }
+    & > li:first-child {
+      height: 50px;
+      & > .something-middle {
+        flex: 10;
+        line-height: 25px;
       }
     }
   }

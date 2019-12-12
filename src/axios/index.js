@@ -28,27 +28,34 @@ axios.interceptors.response.use(function (response) {
 // axios.defaults.baseURL = process.env.API_ROOT;
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
-axios.defaults.baseURL = localStorage.IP ? `http://${localStorage.IP}` : process.env.API_ROOT;
+axios.defaults.baseURL = process.env.API_ROOT;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 // get请求
-const axiosGet = (url, data, callback) => {
-  axios({
-    method: 'get',
-    url: url,
-    params: data,
-    timeout: 5000,
-  })
-    .then(function (res) {
-      if (typeof (callback) == 'function') {
-        if (res.data.error_code === 'login_timeout') {
-          router.push("/");
-          return;
+const axiosGet = (url, data) => {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'get',
+      url: url,
+      params: data,
+      timeout: 5000,
+      headers: {
+        'oauth-key': localStorage.userInfo ? JSON.parse(localStorage.userInfo).oauth_key  : '',
+        'personal-sign': localStorage.userInfo ? JSON.parse(localStorage.userInfo).personal_sign : ''
+      },
+    })
+      .then(function (res) {
+        if (res.data.status >= '40000') {
+          Toast({
+            message: res.data.msg,
+            duration: 5000
+          });
         }
-        callback(res)
-      }
-    })
-    .catch(function (error) {
-    })
+        resolve(res.data)
+      })
+      .catch(function (error) {
+        reject(error);
+      })
+  })
 }
 
 // post请求
@@ -59,11 +66,46 @@ const axiosPost = (url, data) => {
       url: url,
       data: data,
       timeout: 5000,
+      headers: {
+        'oauth-key': localStorage.userInfo ? JSON.parse(localStorage.userInfo).oauth_key  : '',
+        'personal-sign': localStorage.userInfo ? JSON.parse(localStorage.userInfo).personal_sign : ''
+      },
     })
       .then(function (res) {
-        if (res.data.error_code === 'login_timeout') {
-          router.push("/");
-          return;
+        if (res.data.status >= '40000') {
+          Toast({
+            message: res.data.msg,
+            duration: 5000
+          });
+        }
+        resolve(res.data)
+      })
+      .catch(function (error) {
+        reject(error);
+      })
+  })
+
+}
+
+// del请求
+const axiosDel = (url, data) => {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'delete',
+      url: url,
+      data: data,
+      timeout: 5000,
+      headers: {
+        'oauth-key': localStorage.userInfo ? JSON.parse(localStorage.userInfo).oauth_key  : '',
+        'personal-sign': localStorage.userInfo ? JSON.parse(localStorage.userInfo).personal_sign : ''
+      },
+    })
+      .then(function (res) {
+        if (res.data.status >= '40000') {
+          Toast({
+            message: res.data.msg,
+            duration: 5000
+          });
         }
         resolve(res.data)
       })
@@ -118,5 +160,6 @@ export default {
   axiosGet,
   axiosPost,
   axiosUpload,
-  parameterVerify
+  parameterVerify,
+  axiosDel
 }

@@ -2,18 +2,20 @@
   <div class="main">
     <v-header></v-header>
     <div class="all">
-      <div class="list">
+      <div class="list" v-for="(item,index) in list" :key="index" @click="localAddress(item)">
         <div class="list-left"></div>
         <div class="list-conter">
           <div>
-            <span style="font-size:14px;">陈陈陈</span> 13927471827
+            <span style="font-size:14px;">{{item.receiver}}</span>
+            {{item.mobile}}
           </div>
-          <div>上海市 上海 长宁区 AAAAAAA</div>
-          <div>默认</div>
+          <div>{{item.province}} {{item.city}} {{item.area}}</div>
+          <div>{{item.address_detail}}</div>
+          <div class="default" v-if="item.is_default">默认</div>
         </div>
         <div>
-          <img src="../../assets/image/delete.png" alt />
-          <img @click="edit()" src="../../assets/image/edit.png" alt />
+          <img src="../../assets/image/delete.png" alt @click="deleteAddress(item.id)" />
+          <img @click="edit(item)" src="../../assets/image/edit.png" alt />
         </div>
       </div>
     </div>
@@ -25,17 +27,40 @@
 import Header from "@/common/_header.vue";
 export default {
   data() {
-    return {};
+    return {
+      list: []
+    };
   },
-  mounted() {},
-  methods:{
-    edit() {
-      this.$router.push("/address");
+  mounted() {
+    this.getAddressList();
+  },
+  methods: {
+    edit(item) {
+      localStorage.addressinfo = JSON.stringify(item);
+      this.$router.push("/address/edit");
     },
     add() {
-      this.$router.push("/address");
+      this.$router.push("/address/add");
     },
-    // del() {}
+    localAddress(item){
+      localStorage.address = JSON.stringify(item);
+      this.$router.go(-1);
+    },
+    async getAddressList() {
+      const res = await this.$axios.addressList({});
+      if (res.status === "20000") {
+        this.list = res.data;
+      }
+    },
+
+    async deleteAddress(id) {
+      const path = `/personal/address/${id}/delete/`;
+      const res = await this.$axios.delAddress(path, {});
+      if (res.status === "20000") {
+        Toast("删除成功");
+        this.getAddressList();
+      }
+    }
   },
   components: {
     "v-header": Header
@@ -51,7 +76,7 @@ export default {
     padding: 0 30px;
     margin-top: 35px;
     .list {
-      height: 90px;
+      height: 110px;
       border-top: 1px solid #9b9b9b;
       font-size: 12px;
       display: flex;
@@ -65,10 +90,11 @@ export default {
         margin-top: 4px;
       }
       & > div:nth-child(2) {
+        width: 180px;
         & > div {
           margin-bottom: 5px;
         }
-        & > div:last-child {
+        & > .default {
           width: 37px;
           height: 17px;
           color: #9b9b9b;

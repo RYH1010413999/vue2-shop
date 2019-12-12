@@ -7,6 +7,9 @@ import detail from './modules/detail'
 import category from './modules/category'
 import login from './modules/login'
 
+// new 
+import car from './modules/car';
+
 
 Vue.use(Vuex)
 
@@ -14,6 +17,7 @@ export default new Vuex.Store({
   modules: {
     detail,
     category,
-    login
+    login,
+    car
   }
 })

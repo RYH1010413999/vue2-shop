@@ -4,7 +4,7 @@
       <!-- slot分发内容 让子组件混合父组件的内容 -->
       <v-header></v-header>
       <!-- 根据购物车是否有商品加载不同的组件 -->
-      <v-something v-if="count"/>
+      <v-something v-if="true"/>
       <v-nothing v-else/>
       <v-footer/>
     </div>
@@ -15,7 +15,7 @@ import Header from '@/common/_header.vue'
 import Nothing from '@/components/car/nothing.vue'
 import Something from '@/components/car/something.vue'
 import Footer from '@/components/car/footer.vue'
-
+import { mapState } from 'vuex'
 export default {
   components:{
     'v-header':Header,
@@ -25,15 +25,12 @@ export default {
   },
 
   computed:{
-    count(){
-      return this.$store.state.detail.count
-    }
+    ...mapState({
+      number: state => state.car.number,
+      money: state => state.car.money
+    })
   },
   mounted(){
-    // 防止刷新页面数据为空
-    if (this.$store.state.detail.count=="") {
-      this.$store.commit('RESET_COUNT')
-    }
   }
 
 }

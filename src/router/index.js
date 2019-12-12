@@ -21,6 +21,11 @@ const Coupon = resolve => require(['@/components/user/coupon.vue'], resolve)
 const Like = resolve => require(['@/components/user/like.vue'], resolve)
 
 
+const ConsirmOrder = resolve => require(['@/components/detail/consirmOrder'], resolve) //确认订单页面
+const Over = resolve => require(['@/components/detail/over'], resolve) //支付成功页面
+const Myorder = resolve => require(['@/components/user/myorder'], resolve) //我的订单页面
+
+
 export default new Router({
   routes: [{
     path: '/',
@@ -40,7 +45,10 @@ export default new Router({
   {
     path: '/car',
     name: '购物车页',
-    component: Car
+    component: Car,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    },
   },
   {
     path: '/car/pay',
@@ -54,7 +62,7 @@ export default new Router({
     name: '用户页',
     component: User,
     meta: {
-      requireAuth: false,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
     },
   },
   {
@@ -63,7 +71,7 @@ export default new Router({
     name: '收货地址'
   },
   {
-    path: '/address',
+    path: '/address/:type',
     component: Address,
     name: '增加收货地址'
   },
@@ -85,19 +93,34 @@ export default new Router({
 
 
   {
-    path: '/detail',
+    path: '/detail/:id',
     name: '详情页',
     component: Detail
-  }, 
+  },
   {
-    path: '/search',
+    path: '/search/:type/:id',
     name: '搜索页',
     component: Search
-  }, 
+  },
   {
     path: '/login',
     name: '登录页',
     component: Login
+  },
+  {
+    path: '/confirm/order',
+    name: '确认订单',
+    component: ConsirmOrder
+  },
+  {
+    path: '/confirm/over',
+    name: '订单完成',
+    component: Over
+  },
+  {
+    path: '/myorder',
+    name: '我的订单',
+    component: Myorder
   }
   ]
 })

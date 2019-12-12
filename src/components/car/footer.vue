@@ -2,10 +2,10 @@
   <footer class="footer">
 
     <div class="footer-result">
-      <p>共{{count}}件 金额：</p>
-      <p><span>{{allpay}} </span>元</p>
+      <p>共{{number}}件 金额：</p>
+      <p><span>{{money}} </span>元</p>
     </div>
-    <router-link :to="{ name: '分类页'}" class="footer-goon" >
+    <router-link :to="{ name: '搜索页'}" class="footer-goon" >
       继续购物
     </router-link>
     <a class="footer-pay" @click="goPay">
@@ -16,57 +16,31 @@
 </template>
 
 <script>
-
+import { mapState } from 'vuex'
 export default {
   computed: {
-    // 勾选的商品数量
-    count () {
-      // 如果已选择列表为空 就返回0
-      if (this.$store.getters.selectedList == undefined) {
-        return 0
-      } else {
-        return this.$store.getters.selectedList.length
-      }
-    },
-
-    //勾选的商品的价格总和
-    allpay () {
-      let all = 0;
-      // 如果有勾选商品,计算总价格
-      if (this.$store.getters.selectedList != undefined) {
-
-        for (let i = 0; i < this.$store.getters.selectedList.length; i++) {
-
-          all += this.$store.getters.selectedList[i].price;
-
-        }
-
-      }
-      // 没有勾选 即为0
-      return all
-    }
+    ...mapState({
+      number: state => state.car.number,
+      money: state => state.car.money
+    })
   },
 
   methods: {
     //点击跳转到支付页
-    goPay () {
-      this.$router.push({ name: '支付页' })
+    goPay() {
+      this.$router.push({ name: "支付页" });
       return;
       // 如果有选择商品才能跳转
       if (this.$store.getters.selectedList.length) {
         // 保存+缓存选择的商品 ,在支付页能用到
-        this.$store.dispatch('setSelectedList')
-        this.$router.push({ name: '支付页' })
-
+        this.$store.dispatch("setSelectedList");
+        this.$router.push({ name: "支付页" });
       } else {
-
-        alert('你还没选择商品')
-
+        alert("你还没选择商品");
       }
-
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -93,7 +67,7 @@ export default {
 
   .footer-result {
     p {
-      .fz(font-size,24);
+      .fz(font-size, 24);
       color: #999;
     }
 
@@ -101,7 +75,7 @@ export default {
       padding: 1vw 0 0 1vw;
       span {
         color: @cl;
-        .fz(font-size,42);
+        .fz(font-size, 42);
       }
     }
   }

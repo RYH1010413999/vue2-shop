@@ -3,16 +3,16 @@
     <v-header></v-header>
     <div class="main-head">
       <div class="main-head-img">
-        <img src alt />
+        <img :src="userInfo.avatar" alt />
       </div>
-      <div>陈女士</div>
+      <div>{{userInfo.nick_name}}</div>
     </div>
     <div class="main-all">
-      <div class="main-all-list">
+      <div class="main-all-list" @click="gotomyorder">
         <div>我的订单</div>
         <div>></div>
       </div>
-      <div class="main-all-list main-all-special">
+      <div class="main-all-list main-all-special" @click="gotomyorder">
         <div class="main-all-list-shopping">
           <img src="../assets/image/user_shopping1.png" alt />
           <div>待支付</div>
@@ -58,13 +58,24 @@
 <script>
 import Header from "@/common/_header.vue";
 export default {
+  data() {
+    return {
+      userInfo: {},
+    };
+  },
   components: {
     "v-header": Header
   },
   methods: {
     goto(path) {
-      this.$router.push({name:path});
+      this.$router.push({ name: path });
     },
+    gotomyorder(){
+      this.$router.push({ name: '我的订单' });
+    }
+  },
+  mounted(){
+    this.userInfo = JSON.parse(localStorage.userInfo);
   }
 };
 </script>
@@ -88,6 +99,7 @@ export default {
       img {
         width: 100%;
         height: 100%;
+        border-radius: 50%;
       }
     }
   }
@@ -103,7 +115,7 @@ export default {
       justify-content: space-between;
       align-items: center;
     }
-    &-list:last-child{
+    &-list:last-child {
       border-bottom: 1px solid #9b9b9b;
     }
     &-special {

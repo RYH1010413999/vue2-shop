@@ -11,13 +11,17 @@
         <div>Planet</div>
       </div>
       <div class="main-all">
-        <template v-for="item in 1">
-          <div class="main-all-list" @click="gotoDetail" v-bind:key="item">
+        <template v-for="(item, i) in list">
+          <div class="main-all-list" @click="gotoDetail(item.productSn)" v-bind:key="i">
             <img class="main-all-list-item1" src="../assets/image/like.png" alt />
-            <img class="main-all-list-item2" src="../assets/image/banner2.png" alt />
-            <div class="main-all-list-item3">Planet-耳饰</div>
-            <div class="main-all-list-item4">型号：00000000</div>
-            <div class="main-all-list-item5">¥ 5000</div>
+            <img class="main-all-list-item2" :src="item.headImageUrl" alt />
+            <div class="main-all-list-item3">{{item.spectrum}}-{{item.title}}</div>
+            <div class="main-all-list-item4">型号：{{item.productSn}}</div>
+            <div
+              class="main-all-list-item5"
+              v-if="item.maxPrice === item.minPrice"
+            >¥ {{item.maxPrice}}</div>
+            <div class="main-all-list-item5" v-else>¥{{item.minPrice}} - ¥ {{item.maxPrice}}</div>
           </div>
         </template>
       </div>
@@ -28,12 +32,51 @@
 <script>
 import Header from "@/common/_headerHome.vue";
 export default {
+  data() {
+    return {
+      list: []
+    };
+  },
   components: {
     "v-header": Header
   },
   methods: {
-    gotoDetail() {
-      this.$router.push({ name: "详情页" });
+    gotoDetail(id) {
+      this.$router.push(`/detail/${id}`);
+    }
+  },
+  async mounted() {
+    if (this.$route.params.type === "all") {
+      const data = {
+        page: "1",
+        list_rows: "10"
+      };
+      const res = await this.$axios.productsAll(data);
+      if (res.status === "20000") {
+        this.list = res.data.list;
+      }
+    }
+    if (this.$route.params.type === "spectrum") {
+      const data = {
+        page: "1",
+        list_rows: "10",
+        spectrum: this.$route.params.id
+      };
+      const res = await this.$axios.productsSpectrum(data);
+      if (res.status === "20000") {
+        this.list = res.data.list;
+      }
+    }
+    if (this.$route.params.type === "category") {
+      const data = {
+        page: "1",
+        list_rows: "10",
+        category: this.$route.params.id
+      };
+      const res = await this.$axios.productsCategory(data);
+      if (res.status === "20000") {
+        this.list = res.data.list;
+      }
     }
   }
 };
@@ -80,7 +123,7 @@ export default {
     background-color: #f0f0f0;
     display: flex;
     justify-content: space-around;
-    flex-wrap:wrap;
+    flex-wrap: wrap;
     padding-top: 10px;
     &-list {
       width: 182px;
