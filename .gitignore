@@ -2,6 +2,7 @@
 node_modules/
 dist/
 demo/
+shopping/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

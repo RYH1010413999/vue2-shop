@@ -34,19 +34,19 @@
           <div>售后</div>
         </div>
       </div>
-      <div class="main-all-list" @click="goto('收藏')">
+      <!-- <div class="main-all-list" @click="goto('收藏')">
         <div>我的收藏</div>
         <div>></div>
-      </div>
-      <div class="main-all-list" @click="goto('优惠券')">
+      </div> -->
+      <!-- <div class="main-all-list" @click="goto('优惠券')">
         <div>优惠券</div>
         <div>></div>
       </div>
       <div class="main-all-list" @click="goto('个人信息')">
         <div>个人信息</div>
         <div>></div>
-      </div>
-      <div class="main-all-list" @click="goto('收货地址')">
+      </div> -->
+      <div class="main-all-list" @click="gotoAddress">
         <div>收货地址</div>
         <div>></div>
       </div>
@@ -60,7 +60,7 @@ import Header from "@/common/_header.vue";
 export default {
   data() {
     return {
-      userInfo: {},
+      userInfo: {}
     };
   },
   components: {
@@ -70,11 +70,14 @@ export default {
     goto(path) {
       this.$router.push({ name: path });
     },
-    gotomyorder(){
-      this.$router.push({ name: '我的订单' });
+    gotoAddress() {
+      this.$router.push(`/addressList/user`);
+    },
+    gotomyorder() {
+      this.$router.push({ name: "我的订单" });
     }
   },
-  mounted(){
+  mounted() {
     this.userInfo = JSON.parse(localStorage.userInfo);
   }
 };

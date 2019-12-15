@@ -14,8 +14,8 @@
           <div class="default" v-if="item.is_default">默认</div>
         </div>
         <div>
-          <img src="../../assets/image/delete.png" alt @click="deleteAddress(item.id)" />
-          <img @click="edit(item)" src="../../assets/image/edit.png" alt />
+          <img src="../../assets/image/delete.png" alt @click.stop="deleteAddress(item.id)" />
+          <img @click.stop="edit(item)" src="../../assets/image/edit.png" alt />
         </div>
       </div>
     </div>
@@ -42,9 +42,11 @@ export default {
     add() {
       this.$router.push("/address/add");
     },
-    localAddress(item){
-      localStorage.address = JSON.stringify(item);
-      this.$router.go(-1);
+    localAddress(item) {
+      if (this.$route.params.status === "order") {
+        localStorage.address = JSON.stringify(item);
+        this.$router.go(-1);
+      }
     },
     async getAddressList() {
       const res = await this.$axios.addressList({});

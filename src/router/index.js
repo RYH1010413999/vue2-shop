@@ -22,8 +22,9 @@ const Like = resolve => require(['@/components/user/like.vue'], resolve)
 
 
 const ConsirmOrder = resolve => require(['@/components/detail/consirmOrder'], resolve) //确认订单页面
-const Over = resolve => require(['@/components/detail/over'], resolve) //支付成功页面
+const Success = resolve => require(['@/components/detail/success'], resolve) //支付成功页面
 const Myorder = resolve => require(['@/components/user/myorder'], resolve) //我的订单页面
+const Payview = resolve => require(['@/views/pay.vue'], resolve) //我的订单页面
 
 
 export default new Router({
@@ -66,7 +67,7 @@ export default new Router({
     },
   },
   {
-    path: '/addressList',
+    path: '/addressList/:status',
     component: AddressList,
     name: '收货地址'
   },
@@ -110,17 +111,25 @@ export default new Router({
   {
     path: '/confirm/order',
     name: '确认订单',
-    component: ConsirmOrder
+    component: ConsirmOrder,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    },
   },
   {
-    path: '/confirm/over',
+    path: '/success',
     name: '订单完成',
-    component: Over
+    component: Success
   },
   {
     path: '/myorder',
     name: '我的订单',
     component: Myorder
-  }
+  },
+  {
+    path: '/payView',
+    name: '支付方式',
+    component: Payview
+  },
   ]
 })

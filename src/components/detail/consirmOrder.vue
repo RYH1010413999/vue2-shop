@@ -2,9 +2,9 @@
   <div class="main">
     <v-header />
     <div class="list list2">
-      <div @click="gotoAddressList" v-if="address">
+      <div @click="gotoAddressList" v-if="address.receiver">
         <div>
-          <div>{{address.receiver}}  {{address.mobile}}</div>
+          <div>{{address.receiver}} {{address.mobile}}</div>
           <div>{{address.province}} {{address.city}} {{address.area}} {{address.address_detail}}</div>
         </div>
         <div>></div>
@@ -22,12 +22,12 @@
         <div>共计一件商品 ></div>
       </div>
     </div>
-    <div class="list">
+    <!-- <div class="list">
       <div>
         <div>开具发票</div>
         <div>不开具发票 ></div>
       </div>
-    </div>
+    </div>-->
     <div class="list">
       <div>
         <div>商品金额</div>
@@ -52,6 +52,7 @@
 
 <script>
 import Header from "@/common/_header.vue";
+import { Toast } from "mint-ui";
 export default {
   data() {
     return {
@@ -64,73 +65,22 @@ export default {
     "v-header": Header
   },
   methods: {
-    onBridgeReady() {
-      WeixinJSBridge.invoke(
-        "getBrandWCPayRequest",
-        {
-          appId: resp.data.appId, //公众号名称，由商户传入
-          timeStamp: resp.data.timeStamp, //时间戳，自1970年以来的秒数
-          nonceStr: resp.data.nonceStr, //随机串
-          package: resp.data.package,
-          signType: resp.data.signType, //微信签名方式：
-          paySign: resp.data.paySign //微信签名
-        },
-        this.aa(res)
-      );
-    },
-    aa(res) {
-      console.log(res);
-      if (res.err_msg == "get_brand_wcpay_request:ok") {
-        // mdui.snackbar(resp.msg, {position: 'top'});
-        // 使用以上方式判断前端返回,微信团队郑重提示：
-        // res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-        // window.location.href='{{ path('pay_success') }}';
-      } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
-        mdui.snackbar("您已取消了此次支付", { position: "top" });
-      } else if (res.err_msg == "get_brand_wcpay_request:fail") {
-        mdui.snackbar("支付失败，请重新尝试", { position: "top" });
-      } else {
-        mdui.snackbar("未知错误", { position: "top" });
-      }
-    },
-
-    async payment() {
-      const data = {
-        products: [
-          {
-            product_sku_key: JSON.parse(localStorage.price).productSkuKey,
-            product_num: "1"
-          }
-        ],
-        address_id: "4",
-        remark: "111"
-      };
-      const res = await this.$axios.orderCreate(data);
-      if (res.status === "20000") {
-        window.location.href = res.data.url;
-      }
-      // this.onBridgeReady();
+    async payment() { 
+      this.$router.push("/payView");
     },
     gotoAddressList() {
-      this.$router.push("/addressList");
+      this.$router.push("/addressList/order");
     }
   },
-  mounted() {
+  async mounted() {
     this.consirmOrder = JSON.parse(localStorage.consirmOrder);
+    const res = await this.$axios.addressDefault({});
+    if (res.status === "20000" && res.data) {
+      this.address = res.data;
+    }
     if (localStorage.address) {
       this.address = JSON.parse(localStorage.address);
     }
-
-    // if (typeof WeixinJSBridge == "undefined") {
-    //   if (document.addEventListener) {
-    //     document.addEventListener("WeixinJSBridgeReady", onBridgeReady, false);
-    //   } else if (document.attachEvent) {
-    //     document.attachEvent("WeixinJSBridgeReady", onBridgeReady);
-    //     document.attachEvent("onWeixinJSBridgeReady", onBridgeReady);
-    //   }
-    // } else {
-    //   this.onBridgeReady();
-    // }
   }
 };
 </script>

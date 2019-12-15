@@ -2,7 +2,7 @@
   <div>
     <v-header />
     <div class="content">
-      <div>支付成功</div>
+      <div>{{title}}</div>
       <div>订单编号：000000</div>
     </div>
     <div class="end" @click="goto('首页')">< 返回首页</div>
@@ -15,10 +15,18 @@ export default {
   components: {
     "v-header": Header
   },
+  data(){
+    return{
+      title:'支付成功'
+    }
+  },
   methods: {
     goto(path) {
       this.$router.push({ name: path });
     }
+  },
+  async mounted(){
+    const res = await this.$axios.payCheck({})
   }
 };
 </script>

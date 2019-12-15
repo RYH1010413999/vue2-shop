@@ -77,12 +77,8 @@ export default {
     async getProductsPrice() {
       const data = {
         product_id: this.detail.id,
-        caizhi: (this.caizhi !== ""
-          ? this.caizhi
-          : this.detail.specs[0].children[0].id),
-        chicun: (this.chicun !== ""
-          ? this.caizhi
-          : this.detail.specs[1].children[0].id)
+        caizhi: this.caizhi || this.detail.specs[0].children[0].id,
+        chicun: this.chicun || this.detail.specs[1].children[0].id
       };
       const res = await this.$axios.productsPrice(data);
       if (res.status === "20000") {

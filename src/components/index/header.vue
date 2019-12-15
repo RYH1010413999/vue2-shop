@@ -43,6 +43,15 @@
             </div>
             <div>个人中心</div>
           </div>
+
+          <div>
+            <div>
+              <!-- <img src="../../assets/image/all_list1.png" alt /> -->
+            </div>
+            <div>关于我们</div>
+          </div>
+
+
         </div>
       </div>
       <div class="header-all-service">拨打客服中心</div>
@@ -123,7 +132,7 @@ export default {
 
   &-all {
     width: 100%;
-    height: 513px;
+    height: 558px;
     position: absolute;
     top: 0;
     z-index: 11;
