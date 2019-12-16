@@ -25,6 +25,7 @@ const ConsirmOrder = resolve => require(['@/components/detail/consirmOrder'], re
 const Success = resolve => require(['@/components/detail/success'], resolve) //支付成功页面
 const Myorder = resolve => require(['@/components/user/myorder'], resolve) //我的订单页面
 const Payview = resolve => require(['@/views/pay.vue'], resolve) //我的订单页面
+const Explain = resolve => require(['@/views/explain.vue'], resolve) //关于
 
 
 export default new Router({
@@ -130,6 +131,11 @@ export default new Router({
     path: '/payView',
     name: '支付方式',
     component: Payview
+  },
+  {
+    path: '/explain/:type',
+    name: '关于',
+    component: Explain
   },
   ]
 })

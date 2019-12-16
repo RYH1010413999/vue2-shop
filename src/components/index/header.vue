@@ -37,21 +37,19 @@
             </div>
           </template>
 
-          <div @click="gotoUser">
+          <div @click="gotoUser('/user')">
             <div>
               <img src="../../assets/image/all_list6.png" alt />
             </div>
             <div>个人中心</div>
           </div>
 
-          <div>
+          <div @click="gotoUser('/explain/1')">
             <div>
-              <!-- <img src="../../assets/image/all_list1.png" alt /> -->
+              <img src="../../assets/image/aboutUs.png" alt />
             </div>
             <div>关于我们</div>
           </div>
-
-
         </div>
       </div>
       <div class="header-all-service">拨打客服中心</div>
@@ -79,13 +77,13 @@ export default {
     showAll(bool) {
       this.show = bool;
     },
-    gotoUser() {
-      this.$router.push({ name: "用户页" });
+    gotoUser(path) {
+      this.$router.push({ path: path });
     },
     gitoCar() {
       this.$router.push({ name: "购物车页" });
     },
-    gitoSearch(type,id) {
+    gitoSearch(type, id) {
       this.$router.push({ path: `/search/${type}/${id}` });
     }
   }
@@ -185,7 +183,8 @@ export default {
 
         & > div {
           display: flex;
-          font-size: 14px;
+          font-size: 13px;
+          font-family: helvetica neue;
           align-items: center;
           height: 45px;
           border-bottom: 1px solid #f2f2f2;
@@ -219,6 +218,13 @@ export default {
         & > div:nth-child(6) > div > img {
           width: 18px;
           height: 19px;
+        }
+
+        & > div:nth-child(7) > div > img {
+          width: 28px;
+          height: 28px;
+          position: relative;
+          right: 5px;
         }
       }
     }

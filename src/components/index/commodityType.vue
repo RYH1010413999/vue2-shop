@@ -50,7 +50,8 @@ export default {
     }
     div {
       position: absolute;
-      font-size: 15px;
+      font-size: 13px;
+      font-family: helvetica neue;
       color: #ffffff;
       left: 50%;
       transform: translateX(-50%);

@@ -6,7 +6,7 @@
       <div class="content-all">
         <div class="content-all-list" @click="select = '1'">
           <div>
-            <img src alt />
+            <img src="../assets/image/wxPay.png" alt />
           </div>
           <div>
             <p>微信支付</p>
@@ -21,7 +21,7 @@
 
         <div class="content-all-list" @click="select = '2'">
           <div>
-            <img src alt />
+            <img src="../assets/image/zfbPay.png" alt />
           </div>
           <div>
             <p>支付宝支付</p>
@@ -49,7 +49,8 @@ export default {
   data() {
     return {
       select: "1",
-      consirmOrder: {}
+      consirmOrder: {},
+      wxBrowser:false,
     };
   },
   methods: {
@@ -67,26 +68,26 @@ export default {
         address_id: JSON.parse(localStorage.address).id,
         remark: "111"
       };
-      const ua = navigator.userAgent.toLowerCase(); //获取判断用的对象
+      const res = await this.$axios.orderCreate(data);
+      const data2 = {
+        order_sn:res.data.order_sn,
+      }
       // 选择微信 并且在 微信浏览器
       if (this.select === "1") {
-        if (ua.match(/MicroMessenger/i) == "micromessenger") {
-          data.pay_type = 1;
+        if (this.wxBrowser) {
+          data2.pay_type = 1;
         }
       }
       // 选择支付宝
       if (this.select === "2") {
-        data.pay_type = "2";
+        data2.pay_type = "2";
       }
-      const res = await this.$axios.orderCreate(data);
-      if (res.status === "20000") {
-        if (
-          ua.match(/MicroMessenger/i) == "micromessenger" &&
-          this.select === "1"
-        ) {
-          this.wxPay(res);
+      const res2 = await this.$axios.payCreate(data2);
+      if (res2.status === "20000") {
+        if (this.wxBrowser && this.select === "1") {
+          this.wxPay(res2);
         } else {
-          window.location.href = res.data.url;
+          window.location.href = res2.data.url;
         }
       }
     },
@@ -136,6 +137,8 @@ export default {
   },
   mounted() {
     this.consirmOrder = JSON.parse(localStorage.consirmOrder);
+    const ua = navigator.userAgent.toLowerCase();
+    this.wxBrowser = ua.match(/MicroMessenger/i) == "micromessenger";
   }
 };
 </script>
@@ -156,7 +159,15 @@ export default {
       font-size: 14px;
       align-items: center;
       justify-content: space-between;
+      & > div:nth-child(1) {
+        img{
+          width: 30px;
+          height: 30px;
+          margin-right: 20px;
+        }
+      }
       & > div:nth-child(2) {
+        width: 200px;
         & > p:last-child {
           color: #a8a8a8;
         }

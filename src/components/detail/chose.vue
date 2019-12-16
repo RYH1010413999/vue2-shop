@@ -2,7 +2,7 @@
   <section class="chose">
     <div class="chose-view">
       <h1 class="chose-view-title">{{detail.spectrum}}-{{detail.title}}</h1>
-      <div class="chose-view-price">¥ {{detail.minPrice}}元</div>
+      <div class="chose-view-price">¥ {{price.salePrice}}元</div>
       <div class="chose-view-model">
         <div class="chose-view-model-name">
           <div>型号：{{detail.productSn}}</div>
@@ -24,17 +24,28 @@
           </div>
         </div>
 
-        <div class="shopping" @click="confirm">立即购买</div>
+        <div class="chose-view-model-detail">
+          <div>详细：</div>
+          <div v-html="detail.content"></div>
+        </div>
+
+        <div class="shopping" @click="gotoConfirmOrder">立即购买</div>
         <div class="chose-view-model-careful">
-          <div>
+          <div @click="popupVisible1 = true">
             <div>使用注意</div>
             <img src="../../assets/image/add.png" alt />
           </div>
-          <div>
+          <div @click="gotoAbout()">
             <div>销售条款</div>
             <img src="../../assets/image/add.png" alt />
           </div>
         </div>
+
+        <mt-popup v-model="popupVisible1">
+          <p>产品描述中备注的注意事项：</p>
+          <p>• 产品中使用的珍珠均为天然珍珠，色彩和形状大小差异造就了每件产品的独特性。介意者请谨慎购买，购买前可联系客服咨询。</p>
+          <p>• 部分耳饰由于材料存在一定重量的自重，在长时间佩戴的情况下有可能会影响佩戴舒适感。</p>
+        </mt-popup>
 
         <div class="chose-view-model-end">
           <img src="../../assets/image/logo_center.png" alt />
@@ -61,11 +72,21 @@ export default {
     return {
       rangeValue: 55,
       caizhi: "",
-      chicun: ""
+      chicun: "",
+      popupVisible1: false,
+      price: {}
     };
   },
   computed: mapState({}),
   methods: {
+    gotoAbout() {
+      this.$router.push("/explain/2");
+    },
+
+    gotoConfirmOrder() {
+      this.$router.push("/confirm/order");
+    },
+
     select(index, id) {
       if (index === 0) {
         this.caizhi = id;
@@ -73,25 +94,31 @@ export default {
       if (index === 1) {
         this.chicun = id;
       }
+      this.getProductsPrice();
     },
+
     async getProductsPrice() {
       const data = {
         product_id: this.detail.id,
-        caizhi: this.caizhi || this.detail.specs[0].children[0].id,
-        chicun: this.chicun || this.detail.specs[1].children[0].id
+        caizhi: this.caizhi,
+        chicun: this.chicun
       };
       const res = await this.$axios.productsPrice(data);
       if (res.status === "20000") {
+        this.price = res.data;
         localStorage.price = JSON.stringify(res.data);
       }
-    },
-    async confirm() {
-      await this.getProductsPrice();
-      localStorage.consirmOrder = JSON.stringify(this.detail);
-      this.$router.push("/confirm/order");
     }
   },
-  updated() {}
+  async mounted() {},
+  watch: {
+    detail(val) {
+      localStorage.consirmOrder = JSON.stringify(this.detail);
+      this.caizhi = this.detail.specs[0].children[0].id;
+      this.chicun = this.detail.specs[1].children[0].id;
+      this.getProductsPrice();
+    }
+  }
 };
 </script>
 
@@ -194,6 +221,12 @@ export default {
         }
       }
     }
+  }
+  & /deep/ .mint-popup {
+    padding: 15px;
+    line-height: 20px;
+    border-radius: 5px;
+    width: 80%;
   }
 }
 .shopping {

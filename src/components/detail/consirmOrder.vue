@@ -31,7 +31,7 @@
     <div class="list">
       <div>
         <div>商品金额</div>
-        <div>¥ {{consirmOrder.minPrice}}</div>
+        <div>¥ {{price.salePrice}}</div>
       </div>
       <div>
         <div>运费</div>
@@ -39,7 +39,7 @@
       </div>
       <div>
         <div>合计</div>
-        <div>¥ {{consirmOrder.minPrice}}</div>
+        <div>¥ {{price.salePrice}}</div>
       </div>
     </div>
     <div>
@@ -58,7 +58,8 @@ export default {
     return {
       value: [],
       consirmOrder: {},
-      address: {}
+      address: {},
+      price:{}
     };
   },
   components: {
@@ -74,6 +75,7 @@ export default {
   },
   async mounted() {
     this.consirmOrder = JSON.parse(localStorage.consirmOrder);
+    this.price = JSON.parse(localStorage.price);
     const res = await this.$axios.addressDefault({});
     if (res.status === "20000" && res.data) {
       this.address = res.data;
