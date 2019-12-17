@@ -18,9 +18,17 @@
               class="detail-list"
               v-for="(item2,index2) in item.children"
               :class="item2.id === caizhi || item2.id === chicun?'active':''"
-              @click="select(index,item2.id)"
+              @click="select(index,item2)"
               :key="index2"
             >{{item2.specs}}</div>
+          </div>
+        </div>
+
+         <div class="chose-view-model-detail">
+          <div>说明：</div>
+          <div>
+            {{explain1}}
+            {{explain2}}
           </div>
         </div>
 
@@ -74,7 +82,9 @@ export default {
       caizhi: "",
       chicun: "",
       popupVisible1: false,
-      price: {}
+      price: {},
+      explain1:'',
+      explain2:''
     };
   },
   computed: mapState({}),
@@ -87,12 +97,14 @@ export default {
       this.$router.push("/confirm/order");
     },
 
-    select(index, id) {
+    select(index, item2) {
       if (index === 0) {
-        this.caizhi = id;
+        this.caizhi = item2.id;
+        this.explain1 = item2.specs_remark
       }
       if (index === 1) {
-        this.chicun = id;
+        this.chicun = item2.id;
+        this.explain2 = item2.specs_remark
       }
       this.getProductsPrice();
     },
@@ -116,6 +128,8 @@ export default {
       localStorage.consirmOrder = JSON.stringify(this.detail);
       this.caizhi = this.detail.specs[0].children[0].id;
       this.chicun = this.detail.specs[1].children[0].id;
+      this.explain1 = `${this.detail.specs[0].children[0].specs_remark}`
+      this.explain2 = `${this.detail.specs[1].children[0].specs_remark}`
       this.getProductsPrice();
     }
   }

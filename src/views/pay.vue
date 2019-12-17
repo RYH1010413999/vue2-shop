@@ -2,7 +2,7 @@
   <div>
     <v-header />
     <div class="content">
-      <div class="content-title">需支付 ￥{{consirmOrder.minPrice}}</div>
+      <div class="content-title">需支付 ￥{{price.salePrice}}</div>
       <div class="content-all">
         <div class="content-all-list" @click="select = '1'">
           <div>
@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       select: "1",
-      consirmOrder: {},
+      price: {},
       wxBrowser:false,
     };
   },
@@ -58,19 +58,8 @@ export default {
       this.$router.push({ name: path });
     },
     async payment() {
-      const data = {
-        products: [
-          {
-            product_sku_key: JSON.parse(localStorage.price).productSkuKey,
-            product_num: "1"
-          }
-        ],
-        address_id: JSON.parse(localStorage.address).id,
-        remark: "111"
-      };
-      const res = await this.$axios.orderCreate(data);
       const data2 = {
-        order_sn:res.data.order_sn,
+        order_sn:localStorage.order_sn,
       }
       // 选择微信 并且在 微信浏览器
       if (this.select === "1") {
@@ -136,7 +125,7 @@ export default {
     }
   },
   mounted() {
-    this.consirmOrder = JSON.parse(localStorage.consirmOrder);
+    this.price = JSON.parse(localStorage.price);
     const ua = navigator.userAgent.toLowerCase();
     this.wxBrowser = ua.match(/MicroMessenger/i) == "micromessenger";
   }

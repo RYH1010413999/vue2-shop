@@ -7,7 +7,7 @@
         <mt-tab-item id="2">待支付</mt-tab-item>
         <mt-tab-item id="3">待发货</mt-tab-item>
         <mt-tab-item id="4">待收货</mt-tab-item>
-        <mt-tab-item id="5">已完成</mt-tab-item>
+        <mt-tab-item id="5">待评价</mt-tab-item>
       </mt-navbar>
 
       <!-- tab-container -->
@@ -38,10 +38,110 @@
             </div>
           </div>
         </mt-tab-container-item>
-        <mt-tab-container-item id="2"></mt-tab-container-item>
-        <mt-tab-container-item id="3"></mt-tab-container-item>
-        <mt-tab-container-item id="4"></mt-tab-container-item>
-        <mt-tab-container-item id="5"></mt-tab-container-item>
+        <mt-tab-container-item id="2">
+          <div class="list" v-for="(item,index) in list" :key="index" v-if="item.orderStatus === 1">
+            <div>
+              <div class="list-color">订单编号：{{item.orderNo}}</div>
+              <div>{{item.orderStatus | Status}}</div>
+            </div>
+            <!-- <div>
+              <div class="list-color">参考编码：2019112810293810248</div>
+            </div>-->
+            <div>
+              <div class="list-image">
+                <img :src="item.orderItem[0].imageUrl" alt />
+              </div>
+              <div class="list-detail">
+                <div>Planet-戒指</div>
+                <div>编号00000</div>
+                <div>尺寸：53</div>
+                <div>￥ {{item.originPrice}} x 1</div>
+              </div>
+            </div>
+            <div>
+              <div>共计1件商品，运费￥{{item.policyPrice}}</div>
+              <div>合计: ￥ {{item.finalPrice}}</div>
+            </div>
+          </div>
+        </mt-tab-container-item>
+        <mt-tab-container-item id="3">
+          <div class="list" v-for="(item,index) in list" :key="index" v-if="item.orderStatus === 2">
+            <div>
+              <div class="list-color">订单编号：{{item.orderNo}}</div>
+              <div>{{item.orderStatus | Status}}</div>
+            </div>
+            <!-- <div>
+              <div class="list-color">参考编码：2019112810293810248</div>
+            </div>-->
+            <div>
+              <div class="list-image">
+                <img :src="item.orderItem[0].imageUrl" alt />
+              </div>
+              <div class="list-detail">
+                <div>Planet-戒指</div>
+                <div>编号00000</div>
+                <div>尺寸：53</div>
+                <div>￥ {{item.originPrice}} x 1</div>
+              </div>
+            </div>
+            <div>
+              <div>共计1件商品，运费￥{{item.policyPrice}}</div>
+              <div>合计: ￥ {{item.finalPrice}}</div>
+            </div>
+          </div>
+        </mt-tab-container-item>
+        <mt-tab-container-item id="4">
+          <div class="list" v-for="(item,index) in list" :key="index" v-if="item.orderStatus === 3">
+            <div>
+              <div class="list-color">订单编号：{{item.orderNo}}</div>
+              <div>{{item.orderStatus | Status}}</div>
+            </div>
+            <!-- <div>
+              <div class="list-color">参考编码：2019112810293810248</div>
+            </div>-->
+            <div>
+              <div class="list-image">
+                <img :src="item.orderItem[0].imageUrl" alt />
+              </div>
+              <div class="list-detail">
+                <div>Planet-戒指</div>
+                <div>编号00000</div>
+                <div>尺寸：53</div>
+                <div>￥ {{item.originPrice}} x 1</div>
+              </div>
+            </div>
+            <div>
+              <div>共计1件商品，运费￥{{item.policyPrice}}</div>
+              <div>合计: ￥ {{item.finalPrice}}</div>
+            </div>
+          </div>
+        </mt-tab-container-item>
+        <mt-tab-container-item id="5">
+          <div class="list" v-for="(item,index) in list" :key="index" v-if="item.orderStatus === 4">
+            <div>
+              <div class="list-color">订单编号：{{item.orderNo}}</div>
+              <div>{{item.orderStatus | Status}}</div>
+            </div>
+            <!-- <div>
+              <div class="list-color">参考编码：2019112810293810248</div>
+            </div>-->
+            <div>
+              <div class="list-image">
+                <img :src="item.orderItem[0].imageUrl" alt />
+              </div>
+              <div class="list-detail">
+                <div>Planet-戒指</div>
+                <div>编号00000</div>
+                <div>尺寸：53</div>
+                <div>￥ {{item.originPrice}} x 1</div>
+              </div>
+            </div>
+            <div>
+              <div>共计1件商品，运费￥{{item.policyPrice}}</div>
+              <div>合计: ￥ {{item.finalPrice}}</div>
+            </div>
+          </div>
+        </mt-tab-container-item>
       </mt-tab-container>
     </div>
   </div>
@@ -60,14 +160,17 @@ export default {
     Status: function(value) {
       let data;
       switch (value) {
+        case 0:
+          data = '待下单'
+          break;
         case 1:
-          data = '待付款'
+          data = '待支付'
           break;
         case 2:
           data = '待发货'
           break;
         case 3:
-          data = '待签收'
+          data = '待收货'
           break;
         case 4:
           data = '待评价'
@@ -84,7 +187,7 @@ export default {
           case 8:
           data = '退货退款'
           break;
-          case 8:
+          case 9:
           data = '退款不退货'
           break;
         default:
@@ -97,6 +200,7 @@ export default {
     "v-header": Header
   },
   async mounted() {
+    this.selected = this.$route.params.type;
     const res = await this.$axios.orderList({});
     if (res.status === "20000") {
       this.list = res.data.list;

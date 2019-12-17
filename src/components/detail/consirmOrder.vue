@@ -59,15 +59,31 @@ export default {
       value: [],
       consirmOrder: {},
       address: {},
-      price:{}
+      price: {}
     };
   },
   components: {
     "v-header": Header
   },
   methods: {
-    async payment() { 
-      this.$router.push("/payView");
+    async payment() {
+      const data = {
+        products: [
+          {
+            product_sku_key: JSON.parse(localStorage.price).productSkuKey,
+            product_num: "1"
+          }
+        ],
+        address_id: JSON.parse(localStorage.address).id,
+        remark: "111"
+      };
+      const res = await this.$axios.orderCreate(data);
+      if (res.status === "20000") {
+        localStorage.order_sn = res.data.order_sn;
+        this.$router.push("/payView");
+      } else {
+        Toast(res.msg);
+      }
     },
     gotoAddressList() {
       this.$router.push("/addressList/order");

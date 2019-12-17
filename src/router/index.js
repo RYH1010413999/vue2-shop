@@ -123,7 +123,7 @@ export default new Router({
     component: Success
   },
   {
-    path: '/myorder',
+    path: '/myorder/:type',
     name: '我的订单',
     component: Myorder
   },
