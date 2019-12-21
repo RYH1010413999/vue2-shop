@@ -59,7 +59,7 @@ export default {
     },
     async payment() {
       const data2 = {
-        order_sn:localStorage.order_sn,
+        order_no:localStorage.order_no,
       }
       // 选择微信 并且在 微信浏览器
       if (this.select === "1") {

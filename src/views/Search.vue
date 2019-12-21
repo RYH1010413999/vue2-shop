@@ -114,6 +114,8 @@ export default {
     width: 100%;
     height: 105px;
     background-image: url(../assets/image/commodityType4.png);
+    background-repeat:no-repeat;
+    background-size:100%;
     font-size: 15px;
     color: #ffffff;
     text-align: center;

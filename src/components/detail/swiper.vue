@@ -24,10 +24,6 @@ export default {
   },
   data(){
     return{
-      swiper:[{
-        imgSrc:require("@/assets/image/banner2.png"),
-        id:1,
-      }]
     }
   }
 }

@@ -43,7 +43,8 @@
       </div>
     </div>
     <div>
-      <mt-checklist v-model="value" :options="['我已阅读并接受本订单适用的 隐私政策、销售条款以及 退货政策']"></mt-checklist>
+      <mt-checklist v-model="value" :options="['我已阅读并接受本订单适用的']"></mt-checklist>
+      <div class="gotoAbout" @click="gotoAbout()">隐私政策、销售条款以及 退货政策</div>
       <mt-checklist v-model="value" :options="['接收 HORUS 新闻快讯及最新产品']"></mt-checklist>
     </div>
     <div class="shopping" @click="payment">立即支付</div>
@@ -79,7 +80,7 @@ export default {
       };
       const res = await this.$axios.orderCreate(data);
       if (res.status === "20000") {
-        localStorage.order_sn = res.data.order_sn;
+        localStorage.order_no = res.data.order_no;
         this.$router.push("/payView");
       } else {
         Toast(res.msg);
@@ -87,7 +88,10 @@ export default {
     },
     gotoAddressList() {
       this.$router.push("/addressList/order");
-    }
+    },
+    gotoAbout() {
+      this.$router.push("/explain/2");
+    },
   },
   async mounted() {
     this.consirmOrder = JSON.parse(localStorage.consirmOrder);
@@ -169,5 +173,11 @@ export default {
   line-height: 42px;
   color: white;
   margin: 30px 0;
+}
+.gotoAbout{
+  margin-left:24px;
+  position: relative;
+  bottom :10px;
+  text-decoration:underline;
 }
 </style>

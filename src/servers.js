@@ -17,8 +17,9 @@ const editAddress = (path,data) => axios.axiosPost(path, data); // 修改收货�
 const orderCreate = (data) => axios.axiosPost(`/consume/order/create/`, data); // 创建订单
 const payCreate = (data) => axios.axiosPost(`/consume/pay/create/`, data); // 支付
 const addressDefault = (data) => axios.axiosPost(`personal/address/default/`, data); // 获取默认地址
-const orderList= (data) => axios.axiosPost(`personal/order/list/`, data); // 获取默认地址
-const payCheck= (data) => axios.axiosGet(`personal/pay/check/`, data); // 判断支付状态
+const orderList = (data) => axios.axiosPost(`personal/order/list/`, data); // 获取默认地址
+const payCheck = (data) => axios.axiosGet(`personal/pay/check/`, data); // 判断支付状态
+const shopInfo = (data) => axios.axiosGet(`shop/info/`, data); // 购物信息
 export default {
   sendRegisterCode,
   register,
@@ -39,5 +40,6 @@ export default {
   addressDefault,
   orderList,
   payCheck,
-  payCreate
+  payCreate,
+  shopInfo
 }

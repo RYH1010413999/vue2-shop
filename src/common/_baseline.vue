@@ -5,6 +5,13 @@
       <img src="../assets/image/wechat.png" alt />
        <p>客服微信</p>
     </div>
+
+    <div>
+      <img src="../assets/image/wechat.png" alt />
+       <p>微信公众号</p>
+    </div>
+
+    <div>Ins : horus1924</div>
   </div>
 </template>
 
