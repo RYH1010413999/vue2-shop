@@ -7,7 +7,7 @@
     </div>
 
     <div>
-      <img src="../assets/image/wechat.png" alt />
+      <img src="../assets/image/WechatIMG2.png" alt />
        <p>微信公众号</p>
     </div>
 

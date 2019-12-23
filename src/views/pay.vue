@@ -2,7 +2,7 @@
   <div>
     <v-header />
     <div class="content">
-      <div class="content-title">需支付 ￥{{price.salePrice}}</div>
+      <div class="content-title">需支付 ￥{{price}}</div>
       <div class="content-all">
         <div class="content-all-list" @click="select = '1'">
           <div>
@@ -125,7 +125,7 @@ export default {
     }
   },
   mounted() {
-    this.price = JSON.parse(localStorage.price);
+    this.price = localStorage.price;
     const ua = navigator.userAgent.toLowerCase();
     this.wxBrowser = ua.match(/MicroMessenger/i) == "micromessenger";
   }

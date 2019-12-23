@@ -38,12 +38,12 @@
         <mt-tab-container-item id="1">
           <div class="list-basic">
             <div>
-              <input type="number" placeholder="手机号" v-model="loginForm.mobile"/>
+              <input type="number" placeholder="手机号" v-model="loginForm.mobile" />
             </div>
           </div>
           <div class="list-basic">
             <div>
-              <input type="password" placeholder="密码" v-model="loginForm.password"/>
+              <input type="password" placeholder="密码" v-model="loginForm.password" />
             </div>
           </div>
           <div class="submit" @click="login">登录并绑定微信</div>
@@ -85,14 +85,14 @@ export default {
       const data = this.registerForm;
       console.log(data);
       const res = await this.$axios.register(data);
-      if (res.status === '20000') {
-          Toast("注册成功");
-          localStorage.login = true;
-          localStorage.userInfo = JSON.stringify(res.data);
-          this.$router.go(-1);
-        } else {
-          Toast(res.msg);
-        }
+      if (res.status === "20000") {
+        Toast("注册成功");
+        localStorage.login = true;
+        localStorage.userInfo = JSON.stringify(res.data);
+        this.$router.go(-1);
+      } else {
+        Toast(res.msg);
+      }
     },
 
     /** 发送验证码 */
@@ -111,7 +111,6 @@ export default {
       }, 1000);
     },
 
-
     /** 登录 */
     async login() {
       if (this.loginForm.mobile !== "" && this.loginForm.password !== "") {
@@ -120,7 +119,7 @@ export default {
           password: this.loginForm.password
         };
         const res = await this.$axios.register(data);
-        if (res.status === '20000') {
+        if (res.status === "20000") {
           Toast("登录成功");
           localStorage.login = true;
           localStorage.userInfo = JSON.stringify(res.data);
@@ -180,6 +179,9 @@ export default {
       align-items: flex-end;
       justify-content: space-between;
       border-bottom: 1px solid #9b9b9b;
+      & > div{
+        width: 100%;
+      }
     }
   }
   & /deep/ .mint-navbar {
@@ -220,5 +222,9 @@ export default {
   text-align: center;
   line-height: 42px;
   margin-top: 25px;
+}
+input {
+  width: 100%;
+  font-size: 14px;
 }
 </style>

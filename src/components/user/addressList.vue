@@ -44,7 +44,7 @@ export default {
     },
     localAddress(item) {
       if (this.$route.params.status === "order") {
-        localStorage.address = JSON.stringify(item);
+        localStorage.addressinfo = JSON.stringify(item);
         this.$router.go(-1);
       }
     },

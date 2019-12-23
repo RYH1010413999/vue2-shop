@@ -8,26 +8,26 @@
       <div>{{userInfo.nick_name}}</div>
     </div>
     <div class="main-all">
-      <div class="main-all-list" @click="gotomyorder(1)">
+      <div class="main-all-list" @click="gotomyorder('0')">
         <div>我的订单</div>
         <div>></div>
       </div>
       <div class="main-all-list main-all-special">
-        <div class="main-all-list-shopping" @click="gotomyorder(2)">
+        <div class="main-all-list-shopping" @click="gotomyorder('1')">
           <img src="../assets/image/user_shopping1.png" alt />
           <div>待支付</div>
         </div>
-        <div class="main-all-list-shopping" @click="gotomyorder(3)">
+        <div class="main-all-list-shopping" @click="gotomyorder('2')">
           <img src="../assets/image/user_shopping2.png" alt />
           <div>待发货</div>
         </div>
-        <div class="main-all-list-shopping" @click="gotomyorder(4)">
+        <div class="main-all-list-shopping" @click="gotomyorder('3')">
           <img src="../assets/image/user_shopping3.png" alt />
           <div>待收货</div>
         </div>
-        <div class="main-all-list-shopping" @click="gotomyorder(5)">
+        <div class="main-all-list-shopping" @click="gotomyorder('4')">
           <img src="../assets/image/user_shopping4.png" alt />
-          <div>待评价</div>
+          <div>已完成</div>
         </div>
         <div class="main-all-list-shopping">
           <img src="../assets/image/user_shopping5.png" alt />
@@ -38,11 +38,11 @@
         <div>我的收藏</div>
         <div>></div>
       </div> -->
-      <!-- <div class="main-all-list" @click="goto('优惠券')">
+      <div class="main-all-list" @click="goto('优惠券')">
         <div>优惠券</div>
         <div>></div>
       </div>
-      <div class="main-all-list" @click="goto('个人信息')">
+      <!-- <div class="main-all-list" @click="goto('个人信息')">
         <div>个人信息</div>
         <div>></div>
       </div> -->

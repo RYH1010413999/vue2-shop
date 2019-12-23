@@ -5,25 +5,25 @@
       <li>
         <div class="something-left" @click="allToggle">
           <label class="true" :class="{false:!allChoseBool}">
-            <input v-model="allChoseBool" />
+            <input type="checkbox" />
           </label>
         </div>
         <div class="something-middle">全部商品</div>
       </li>
-      <li v-for="(k,i) in carList" :key="i">
-        <div class="something-left" @click="toggle(i)">
-          <label class="true" :class="{false:!k.choseBool}">
-            <input v-model="k.choseBool" />
+      <li v-for="(item,i) in carList" :key="i">
+        <div class="something-left" @click="toggle(item)">
+          <label class="true" :class="{'false':!item.choseBool}">
+            <input type="checkbox" />
           </label>
         </div>
         <div class="something-middle">
-          <img :src="k.imgPath" />
+          <img :src="item.imageUrl" />
         </div>
         <div class="something-right">
-          <p>{{k.title}}</p>
-          <p style="color:rgb(199, 108, 28)">18K金，宝石</p>
-          <p>售价：{{k.price}}元</p>
-          <div class="something-right-bottom" @click="cut(i)">
+          <p>{{item.title}}</p>
+          <!-- <p style="color:rgb(199, 108, 28)">18K金，宝石</p> -->
+          <p>售价：{{item.salePrice}}元</p>
+          <div class="something-right-bottom" @click="cut(item)">
             <span></span>
           </div>
         </div>
@@ -40,44 +40,34 @@ export default {
   data() {
     return {
       allChoseBool: false,
-      carList: [
-        {
-          imgPath: require("@/assets/image/banner2.png"),
-          choseBool: false,
-          title: "Planet-戒指",
-          price: "5000"
-        },
-        {
-          imgPath: require("@/assets/image/banner2.png"),
-          choseBool: false,
-          title: "Planet-戒指2",
-          price: "5000"
-        }
-      ]
+      carList: []
     };
   },
   components: {
     "v-gologin": Gologin
   },
 
-  mounted() {},
+  mounted() {
+    this.cartList();
+  },
 
   methods: {
     /** 删除 */
-    cut(i) {
-      // 点击垃圾桶，删除当前商品，这里用splice和filter都会bug,只能重置数组
-      let newCarList = [];
-
-      for (let k = 0; k < this.carList.length; k++) {
-        if (k !== i) {
-          newCarList.push(this.carList[k]);
-        }
+    async cut(item) {
+      const data = {
+        product_sku_key: item.productSkuKey,
+        type: "delete"
+      };
+      const res = await this.$axios.cartHandle(data);
+      if (res.status === "20000") {
+        this.cartList();
       }
     },
 
     /** 单选 */
-    toggle(i) {
-      this.carList[i].choseBool = !this.carList[i].choseBool;
+    toggle(item) {
+      item.choseBool = !item.choseBool;
+      this.carList = [...this.carList];
       const every = this.carList.every(res => {
         return res.choseBool;
       });
@@ -94,15 +84,22 @@ export default {
     },
 
     /** 计算购物车金额 */
-    allMoney(){
+    allMoney() {
       let money = 0;
-      this.carList.forEach(res=>{
-        if(res.choseBool){
-          money += Number(res.price);
+      this.carList.forEach(res => {
+        if (res.choseBool) {
+          money += Number(res.salePrice);
         }
-      })
+      });
       this.$store.commit("updateMoney", money);
       // this.$state.commit("updateNumber", money);
+    },
+
+    async cartList() {
+      const res = await this.$axios.cartList({});
+      if (res.status === "20000") {
+        this.carList = res.data.list;
+      }
     }
   }
 };

@@ -4,6 +4,7 @@
     <div class="content">
       <div class="content-div" v-if="type === '1'">
         <div class="content-div-main">
+
           <div class="content-div-main-title">关于我们</div>
           <div class="content-div-main-p">
             <p>温柔是一种力量，光芒亦蕴含温度，在璀璨辰星中，引你与代号Horus1924行星相遇，让这颗星球在你的心中柔软着陆，为你心头带来一次怦然的震撼。</p>
@@ -12,7 +13,12 @@
               不可抗拒却又温润恒久。我们相信自我才是答案，在多面的生活里我们和每一个自己融洽相处，创造不同的可能和希望。
             </p>
           </div>
-          <!-- <div class="content-div-main-title">Horus Club</div> -->
+
+          <div class="content-div-main-title">Horus Club</div>
+          <div class="content-div-main-p">
+            <img src="../assets/image/WechatIMG3.png" alt="">
+          </div>
+
           <div class="content-div-main-title">关于保养维修等售后服务</div>
           <div class="content-div-main-p">
             <p>
@@ -27,10 +33,12 @@
             <p>* 订制商品、打折商品不接受退换货。</p>
             <p>* 建议使用顺丰退件，退件途中若有任何遗失或损坏请自行承担。</p>
           </div>
+
           <div class="content-div-main-title">关于首次购买者如何确定戒指尺寸</div>
           <div class="content-div-main-p">
             <p>为得知最准确的尺寸，您可使用我们每次随产品附带的指圈测卡。若为首次购买消费者，您可去就近的珠宝商店测量，或者您也可以在家用一条小绳子或小纸条，围绕手指最粗的部位拉测测量做一个记号，然后测量出周长，再对应手寸号。</p>
           </div>
+
           <div class="tips">
             <p>测量小提示：</p>
             <p>冬天购买戒指，由于天气较冷，手指比夏天要细一号到半号。</p>
@@ -43,7 +51,7 @@
       </div>
 
       <div class="content-div" v-if="type === '2'">
-        <div class="content-div-title">销售条款</div>
+        <div class="content-div-title"></div>
         <div class="content-div-main">
           <p class="content-div-main-title">1. 关于首次购买者如何确定戒指尺寸</p>
           <p>为得知最准确的尺寸，您可使用我们每次随产品附带的指圈测卡。若为首次购买消费者，您可去就近的珠宝商店测量，或者您也可以在家用一条小绳子或小纸条，围绕手指最粗的部位拉测测量做一个记号，然后测量出周长，再对应手寸号。</p>
@@ -125,6 +133,10 @@ export default {
 
     &-p {
       margin-bottom: 10px;
+      img{
+        width: 100%;
+        height: auto;
+      }
       p {
         margin: 5px 0;
       }

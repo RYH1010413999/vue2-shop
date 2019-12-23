@@ -20,6 +20,11 @@ const addressDefault = (data) => axios.axiosPost(`personal/address/default/`, da
 const orderList = (data) => axios.axiosPost(`personal/order/list/`, data); // 获取默认地址
 const payCheck = (data) => axios.axiosGet(`personal/pay/check/`, data); // 判断支付状态
 const shopInfo = (data) => axios.axiosGet(`shop/info/`, data); // 购物信息
+const cancelOrder = (data) => axios.axiosPost(`personal/cancel/order/`, data); // 取消订单
+const couponList = (data) => axios.axiosPost(`personal/coupon/list/`, data); // 获取优惠券
+const couponEnable = (data) => axios.axiosPost(`personal/coupon/enable/`, data); // 获取可用优惠券
+const cartHandle = (data) => axios.axiosPost(`personal/cart/handle/`, data); // 加入购物车
+const cartList = (data) => axios.axiosPost(`personal/cart/list/`, data); // 购物车列表
 export default {
   sendRegisterCode,
   register,
@@ -41,5 +46,10 @@ export default {
   orderList,
   payCheck,
   payCreate,
-  shopInfo
+  shopInfo,
+  cancelOrder,
+  couponList,
+  couponEnable,
+  cartHandle,
+  cartList
 }

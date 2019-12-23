@@ -49,7 +49,7 @@ export default {
     if (this.$route.params.type === "all") {
       const data = {
         page: "1",
-        list_rows: "10"
+        list_rows: "99"
       };
       const res = await this.$axios.productsAll(data);
       if (res.status === "20000") {
@@ -59,7 +59,7 @@ export default {
     if (this.$route.params.type === "spectrum") {
       const data = {
         page: "1",
-        list_rows: "10",
+        list_rows: "99",
         spectrum: this.$route.params.id
       };
       const res = await this.$axios.productsSpectrum(data);
@@ -70,7 +70,7 @@ export default {
     if (this.$route.params.type === "category") {
       const data = {
         page: "1",
-        list_rows: "10",
+        list_rows: "99",
         category: this.$route.params.id
       };
       const res = await this.$axios.productsCategory(data);
