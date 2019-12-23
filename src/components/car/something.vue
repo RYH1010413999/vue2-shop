@@ -21,8 +21,18 @@
         </div>
         <div class="something-right">
           <p>{{item.title}}</p>
-          <!-- <p style="color:rgb(199, 108, 28)">18K金，宝石</p> -->
+          <template v-for="item2 in item.productSpecsDesc">
+            <template v-for="(item3,index3) in item2">
+              <p style="color:rgb(199, 108, 28);font-size:10px;" :key="index3">{{item3}}</p>
+            </template>
+          </template>
           <p>售价：{{item.salePrice}}元</p>
+          <div class="calculation">
+            <span class="span1" @click="reduce(item)">-</span>
+            <span class="span2">{{item.productNum}}</span>
+            <span class="span1" @click="add(item)">+</span>
+            <span class="span3">小计 {{item.productNum * item.salePrice}}</span>
+          </div>
           <div class="something-right-bottom" @click="cut(item)">
             <span></span>
           </div>
@@ -86,13 +96,38 @@ export default {
     /** 计算购物车金额 */
     allMoney() {
       let money = 0;
+      let num = 0;
+      const data = [];
       this.carList.forEach(res => {
         if (res.choseBool) {
-          money += Number(res.salePrice);
+          money += Number(res.salePrice) * res.productNum;
+          num += res.productNum;
+          const item = {
+            product_sku_key: res.productSkuKey,
+            product_num: res.productNum
+          };
+          data.push(item);
         }
       });
+      localStorage.productSkuKey = JSON.stringify(data);
+
       this.$store.commit("updateMoney", money);
-      // this.$state.commit("updateNumber", money);
+      this.$store.commit("updateNumber", num);
+    },
+
+    /** 增加数量 */
+    add(item) {
+      item.productNum++;
+      this.allMoney();
+    },
+
+    /** 减少数量 */
+    reduce(item) {
+      if (item.productNum === 0) {
+        return;
+      }
+      item.productNum--;
+      this.allMoney();
     },
 
     async cartList() {
@@ -121,7 +156,6 @@ export default {
       align-items: center;
       padding: 10px;
       position: relative;
-      height: 26vw;
       .bd();
       .something-left {
         -ms-flex: 2;
@@ -241,6 +275,26 @@ export default {
       -webkit-transform: scale(1.3);
       transform: scale(1.3);
     }
+  }
+}
+.calculation {
+  display: flex;
+  height: 20px;
+  text-align: center;
+  align-items: center;
+  margin-top: 5px;
+  .span1 {
+    display: block;
+    border: 1px solid #9b9b9b;
+    width: 20px;
+  }
+  .span2 {
+    display: block;
+    border: 1px solid #9b9b9b;
+    width: 40px;
+  }
+  .span3{
+    margin-left: 10px;
   }
 }
 </style>

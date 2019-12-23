@@ -3,17 +3,17 @@
   <div>
     <v-header></v-header>
     <div class="main">
-      <div class="main-search">
+      <!-- <div class="main-search">
         <img src="../assets/image/search.png" alt />
         <input type="text" placeholder="请输入搜索内容" />
-      </div>
+      </div> -->
       <div class="main-banner">
         <div>Planet</div>
       </div>
       <div class="main-all">
         <template v-for="(item, i) in list">
           <div class="main-all-list" @click="gotoDetail(item.productSn)" v-bind:key="i">
-            <img class="main-all-list-item1" src="../assets/image/like.png" alt />
+            <!-- <img class="main-all-list-item1" src="../assets/image/like.png" alt /> -->
             <img class="main-all-list-item2" :src="item.headImageUrl" alt />
             <div class="main-all-list-item3">{{item.spectrum}}-{{item.title}}</div>
             <div class="main-all-list-item4">型号：{{item.productSn}}</div>

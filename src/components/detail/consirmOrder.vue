@@ -16,19 +16,22 @@
         </div>
       </div>
       <div class="list">
-        <div>
-          <div>
-            <img :src="consirmOrder.image" alt />
+        <template v-for="(item,index) in consirmOrder">
+          <div :key="index">
+            <div>
+              <img :src="item.image" alt />
+            </div>
+            <div>
+              <div>{{item.title}}</div>
+              <div>{{item.sale_price}}</div>
+            </div>
+            <div>
+              <div>数量{{item.product_num}}</div>
+              <div>小计{{item.product_num * item.sale_price}}元</div>
+            </div>
           </div>
-          <div>共计一件商品 ></div>
-        </div>
+        </template>
       </div>
-      <!-- <div class="list">
-      <div>
-        <div>开具发票</div>
-        <div>不开具发票 ></div>
-      </div>
-      </div>-->
       <div class="list">
         <div>
           <div>商品金额</div>
@@ -41,7 +44,7 @@
         <!-- <div>
           <div>优惠券</div>
           <div>- {{couponPrice}}</div>
-        </div> -->
+        </div>-->
         <div>
           <div>合计</div>
           <div>¥ {{price.final_price}}</div>
@@ -58,172 +61,174 @@
 </template>
 
 <script>
-  import Header from "@/common/_header.vue";
-  import { Toast } from "mint-ui";
-  export default {
-    data() {
-      return {
-        value: [],
-        consirmOrder: {},
-        address: {},
-        price: {},
-        couponPrice:''
+import Header from "@/common/_header.vue";
+import { Toast } from "mint-ui";
+import { mapState } from "vuex";
+export default {
+  computed: {
+    ...mapState({
+      number: state => state.car.number,
+      money: state => state.car.money
+    })
+  },
+  data() {
+    return {
+      value: [],
+      consirmOrder: [],
+      address: {},
+      price: {},
+      couponPrice: ""
+    };
+  },
+  components: {
+    "v-header": Header
+  },
+  methods: {
+    // 创建订单
+    async payment() {
+      const data = {
+        products: JSON.parse(localStorage.productSkuKey),
+        address_id: this.address.id,
+        remark: "111"
       };
+      const res = await this.$axios.orderCreate(data);
+      if (res.status === "20000") {
+        this.price = res.data;
+        localStorage.order_no = res.data.order_no;
+        localStorage.price = res.data.final_price;
+        this.consirmOrder = res.data.product_info;
+      } else {
+        Toast(res.msg);
+      }
+      this.useCoupon();
     },
-    components: {
-      "v-header": Header
-    },
-    methods: {
-      // 创建订单
-      async payment() {
-        const data = {
-          products: [
-            {
-              product_sku_key: localStorage.productSkuKey,
-              product_num: "1"
-            }
-          ],
-          address_id: this.address.id,
-          remark: "111"
-        };
-        const res = await this.$axios.orderCreate(data);
-        if (res.status === "20000") {
-          this.price = res.data;
-          localStorage.order_no = res.data.order_no;
-          localStorage.price = res.data.final_price;
-          this.consirmOrder = res.data.product_info[0];
-        } else {
-          Toast(res.msg);
-        }
-        this.useCoupon();
-      },
 
-      // 获取可用优惠券
-      async useCoupon() {
-        const data = {
-          order_no: localStorage.order_no,
-        }
-        const res = await this.$axios.couponEnable(data);
-        if (res.status === "20000" && res.data.enableCoupon.length) {
-          this.couponPrice = res.data.enableCoupon[0].couponPrice;
-        }
-      },
-
-      // 计算优惠券 之后的价格
-
-      gotoAddressList() {
-        this.$router.push("/addressList/order");
-      },
-      gotoAbout() {
-        this.$router.push("/explain/2");
-      },
-      gotoPay() {
-        this.$router.push("/payView");
+    // 获取可用优惠券
+    async useCoupon() {
+      const data = {
+        order_no: localStorage.order_no
+      };
+      const res = await this.$axios.couponEnable(data);
+      if (res.status === "20000" && res.data.enableCoupon.length) {
+        this.couponPrice = res.data.enableCoupon[0].couponPrice;
       }
     },
 
-    async mounted() {
-      const res = await this.$axios.addressDefault({});
-      if (localStorage.addressinfo) {
-        this.address = JSON.parse(localStorage.addressinfo);
-        this.payment();
-        return;
-      }
-      if (res.status === "20000" && res.data) {
-        this.address = res.data;
-        this.payment();
-        return;
-      }
-      Toast("请先添加收货地址！");
+    // 计算优惠券 之后的价格
+
+    gotoAddressList() {
+      this.$router.push("/addressList/order");
+    },
+    gotoAbout() {
+      this.$router.push("/explain/2");
+    },
+    gotoPay() {
+      this.$router.push("/payView");
     }
-  };
+  },
+
+  async mounted() {
+    const res = await this.$axios.addressDefault({});
+    if (localStorage.addressinfo) {
+      this.address = JSON.parse(localStorage.addressinfo);
+      this.payment();
+      return;
+    }
+    if (res.status === "20000" && res.data) {
+      this.address = res.data;
+      this.payment();
+      return;
+    }
+    Toast("请先添加收货地址！");
+  }
+};
 </script>
 
 <style lang="less" scoped>
-  .main {
-    width: 100%;
-    height: 100%;
-    padding: 0 30px;
+.main {
+  width: 100%;
+  height: 100%;
+  padding: 0 30px;
 
-    .list {
+  .list {
+    width: 100%;
+    height: auto;
+    font-size: 12px;
+    color: #9b9b9b;
+    padding: 10px 0;
+    border-top: 1px solid #9b9b9b;
+
+    & > div {
       width: 100%;
       height: auto;
-      font-size: 12px;
-      color: #9b9b9b;
-      padding: 10px 0;
-      border-top: 1px solid #9b9b9b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
-      &>div {
-        width: 100%;
-        height: auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        img {
-          width: 80px;
-          height: 80px;
-        }
+      img {
+        width: 80px;
+        height: 80px;
       }
     }
+  }
 
-    .list2 {
-      margin-top: 30px;
+  .list2 {
+    margin-top: 30px;
+  }
+
+  /deep/ .mint-checklist {
+    &-title {
+      display: none;
     }
 
-    /deep/ .mint-checklist {
-      &-title {
-        display: none;
-      }
+    .mint-cell {
+      background: none;
 
-      .mint-cell {
-        background: none;
+      .mint-cell-wrapper {
+        padding: 0;
+        font-size: 12px;
+        color: #9b9b9b;
 
-        .mint-cell-wrapper {
+        .mint-checklist-label {
           padding: 0;
-          font-size: 12px;
-          color: #9b9b9b;
+        }
 
-          .mint-checklist-label {
-            padding: 0;
-          }
+        .mint-checklist-title {
+          display: none;
+        }
 
-          .mint-checklist-title {
-            display: none;
-          }
+        .mint-checkbox-core {
+          width: 11px;
+          height: 11px;
+        }
 
-          .mint-checkbox-core {
-            width: 11px;
-            height: 11px;
-          }
+        .mint-checkbox-input:checked + .mint-checkbox-core {
+          background-color: #9b9b9b;
+          border-color: #9b9b9b;
+        }
 
-          .mint-checkbox-input:checked+.mint-checkbox-core {
-            background-color: #9b9b9b;
-            border-color: #9b9b9b;
-          }
-
-          .mint-checkbox-core::after {
-            display: none;
-          }
+        .mint-checkbox-core::after {
+          display: none;
         }
       }
     }
   }
+}
 
-  .shopping {
-    background: #000000;
-    width: 311px;
-    height: 42px;
-    text-align: center;
-    line-height: 42px;
-    color: white;
-    margin: 30px 0;
-  }
+.shopping {
+  background: #000000;
+  width: 311px;
+  height: 42px;
+  text-align: center;
+  line-height: 42px;
+  color: white;
+  margin: 30px 0;
+}
 
-  .gotoAbout {
-    margin-left: 24px;
-    position: relative;
-    bottom: 10px;
-    text-decoration: underline;
-  }
+.gotoAbout {
+  margin-left: 24px;
+  position: relative;
+  bottom: 10px;
+  text-decoration: underline;
+}
 </style>

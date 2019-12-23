@@ -119,9 +119,9 @@ export default {
       };
       const res = await this.$axios.cartHandle(data);
       if (res.status === "20000") {
-        Toast("已成功加入购物车！")
-      } else{
-        Toast(res.msg)
+        Toast("已成功加入购物车！");
+      } else {
+        Toast(res.msg);
       }
     },
 
@@ -134,7 +134,12 @@ export default {
       const res = await this.$axios.productsPrice(data);
       if (res.status === "20000") {
         this.price = res.data;
-        localStorage.productSkuKey = res.data.productSkuKey;
+        localStorage.productSkuKey = JSON.stringify([
+          {
+            product_sku_key: res.data.productSkuKey,
+            product_num: res.data.productNum
+          }
+        ]);
       }
     },
 

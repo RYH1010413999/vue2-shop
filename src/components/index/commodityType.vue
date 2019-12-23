@@ -5,7 +5,7 @@
         <li :key="index">
           <router-link :to="{ path: '/search/spectrum/'+k.id}">
             <div class="list-img">
-              <div>{{k.spectrum}}</div>
+              <!-- <div>{{k.spectrum}}</div> -->
               <img :src="k.image" />
             </div>
           </router-link>
