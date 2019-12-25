@@ -116,18 +116,36 @@ export default {
     },
 
     /** 增加数量 */
-    add(item) {
-      item.productNum++;
-      this.allMoney();
+    async add(item) {
+      const data = {
+        product_sku_key: item.productSkuKey,
+        type: "plus"
+      };
+      const res = await this.$axios.cartHandle(data);
+      if (res.status === "20000") {
+        item.productNum++;
+        this.allMoney();
+      } else {
+        Toast(res.msg);
+      }
     },
 
     /** 减少数量 */
-    reduce(item) {
+    async reduce(item) {
       if (item.productNum === 0) {
         return;
       }
-      item.productNum--;
-      this.allMoney();
+      const data = {
+        product_sku_key: item.productSkuKey,
+        type: "reduce"
+      };
+      const res = await this.$axios.cartHandle(data);
+      if (res.status === "20000") {
+        item.productNum--;
+         this.allMoney();
+      } else {
+        Toast(res.msg);
+      }
     },
 
     async cartList() {

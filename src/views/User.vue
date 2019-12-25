@@ -37,7 +37,7 @@
       <!-- <div class="main-all-list" @click="goto('收藏')">
         <div>我的收藏</div>
         <div>></div>
-      </div> -->
+      </div>-->
       <div class="main-all-list" @click="goto('优惠券')">
         <div>优惠券</div>
         <div>></div>
@@ -50,6 +50,15 @@
         <div>收货地址</div>
         <div>></div>
       </div>
+
+      <div class="main-all-list" @click="gotoeditPassword">
+        <div>修改密码</div>
+        <div>></div>
+      </div>
+      <div class="main-all-list" @click="gotologin">
+        <div>退出账号</div>
+        <div>></div>
+      </div>
     </div>
     <div class="end" @click="goto('首页')">< 返回首页</div>
   </div>
@@ -57,6 +66,7 @@
 
 <script>
 import Header from "@/common/_header.vue";
+import { Toast } from "mint-ui";
 export default {
   data() {
     return {
@@ -73,8 +83,19 @@ export default {
     gotoAddress() {
       this.$router.push(`/addressList/user`);
     },
+    gotoeditPassword() {
+      this.$router.push(`/user/editPassword`);
+    },
     gotomyorder(type) {
       this.$router.push(`/myorder/${type}`);
+    },
+    async gotologin() {
+      const res = await this.$axios.oauthLogout({});
+      if (res.status === "20000") {
+        Toast("退出成功");
+        localStorage.login = false;
+        this.$router.push(`/login`);
+      }
     }
   },
   mounted() {

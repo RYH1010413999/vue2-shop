@@ -32,21 +32,44 @@
               <input type="password" placeholder="确认密码" v-model="registerForm.second_password" />
             </div>
           </div>
-          <div class="submit" @click="register">注册并绑定微信</div>
+          <div class="submit" @click="register">注册</div>
         </mt-tab-container-item>
 
         <mt-tab-container-item id="1">
-          <div class="list-basic">
-            <div>
-              <input type="number" placeholder="手机号" v-model="loginForm.mobile" />
+          <!-- 密码登录 -->
+          <template v-if="paswordLogin">
+            <div class="list-basic">
+              <div>
+                <input type="number" placeholder="手机号码" v-model="loginForm.mobile" />
+              </div>
             </div>
-          </div>
-          <div class="list-basic">
-            <div>
-              <input type="password" placeholder="密码" v-model="loginForm.password" />
+            <div class="list-basic">
+              <div>
+                <input type="password" placeholder="密码" v-model="loginForm.password" />
+              </div>
             </div>
-          </div>
-          <div class="submit" @click="login">登录并绑定微信</div>
+          </template>
+
+          <!-- 验证码登录 -->
+          <template v-if="!paswordLogin">
+            <div class="list">
+              <div>
+                <input type="number" placeholder="手机号码" v-model="codeForm.mobile" />
+              </div>
+              <div v-if="showSendCode2" @click="sendCodelogin">发送验证码</div>
+              <div v-else>{{number2}}</div>
+            </div>
+            <div class="list-basic">
+              <div>
+                <input type="number" placeholder="验证码" v-model="codeForm.login_code" />
+              </div>
+            </div>
+          </template>
+          <div
+            class="logincheck"
+            @click="paswordLogin = !paswordLogin"
+          >{{paswordLogin?'验证码登录':'密码登录'}}</div>
+          <div class="submit" @click="login">登录</div>
         </mt-tab-container-item>
       </mt-tab-container>
     </div>
@@ -62,9 +85,13 @@ export default {
   },
   data() {
     return {
+      paswordLogin: true,
       selected: "1",
       showSendCode: true,
+      showSendCode2: true,
+      wxBrowser: false,
       number: 59,
+      number2: 59,
       registerForm: {
         password: "",
         second_password: "",
@@ -76,6 +103,11 @@ export default {
         mobile: "",
         password: "",
         openid: localStorage.openId
+      },
+      codeForm: {
+        mobile: "",
+        login_code: "",
+        openid: localStorage.openId
       }
     };
   },
@@ -83,7 +115,6 @@ export default {
     /** 注册 */
     async register() {
       const data = this.registerForm;
-      console.log(data);
       const res = await this.$axios.register(data);
       if (res.status === "20000") {
         Toast("注册成功");
@@ -95,8 +126,12 @@ export default {
       }
     },
 
-    /** 发送验证码 */
+    /** 发送注册验证码 */
     async sendCode() {
+      if (this.registerForm.mobile === "") {
+        Toast("手机号为空！");
+        return;
+      }
       const data = {
         mobile: this.registerForm.mobile
       };
@@ -111,24 +146,50 @@ export default {
       }, 1000);
     },
 
+    /** 发送登录验证码 */
+    async sendCodelogin() {
+      if (this.codeForm.mobile === "") {
+        Toast("手机号为空！");
+        return;
+      }
+      const data = {
+        mobile: this.codeForm.mobile
+      };
+      const res = await this.$axios.sendLoginCode(data);
+      this.showSendCode2 = false;
+      const clearSettime = setInterval(() => {
+        this.number2--;
+        if (this.number2 === 0) {
+          clearInterval(clearSettime);
+          this.showSendCode2 = true;
+        }
+      }, 1000);
+    },
+
     /** 登录 */
     async login() {
-      if (this.loginForm.mobile !== "" && this.loginForm.password !== "") {
-        const data = {
-          mobile: this.loginForm.mobile,
-          password: this.loginForm.password
-        };
-        const res = await this.$axios.register(data);
-        if (res.status === "20000") {
-          Toast("登录成功");
-          localStorage.login = true;
-          localStorage.userInfo = JSON.stringify(res.data);
-          this.$router.go(-1);
-        } else {
-          Toast(res.msg);
+      let data;
+      if (this.paswordLogin) {
+        if (this.loginForm.mobile === "" || this.loginForm.password === "") {
+          Toast("账号密码不能为空");
+          return;
         }
+        data = this.loginForm;
       } else {
-        Toast("账号密码不能为空");
+        if (this.codeForm.mobile === "") {
+          Toast("手机号为空！");
+          return;
+        }
+        data = this.codeForm;
+      }
+      const res = await this.$axios.register(data);
+      if (res.status === "20000") {
+        Toast("登录成功");
+        localStorage.login = true;
+        localStorage.userInfo = JSON.stringify(res.data);
+        this.$router.go(-1);
+      } else {
+        Toast(res.msg);
       }
     },
 
@@ -142,6 +203,10 @@ export default {
       this.account = "";
       this.password = "";
     }
+  },
+  mounted() {
+    const ua = navigator.userAgent.toLowerCase();
+    this.wxBrowser = ua.match(/MicroMessenger/i) == "micromessenger";
   }
 };
 </script>
@@ -179,7 +244,7 @@ export default {
       align-items: flex-end;
       justify-content: space-between;
       border-bottom: 1px solid #9b9b9b;
-      & > div{
+      & > div {
         width: 100%;
       }
     }
@@ -226,5 +291,9 @@ export default {
 input {
   width: 100%;
   font-size: 14px;
+}
+.logincheck {
+  text-align: right;
+  margin-top: 10px;
 }
 </style>

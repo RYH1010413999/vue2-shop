@@ -41,11 +41,11 @@ export default {
     }
   },
   async mounted() {
-    if (localStorage.login) {
+    const ua = navigator.userAgent.toLowerCase(); //获取判断用的对象
+    if (ua.match(/MicroMessenger/i) != "micromessenger") {
       return;
     }
-    const ua = navigator.userAgent.toLowerCase(); //获取判断用的对象
-    if (ua.match(/MicroMessenger/i) !== "micromessenger") {
+    if (localStorage.openId) {
       return;
     }
     const code = this.GetQueryValue("code");

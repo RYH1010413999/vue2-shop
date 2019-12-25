@@ -26,6 +26,7 @@ const Success = resolve => require(['@/components/detail/success'], resolve) //�
 const Myorder = resolve => require(['@/components/user/myorder'], resolve) //我的订单页面
 const Payview = resolve => require(['@/views/pay.vue'], resolve) //我的订单页面
 const Explain = resolve => require(['@/views/explain.vue'], resolve) //关于
+const EditPassword = resolve => require(['@/components/user/editPassword.vue'], resolve) //关于
 
 
 export default new Router({
@@ -136,6 +137,11 @@ export default new Router({
     path: '/explain/:type',
     name: '关于',
     component: Explain
+  },
+  {
+    path: '/user/editPassword',
+    name: '关于',
+    component: EditPassword
   },
   ]
 })

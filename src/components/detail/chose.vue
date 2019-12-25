@@ -114,8 +114,7 @@ export default {
 
     async addShoppingCart() {
       const data = {
-        product_sku_key: localStorage.productSkuKey,
-        type: "plus"
+        product_sku_key: JSON.parse(localStorage.productSkuKey)[0].product_sku_key,
       };
       const res = await this.$axios.cartHandle(data);
       if (res.status === "20000") {

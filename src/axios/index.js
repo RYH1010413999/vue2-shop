@@ -49,6 +49,9 @@ const axiosGet = (url, data) => {
             message: res.data.msg,
             duration: 5000
           });
+          if(res.data.status === '40106'){
+            router.replace('/login');
+          }
         }
         resolve(res.data)
       })
@@ -77,6 +80,9 @@ const axiosPost = (url, data) => {
             message: res.data.msg,
             duration: 5000
           });
+          if(res.data.status === '40106'){
+            router.replace('/login');
+          }
         }
         resolve(res.data)
       })
@@ -106,6 +112,9 @@ const axiosDel = (url, data) => {
             message: res.data.msg,
             duration: 5000
           });
+          if(res.data.status === '40106'){
+            router.replace('/login');
+          }
         }
         resolve(res.data)
       })

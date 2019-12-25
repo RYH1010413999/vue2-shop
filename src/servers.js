@@ -1,6 +1,7 @@
 import axios from '@/axios/index.js';
 const sendRegisterCode = (data) => axios.axiosPost(`/send/register/code/`, data);//发送注册验证码
 const register = (data) => axios.axiosPost(`/oauth/login/`, data); // 登录 注册
+const sendLoginCode= (data) => axios.axiosPost(`/send/login/code/`, data); // 验证码登录
 const wechatOauth = (data) => axios.axiosPost(`/wechat/oauth/`, data); // 获取openid
 const productsAll = (data) => axios.axiosGet(`/sales/products/all/`, data); // 获取所有产品
 const productsDetail = (data) => axios.axiosGet(`/sales/products/detail/`, data); // 获取产品详情
@@ -25,9 +26,12 @@ const couponList = (data) => axios.axiosPost(`personal/coupon/list/`, data); // 
 const couponEnable = (data) => axios.axiosPost(`personal/coupon/enable/`, data); // 获取可用优惠券
 const cartHandle = (data) => axios.axiosPost(`personal/cart/handle/`, data); // 加入购物车
 const cartList = (data) => axios.axiosPost(`personal/cart/list/`, data); // 购物车列表
+const oauthLogout = (data) => axios.axiosPost(`oauth/logout/`, data); // 退出账号
+const changePassword= (data) => axios.axiosPost(`personal/change/password/`, data); // 修改密码
 export default {
   sendRegisterCode,
   register,
+  sendLoginCode,
   wechatOauth,
   productsAll,
   productsDetail,
@@ -51,5 +55,7 @@ export default {
   couponList,
   couponEnable,
   cartHandle,
-  cartList
+  cartList,
+  oauthLogout,
+  changePassword
 }

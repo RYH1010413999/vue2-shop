@@ -18,20 +18,24 @@
               <div class="list-color">订单编号：{{item.orderNo}}</div>
               <div>{{item.orderStatus | Status}}</div>
             </div>
-            <!-- <div>
-              <div class="list-color">参考编码：2019112810293810248</div>
-            </div>-->
-            <div>
-              <div class="list-image">
-                <img :src="item.orderItem[0].imageUrl" alt />
+            <template v-for="(item2,index2) in item.orderItem">
+              <div :key="index2">
+                <div class="list-image">
+                  <img :src="item2.imageUrl" alt />
+                </div>
+                <div class="list-detail">
+                  <div>{{item2.productName}}</div>
+                  <div>编号{{item2.productSn}}</div>
+                  <div>
+                    <span>尺寸：</span>
+                    <template v-for="(item3,index3) in item2.productDesc['尺寸']">
+                      <span :key="index3">{{item3}}</span>
+                    </template>
+                  </div>
+                  <div>￥ {{item2.salePrice}} x {{item2.productNum}}</div>
+                </div>
               </div>
-              <div class="list-detail">
-                <div>Planet-戒指</div>
-                <div>编号00000</div>
-                <div>尺寸：53</div>
-                <div>￥ {{item.originPrice}} x 1</div>
-              </div>
-            </div>
+            </template>
             <div>
               <div>共计1件商品，运费￥{{item.policyPrice}}</div>
               <div>合计: ￥ {{item.finalPrice}}</div>
@@ -56,17 +60,24 @@
               <!-- <div>
               <div class="list-color">参考编码：2019112810293810248</div>
               </div>-->
-              <div>
-                <div class="list-image">
-                  <img :src="item.orderItem[0].imageUrl" alt />
+              <template v-for="(item2,index2) in item.orderItem">
+                <div :key="index2">
+                  <div class="list-image">
+                    <img :src="item2.imageUrl" alt />
+                  </div>
+                  <div class="list-detail">
+                    <div>{{item2.productName}}</div>
+                    <div>编号{{item2.productSn}}</div>
+                    <div>
+                      <span>尺寸：</span>
+                      <template v-for="(item3,index3) in item2.productDesc['尺寸']">
+                        <span :key="index3">{{item3}}</span>
+                      </template>
+                    </div>
+                    <div>￥ {{item2.salePrice}} x {{item2.productNum}}</div>
+                  </div>
                 </div>
-                <div class="list-detail">
-                  <div>Planet-戒指</div>
-                  <div>编号00000</div>
-                  <div>尺寸：53</div>
-                  <div>￥ {{item.originPrice}} x 1</div>
-                </div>
-              </div>
+              </template>
               <div>
                 <div>共计1件商品，运费￥{{item.policyPrice}}</div>
                 <div>合计: ￥ {{item.finalPrice}}</div>
@@ -91,17 +102,24 @@
               <!-- <div>
               <div class="list-color">参考编码：2019112810293810248</div>
               </div>-->
-              <div>
-                <div class="list-image">
-                  <img :src="item.orderItem[0].imageUrl" alt />
+              <template v-for="(item2,index2) in item.orderItem">
+                <div :key="index2">
+                  <div class="list-image">
+                    <img :src="item2.imageUrl" alt />
+                  </div>
+                  <div class="list-detail">
+                    <div>{{item2.productName}}</div>
+                    <div>编号{{item2.productSn}}</div>
+                    <div>
+                      <span>尺寸：</span>
+                      <template v-for="(item3,index3) in item2.productDesc['尺寸']">
+                        <span :key="index3">{{item3}}</span>
+                      </template>
+                    </div>
+                    <div>￥ {{item2.salePrice}} x {{item2.productNum}}</div>
+                  </div>
                 </div>
-                <div class="list-detail">
-                  <div>Planet-戒指</div>
-                  <div>编号00000</div>
-                  <div>尺寸：53</div>
-                  <div>￥ {{item.originPrice}} x 1</div>
-                </div>
-              </div>
+              </template>
               <div>
                 <div>共计1件商品，运费￥{{item.policyPrice}}</div>
                 <div>合计: ￥ {{item.finalPrice}}</div>
@@ -121,17 +139,24 @@
               <!-- <div>
               <div class="list-color">参考编码：2019112810293810248</div>
               </div>-->
-              <div>
-                <div class="list-image">
-                  <img :src="item.orderItem[0].imageUrl" alt />
+              <template v-for="(item2,index2) in item.orderItem">
+                <div :key="index2">
+                  <div class="list-image">
+                    <img :src="item2.imageUrl" alt />
+                  </div>
+                  <div class="list-detail">
+                    <div>{{item2.productName}}</div>
+                    <div>编号{{item2.productSn}}</div>
+                    <div>
+                      <span>尺寸：</span>
+                      <template v-for="(item3,index3) in item2.productDesc['尺寸']">
+                        <span :key="index3">{{item3}}</span>
+                      </template>
+                    </div>
+                    <div>￥ {{item2.salePrice}} x {{item2.productNum}}</div>
+                  </div>
                 </div>
-                <div class="list-detail">
-                  <div>Planet-戒指</div>
-                  <div>编号00000</div>
-                  <div>尺寸：53</div>
-                  <div>￥ {{item.originPrice}} x 1</div>
-                </div>
-              </div>
+              </template>
               <div>
                 <div>共计1件商品，运费￥{{item.policyPrice}}</div>
                 <div>合计: ￥ {{item.finalPrice}}</div>
@@ -151,17 +176,24 @@
               <!-- <div>
               <div class="list-color">参考编码：2019112810293810248</div>
               </div>-->
-              <div>
-                <div class="list-image">
-                  <img :src="item.orderItem[0].imageUrl" alt />
+              <template v-for="(item2,index2) in item.orderItem">
+                <div :key="index2">
+                  <div class="list-image">
+                    <img :src="item2.imageUrl" alt />
+                  </div>
+                  <div class="list-detail">
+                    <div>{{item2.productName}}</div>
+                    <div>编号{{item2.productSn}}</div>
+                    <div>
+                      <span>尺寸：</span>
+                      <template v-for="(item3,index3) in item2.productDesc['尺寸']">
+                        <span :key="index3">{{item3}}</span>
+                      </template>
+                    </div>
+                    <div>￥ {{item2.salePrice}} x {{item2.productNum}}</div>
+                  </div>
                 </div>
-                <div class="list-detail">
-                  <div>Planet-戒指</div>
-                  <div>编号00000</div>
-                  <div>尺寸：53</div>
-                  <div>￥ {{item.originPrice}} x 1</div>
-                </div>
-              </div>
+              </template>
               <div>
                 <div>共计1件商品，运费￥{{item.policyPrice}}</div>
                 <div>合计: ￥ {{item.finalPrice}}</div>
@@ -303,6 +335,7 @@ export default {
       &-image {
         width: 135px;
         height: 135px;
+        margin-right: 5px;
         img {
           width: 100%;
           height: 100%;

@@ -50,7 +50,7 @@ export default {
     return {
       select: "1",
       price: {},
-      wxBrowser:false,
+      wxBrowser: false
     };
   },
   methods: {
@@ -59,8 +59,8 @@ export default {
     },
     async payment() {
       const data2 = {
-        order_no:localStorage.order_no,
-      }
+        order_no: localStorage.order_no
+      };
       // 选择微信 并且在 微信浏览器
       if (this.select === "1") {
         if (this.wxBrowser) {
@@ -73,10 +73,10 @@ export default {
       }
       const res2 = await this.$axios.payCreate(data2);
       if (res2.status === "20000") {
-        if (this.wxBrowser && this.select === "1") {
-          this.wxPay(res2);
-        } else {
+        if (res2.data.url) {
           window.location.href = res2.data.url;
+        } else{
+          this.wxPay(res2);
         }
       }
     },
@@ -149,7 +149,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       & > div:nth-child(1) {
-        img{
+        img {
           width: 30px;
           height: 30px;
           margin-right: 20px;
