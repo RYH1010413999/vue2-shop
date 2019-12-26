@@ -20,7 +20,10 @@
           <img :src="item.imageUrl" />
         </div>
         <div class="something-right">
-          <p>{{item.title}}</p>
+          <p>
+            {{item.title}}
+            <span>({{item.productSpecsStatus === 0?"已失效":""}})</span>
+          </p>
           <template v-for="item2 in item.productSpecsDesc">
             <template v-for="(item3,index3) in item2">
               <p style="color:rgb(199, 108, 28);font-size:10px;" :key="index3">{{item3}}</p>
@@ -46,6 +49,7 @@
 // 提示登录组件
 import Gologin from "@/components/car/gologin.vue";
 import Util from "../../util/common";
+import { Toast } from "mint-ui";
 export default {
   data() {
     return {
@@ -76,6 +80,10 @@ export default {
 
     /** 单选 */
     toggle(item) {
+      if (item.productSpecsStatus === 0) {
+        Toast("商品已失效！");
+        return;
+      }
       item.choseBool = !item.choseBool;
       this.carList = [...this.carList];
       const every = this.carList.every(res => {
@@ -88,7 +96,9 @@ export default {
     allToggle() {
       this.allChoseBool = !this.allChoseBool;
       this.carList.forEach(element => {
-        element.choseBool = this.allChoseBool;
+        if (element.productSpecsStatus !== 0) {
+          element.choseBool = this.allChoseBool;
+        }
       });
       this.allMoney();
     },
@@ -142,7 +152,7 @@ export default {
       const res = await this.$axios.cartHandle(data);
       if (res.status === "20000") {
         item.productNum--;
-         this.allMoney();
+        this.allMoney();
       } else {
         Toast(res.msg);
       }
@@ -236,6 +246,10 @@ export default {
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           .fz(font-size, 26);
+          span {
+            color: #9b9b9b;
+            font-size: 10px;
+          }
         }
         p:last-of-type {
           .fz(font-size, 22);
@@ -311,7 +325,7 @@ export default {
     border: 1px solid #9b9b9b;
     width: 40px;
   }
-  .span3{
+  .span3 {
     margin-left: 10px;
   }
 }

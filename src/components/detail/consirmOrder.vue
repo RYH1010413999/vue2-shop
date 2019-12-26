@@ -183,7 +183,7 @@ export default {
       const res = await this.$axios.orderConfirm(data);
       if (res.status === "20000") {
         localStorage.order_no = res.data.order_no;
-        // this.$router.push("/payView");
+        this.$router.push("/payView");
       }
     }
   },

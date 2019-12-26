@@ -15,13 +15,28 @@
           <div v-for="(item,index) in detail.specs" :key="index">
             <div style="width:20%;">{{item.specs}}:</div>
             <div style="display:flex; flex-wrap: wrap;width:80%;">
-              <div
-                class="detail-list"
-                v-for="(item2,index2) in item.children"
-                :class="item2.id === caizhi || item2.id === chicun?'active':''"
-                @click="select(index,item2)"
-                :key="index2"
-              >{{item2.specs}}</div>
+              <template v-for="(item2,index2) in item.children">
+                <template v-if="index !== 2">
+                  <div
+                    class="detail-list"
+                    :class="item2.id === caizhi || item2.id === chicun?'active':''"
+                    @click="select(index,item2)"
+                    :key="index2"
+                  >{{item2.specs}}</div>
+                </template>
+
+                <template v-if="index === 2">
+                  <div
+                    class="detail-list-img"
+                    :class="item2.id === kuanshi?'active-img':''"
+                    @click="select(index,item2)"
+                    :key="index2"
+                  >
+                    <img :src="item2.image_thumb" alt />
+                    <div>{{item2.specs}}</div>
+                  </div>
+                </template>
+              </template>
             </div>
           </div>
         </div>
@@ -139,7 +154,9 @@ export default {
     async getProductsPrice() {
       const data = {
         product_id: this.detail.id,
-        keys: [this.caizhi, this.chicun, this.kuanshi].filter(res => res !== ""),
+        keys: [this.caizhi, this.chicun, this.kuanshi].filter(
+          res => res !== ""
+        ),
         product_num: 1
       };
       const res = await this.$axios.productsPrice(data);
@@ -170,8 +187,10 @@ export default {
     detail(val) {
       this.caizhi = this.detail.specs[0].children[0].id;
       this.chicun = this.detail.specs[1].children[0].id;
+      this.kuanshi = this.detail.specs[2].children[0].id;
       this.explain1 = `${this.detail.specs[0].children[0].specs_remark}`;
       this.explain2 = `${this.detail.specs[1].children[0].specs_remark}`;
+      this.explain3 = `${this.detail.specs[2].children[0].specs_remark}`;
       this.getProductsPrice();
     }
   }
@@ -256,6 +275,25 @@ export default {
           .active {
             background-color: #928e8e;
             color: white;
+          }
+
+          .detail-list-img {
+            width: 70px;
+            height: 70px;
+            font-size: 10px;
+            text-align: center;
+            margin-left: 15px;
+            & > img {
+              width: 50px;
+              height: 50px;
+              border: 1px solid #f8f8f8;
+            }
+          }
+
+          .active-img {
+           & > img{
+              border: 1px solid #333333;
+            }
           }
         }
 

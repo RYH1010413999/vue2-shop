@@ -54,7 +54,7 @@ export default {
         code: code
       });
       console.log(res);
-      if (res.status === "30303" || res.status === "30304") {
+      if (res.data.openid) {
         localStorage.openId = res.data.openid;
       }
     } else {
