@@ -28,6 +28,8 @@ const cartHandle = (data) => axios.axiosPost(`personal/cart/handle/`, data); // 
 const cartList = (data) => axios.axiosPost(`personal/cart/list/`, data); // 购物车列表
 const oauthLogout = (data) => axios.axiosPost(`oauth/logout/`, data); // 退出账号
 const changePassword= (data) => axios.axiosPost(`personal/change/password/`, data); // 修改密码
+const orderCalculate = (data) => axios.axiosPost(`consume/order/calculate/`, data); // 选择优惠券后的订单
+const orderConfirm = (data) => axios.axiosPost(`consume/order/confirm/`, data); // 订单确认
 export default {
   sendRegisterCode,
   register,
@@ -57,5 +59,7 @@ export default {
   cartHandle,
   cartList,
   oauthLogout,
-  changePassword
+  changePassword,
+  orderCalculate,
+  orderConfirm
 }

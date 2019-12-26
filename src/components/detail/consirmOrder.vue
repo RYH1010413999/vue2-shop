@@ -21,7 +21,7 @@
             <div>
               <img :src="item.image" alt />
             </div>
-            <div>
+            <div style="width:40%;">
               <div>{{item.title}}</div>
               <div>{{item.sale_price}}</div>
             </div>
@@ -41,10 +41,10 @@
           <div>运费</div>
           <div>{{price.express_price}}</div>
         </div>
-        <!-- <div>
+        <div @click="popupVisible = true">
           <div>优惠券</div>
-          <div>- {{couponPrice}}</div>
-        </div>-->
+          <div>- {{price.coupon_price}}</div>
+        </div>
         <div>
           <div>合计</div>
           <div>¥ {{price.final_price}}</div>
@@ -57,6 +57,25 @@
       </div>
       <div class="shopping" @click="gotoPay">订单确认</div>
     </div>
+    <!-- 优惠券 -->
+    <mt-popup v-model="popupVisible" position="right">
+      <div class="popupVisible-div">
+        <div class="main-content">
+          <template v-for="(item,index) in enableCoupon">
+            <div class="main-content-list" :key="index" @click="selectCoupon(item)">
+              <div class="main-content-list-top">
+                <div style="font-size: 14px;color:black;">¥ {{item.couponPrice}}</div>
+                <div v-if="item.select">已选</div>
+              </div>
+              <div>
+                <div>满{{item.fillPrice}}使用</div>
+                <!-- <div>{{item.receivedAt | date}} - {{item.maturityAt | date}}</div> -->
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </mt-popup>
   </div>
 </template>
 
@@ -77,8 +96,15 @@ export default {
       consirmOrder: [],
       address: {},
       price: {},
-      couponPrice: ""
+      couponCode: "",
+      popupVisible: false, //优惠券窗口,
+      enableCoupon: []
     };
+  },
+  filters: {
+    date: function(value) {
+      return value.substring(0, 10);
+    }
   },
   components: {
     "v-header": Header
@@ -94,9 +120,9 @@ export default {
       const res = await this.$axios.orderCreate(data);
       if (res.status === "20000") {
         this.price = res.data;
+        this.consirmOrder = res.data.product_info;
         localStorage.order_no = res.data.order_no;
         localStorage.price = res.data.final_price;
-        this.consirmOrder = res.data.product_info;
       } else {
         Toast(res.msg);
       }
@@ -110,7 +136,33 @@ export default {
       };
       const res = await this.$axios.couponEnable(data);
       if (res.status === "20000" && res.data.enableCoupon.length) {
-        this.couponPrice = res.data.enableCoupon[0].couponPrice;
+        res.data.enableCoupon[0].select = true;
+        this.couponCode = res.data.enableCoupon[0].couponCode;
+        this.enableCoupon = res.data.enableCoupon;
+        this.checkOrder();
+      }
+    },
+
+    selectCoupon(item) {
+      this.couponCode = item.couponCode;
+      this.enableCoupon.forEach(element => {
+        element.select = false;
+      });
+      item.select = true;
+      this.popupVisible = false;
+      this.checkOrder();
+    },
+
+    async checkOrder() {
+      const data = {
+        order_no: localStorage.order_no,
+        coupon_code: this.couponCode
+      };
+      const res = await this.$axios.orderCalculate(data);
+      console.log(res);
+      if (res.status === "20000") {
+        this.price = res.data;
+        localStorage.price = res.data.final_price;
       }
     },
 
@@ -122,8 +174,17 @@ export default {
     gotoAbout() {
       this.$router.push("/explain/2");
     },
-    gotoPay() {
-      this.$router.push("/payView");
+    async gotoPay() {
+      const data = {
+        order_no: localStorage.order_no,
+        coupon_code: this.couponCode,
+        address_id: this.address.id
+      };
+      const res = await this.$axios.orderConfirm(data);
+      if (res.status === "20000") {
+        localStorage.order_no = res.data.order_no;
+        // this.$router.push("/payView");
+      }
     }
   },
 
@@ -217,7 +278,7 @@ export default {
 
 .shopping {
   background: #000000;
-  width: 311px;
+  width: 100%;
   height: 42px;
   text-align: center;
   line-height: 42px;
@@ -230,5 +291,29 @@ export default {
   position: relative;
   bottom: 10px;
   text-decoration: underline;
+}
+
+.popupVisible-div {
+  width: 70vw;
+  height: 100vh;
+  .main-content {
+    width: 100%;
+    padding: 10px 30px;
+    font-size: 14px;
+    &-list {
+      height: 60px;
+      border-bottom: 1px solid #9b9b9b;
+      font-size: 12px;
+      color: #9b9b9b;
+      & > div {
+        display: flex;
+        justify-content: space-between;
+      }
+      &-top {
+        padding: 5px 0;
+        padding-top: 7px;
+      }
+    }
+  }
 }
 </style>

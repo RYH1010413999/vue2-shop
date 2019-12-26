@@ -3,7 +3,7 @@
     <v-header />
     <div class="content">
       <div>{{title}}</div>
-      <div>订单编号：000000</div>
+      <div>订单编号：{{num}}</div>
     </div>
     <div class="end" @click="goto('首页')">< 返回首页</div>
   </div>
@@ -17,7 +17,8 @@ export default {
   },
   data(){
     return{
-      title:'支付成功'
+      title:'支付成功',
+      num:''
     }
   },
   methods: {
@@ -27,6 +28,9 @@ export default {
   },
   async mounted(){
     const res = await this.$axios.payCheck({})
+    if(res.status === "20000"){
+       this.num = res.data.order_no;
+    }
   }
 };
 </script>

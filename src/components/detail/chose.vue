@@ -7,20 +7,22 @@
         <div class="chose-view-model-name">
           <div>型号：{{detail.productSn}}</div>
           <div>
-            <img src="../../assets/image/like.png" alt />
-            <img src="../../assets/image/share.png" alt />
+            <!-- <img src="../../assets/image/like.png" alt />
+            <img src="../../assets/image/share.png" alt />-->
           </div>
         </div>
         <div class="chose-view-model-detail">
           <div v-for="(item,index) in detail.specs" :key="index">
-            <div>{{item.specs}}:</div>
-            <div
-              class="detail-list"
-              v-for="(item2,index2) in item.children"
-              :class="item2.id === caizhi || item2.id === chicun?'active':''"
-              @click="select(index,item2)"
-              :key="index2"
-            >{{item2.specs}}</div>
+            <div style="width:20%;">{{item.specs}}:</div>
+            <div style="display:flex; flex-wrap: wrap;width:80%;">
+              <div
+                class="detail-list"
+                v-for="(item2,index2) in item.children"
+                :class="item2.id === caizhi || item2.id === chicun?'active':''"
+                @click="select(index,item2)"
+                :key="index2"
+              >{{item2.specs}}</div>
+            </div>
           </div>
         </div>
 
@@ -31,8 +33,10 @@
           </div>
         </div>
 
-        <div class="shopping" @click="gotoConfirmOrder">立即购买</div>
-        <div class="shopping" @click="addShoppingCart">加入购物车</div>
+        <div class="shopping-div">
+          <div class="shopping" @click="addShoppingCart">加入购物车</div>
+          <div class="shopping" @click="gotoConfirmOrder">立即购买</div>
+        </div>
 
         <div class="chose-view-model-detail">
           <div class="chose-view-model-detail-title">重要提示：</div>
@@ -82,9 +86,11 @@ export default {
       rangeValue: 55,
       caizhi: "",
       chicun: "",
+      kuanshi: "",
       price: {},
       explain1: "", //sku信息
       explain2: "",
+      explain3: "",
       prshopInfoice: {}
     };
   },
@@ -109,12 +115,18 @@ export default {
         this.chicun = item2.id;
         this.explain2 = item2.specs_remark;
       }
+
+      if (index === 2) {
+        this.kuanshi = item2.id;
+        this.explain3 = item2.specs_remark;
+      }
       this.getProductsPrice();
     },
 
     async addShoppingCart() {
       const data = {
-        product_sku_key: JSON.parse(localStorage.productSkuKey)[0].product_sku_key,
+        product_sku_key: JSON.parse(localStorage.productSkuKey)[0]
+          .product_sku_key
       };
       const res = await this.$axios.cartHandle(data);
       if (res.status === "20000") {
@@ -127,8 +139,8 @@ export default {
     async getProductsPrice() {
       const data = {
         product_id: this.detail.id,
-        caizhi: this.caizhi,
-        chicun: this.chicun
+        keys: [this.caizhi, this.chicun, this.kuanshi].filter(res => res !== ""),
+        product_num: 1
       };
       const res = await this.$axios.productsPrice(data);
       if (res.status === "20000") {
@@ -221,6 +233,9 @@ export default {
         height: auto;
         font-size: 12px;
         margin-top: 20px;
+        &-title {
+          width: 60px;
+        }
 
         & > div {
           display: flex;
@@ -235,6 +250,7 @@ export default {
             margin-left: 20px;
             background-color: #f8f8f8;
             border-radius: 10px;
+            margin-bottom: 10px;
           }
 
           .active {
@@ -287,13 +303,21 @@ export default {
   }
 }
 
-.shopping {
-  background: #000000;
-  width: 311px;
-  height: 42px;
-  text-align: center;
-  line-height: 42px;
-  color: white;
-  margin: 30px 0;
+.shopping-div {
+  display: flex;
+  justify-content: space-between;
+  .shopping {
+    background: #000000;
+    width: 49%;
+    height: 42px;
+    text-align: center;
+    line-height: 42px;
+    color: white;
+    margin: 30px 0;
+  }
+  .shopping:first-child {
+    background-color: #d9d7d8;
+    color: #000000;
+  }
 }
 </style>

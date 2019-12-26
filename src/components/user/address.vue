@@ -8,8 +8,8 @@
       <div class="content-list">
         <input type="text" placeholder="手机号" v-model="mobile" />
       </div>
-      <div class="content-list" @click="popupVisible=true">
-        <input type="text" placeholder="选择地区" v-model="province" />
+      <div class="content-list" @click="popupVisible=true" style="justify-content: space-between;">
+        <div>{{province}}</div>
         <img src="../../assets/image/back.png" alt />
       </div>
       <div class="content-list">

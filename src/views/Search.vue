@@ -7,8 +7,8 @@
         <img src="../assets/image/search.png" alt />
         <input type="text" placeholder="请输入搜索内容" />
       </div> -->
-      <div class="main-banner">
-        <div>Planet</div>
+      <div class="main-banner" :class="bannerClass" v-if="type === 'spectrum'"> 
+        <!-- <div>Planet</div> -->
       </div>
       <div class="main-all">
         <template v-for="(item, i) in list">
@@ -34,7 +34,9 @@ import Header from "@/common/_headerHome.vue";
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      bannerClass:'',
+      type:''
     };
   },
   components: {
@@ -46,7 +48,9 @@ export default {
     }
   },
   async mounted() {
-    if (this.$route.params.type === "all") {
+    this.bannerClass = `main-banner${this.$route.params.id}`;
+    this.type = this.$route.params.type
+    if (this.type === "all") {
       const data = {
         page: "1",
         list_rows: "99"
@@ -56,7 +60,7 @@ export default {
         this.list = res.data.list;
       }
     }
-    if (this.$route.params.type === "spectrum") {
+    if (this.type === "spectrum") {
       const data = {
         page: "1",
         list_rows: "99",
@@ -67,7 +71,7 @@ export default {
         this.list = res.data.list;
       }
     }
-    if (this.$route.params.type === "category") {
+    if (this.type === "category") {
       const data = {
         page: "1",
         list_rows: "99",
@@ -113,13 +117,22 @@ export default {
   &-banner {
     width: 100%;
     height: 105px;
-    background-image: url(../assets/image/commodityType4.png);
     background-repeat:no-repeat;
+    background-image: url(../assets/image/commodityType1.png);
     background-size:100%;
     font-size: 15px;
     color: #ffffff;
     text-align: center;
     padding-top: 75px;
+  }
+  &-banner2 {
+    background-image: url(../assets/image/commodityType2.png);
+  }
+  &-banner3 {
+    background-image: url(../assets/image/commodityType3.png);
+  }
+  &-banner4 {
+    background-image: url(../assets/image/commodityType4.png);
   }
   &-all {
     background-color: #f0f0f0;
