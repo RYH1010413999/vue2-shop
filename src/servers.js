@@ -30,6 +30,9 @@ const oauthLogout = (data) => axios.axiosPost(`oauth/logout/`, data); // 退出�
 const changePassword= (data) => axios.axiosPost(`personal/change/password/`, data); // 修改密码
 const orderCalculate = (data) => axios.axiosPost(`consume/order/calculate/`, data); // 选择优惠券后的订单
 const orderConfirm = (data) => axios.axiosPost(`consume/order/confirm/`, data); // 订单确认
+const shopBanner = (data) => axios.axiosPost(`shop/banner/`, data); // banner
+const orderDetail = (data) => axios.axiosPost(`personal/order/detail/`, data); // 订单详情
+const personalExpress = (path,data) => axios.axiosPost(path, data); // 物流查询
 export default {
   sendRegisterCode,
   register,
@@ -61,5 +64,8 @@ export default {
   oauthLogout,
   changePassword,
   orderCalculate,
-  orderConfirm
+  orderConfirm,
+  shopBanner,
+  orderDetail,
+  personalExpress
 }

@@ -42,7 +42,7 @@ export default {
   },
   async mounted() {
     const ua = navigator.userAgent.toLowerCase(); //获取判断用的对象
-    if (ua.match(/MicroMessenger/i) != "micromessenger") {
+    if (ua.includes("micromessenger")) {
       return;
     }
     if (localStorage.openId) {
@@ -60,7 +60,21 @@ export default {
     } else {
       this.wxLogin();
     }
-  }
+  },
+
+  created() {
+    //判断是否是IOS设备
+    // IOS分享时的页面是首页，也就是进入页而不是当前页。所有可以采用刷新当前页，让进入页的链接改成当前页，再在页面卸载时删除缓存数据。
+    let agent = navigator.userAgent;
+    let isIOS = !!agent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); // ios终端
+    if (isIOS && !sessionStorage.getItem("isShareState")) {
+      sessionStorage.setItem("isShareState", true);
+      this.$router.go(0);
+    }
+  },
+  destroyed(){
+  sessionStorage.removeItem('isShareState');
+},
 };
 </script>
 

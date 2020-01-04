@@ -1,47 +1,53 @@
 <template>
   <div class="wrap">
     <!-- <v-gologin></v-gologin> -->
-    <ul class="something" v-if="carList">
-      <li>
-        <div class="something-left" @click="allToggle">
-          <label class="true" :class="{false:!allChoseBool}">
-            <input type="checkbox" />
-          </label>
-        </div>
-        <div class="something-middle">全部商品</div>
-      </li>
-      <li v-for="(item,i) in carList" :key="i">
-        <div class="something-left" @click="toggle(item)">
-          <label class="true" :class="{'false':!item.choseBool}">
-            <input type="checkbox" />
-          </label>
-        </div>
-        <div class="something-middle">
-          <img :src="item.imageUrl" />
-        </div>
-        <div class="something-right">
-          <p>
-            {{item.title}}
-            <span>({{item.productSpecsStatus === 0?"已失效":""}})</span>
-          </p>
-          <template v-for="item2 in item.productSpecsDesc">
-            <template v-for="(item3,index3) in item2">
-              <p style="color:rgb(199, 108, 28);font-size:10px;" :key="index3">{{item3}}</p>
+    <template v-if="carList.length > 0">
+      <ul class="something">
+        <li>
+          <div class="something-left" @click="allToggle">
+            <label class="true" :class="{false:!allChoseBool}">
+              <input type="checkbox" />
+            </label>
+          </div>
+          <div class="something-middle">全部商品</div>
+        </li>
+        <li v-for="(item,i) in carList" :key="i">
+          <div class="something-left" @click="toggle(item)">
+            <label class="true" :class="{'false':!item.choseBool}">
+              <input type="checkbox" />
+            </label>
+          </div>
+          <div class="something-middle">
+            <img :src="item.imageUrl" />
+          </div>
+          <div class="something-right">
+            <p>
+              {{item.title}}
+              <span>({{item.productSpecsStatus === 0?"已失效":""}})</span>
+            </p>
+            <template v-for="item2 in item.productSpecsDesc">
+              <template v-for="(item3,index3) in item2">
+                <p style="color:rgb(199, 108, 28);font-size:10px;" :key="index3">{{item3}}</p>
+              </template>
             </template>
-          </template>
-          <p>售价：{{item.salePrice}}元</p>
-          <div class="calculation">
-            <span class="span1" @click="reduce(item)">-</span>
-            <span class="span2">{{item.productNum}}</span>
-            <span class="span1" @click="add(item)">+</span>
-            <span class="span3">小计 {{item.productNum * item.salePrice}}</span>
+            <p>售价：{{item.salePrice}}元</p>
+            <div class="calculation">
+              <span class="span1" @click="reduce(item)">-</span>
+              <span class="span2">{{item.productNum}}</span>
+              <span class="span1" @click="add(item)">+</span>
+              <span class="span3">小计 {{item.productNum * item.salePrice}}</span>
+            </div>
+            <div class="something-right-bottom" @click="cut(item)">
+              <span></span>
+            </div>
           </div>
-          <div class="something-right-bottom" @click="cut(item)">
-            <span></span>
-          </div>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </template>
+
+    <template v-else>
+      <v-empyt></v-empyt>
+    </template>
   </div>
 </template>
 
@@ -50,6 +56,7 @@
 import Gologin from "@/components/car/gologin.vue";
 import Util from "../../util/common";
 import { Toast } from "mint-ui";
+import Empyt from "@/common/_empty.vue";
 export default {
   data() {
     return {
@@ -58,7 +65,8 @@ export default {
     };
   },
   components: {
-    "v-gologin": Gologin
+    "v-gologin": Gologin,
+    "v-empyt": Empyt
   },
 
   mounted() {

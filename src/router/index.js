@@ -27,6 +27,7 @@ const Myorder = resolve => require(['@/components/user/myorder'], resolve) //我
 const Payview = resolve => require(['@/views/pay.vue'], resolve) //我的订单页面
 const Explain = resolve => require(['@/views/explain.vue'], resolve) //关于
 const EditPassword = resolve => require(['@/components/user/editPassword.vue'], resolve) //关于
+const MyorderDetail = resolve => require(['@/components/user/myorderDetail'], resolve) // 订单详情
 
 
 export default new Router({
@@ -56,7 +57,10 @@ export default new Router({
   {
     path: '/car/pay',
     name: '支付页',
-    component: Pay
+    component: Pay,
+    meta: {
+      requireAuth: true,
+    },
   },
 
 
@@ -65,33 +69,48 @@ export default new Router({
     name: '用户页',
     component: User,
     meta: {
-      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      requireAuth: true,
     },
   },
   {
     path: '/addressList/:status',
     component: AddressList,
-    name: '收货地址'
+    name: '收货地址',
+    meta: {
+      requireAuth: true,
+    },
   },
   {
     path: '/address/:type',
     component: Address,
-    name: '增加收货地址'
+    name: '增加收货地址',
+    meta: {
+      requireAuth: true,
+    },
   },
   {
     path: '/userDetail',
     component: UserDetail,
-    name: '个人信息'
+    name: '个人信息',
+    meta: {
+      requireAuth: true,
+    },
   },
   {
     path: '/coupon',
     component: Coupon,
-    name: '优惠券'
+    name: '优惠券',
+    meta: {
+      requireAuth: true,
+    },
   },
   {
     path: '/like',
     component: Like,
-    name: '收藏'
+    name: '收藏',
+    meta: {
+      requireAuth: true,
+    },
   },
 
 
@@ -115,23 +134,32 @@ export default new Router({
     name: '确认订单',
     component: ConsirmOrder,
     meta: {
-      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      requireAuth: true,
     },
   },
   {
     path: '/success',
     name: '订单完成',
-    component: Success
+    component: Success,
+    meta: {
+      requireAuth: true,
+    },
   },
   {
     path: '/myorder/:type',
     name: '我的订单',
-    component: Myorder
+    component: Myorder,
+    meta: {
+      requireAuth: true,
+    },
   },
   {
     path: '/payView',
     name: '支付方式',
-    component: Payview
+    component: Payview,
+    meta: {
+      requireAuth: true,
+    },
   },
   {
     path: '/explain/:type',
@@ -142,6 +170,14 @@ export default new Router({
     path: '/user/editPassword',
     name: '关于',
     component: EditPassword
+  },
+  {
+    path: '/myorder/detail/:id',
+    name: '订单详情',
+    component: MyorderDetail,
+    meta: {
+      requireAuth: true,
+    },
   },
   ]
 })

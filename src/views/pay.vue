@@ -127,7 +127,7 @@ export default {
   mounted() {
     this.price = localStorage.price;
     const ua = navigator.userAgent.toLowerCase();
-    this.wxBrowser = ua.match(/MicroMessenger/i) == "micromessenger";
+    this.wxBrowser = ua.includes('micromessenger');
   }
 };
 </script>

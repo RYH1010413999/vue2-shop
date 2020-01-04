@@ -2,22 +2,27 @@
   <div class="main">
     <v-header></v-header>
     <div class="all">
-      <div class="list" v-for="(item,index) in list" :key="index" @click="localAddress(item)">
-        <div class="list-left"></div>
-        <div class="list-conter">
-          <div>
-            <span style="font-size:14px;">{{item.receiver}}</span>
-            {{item.mobile}}
+      <template v-if="list.length>0">
+        <div class="list" v-for="(item,index) in list" :key="index" @click="localAddress(item)">
+          <div class="list-left"></div>
+          <div class="list-conter">
+            <div>
+              <span style="font-size:14px;">{{item.receiver}}</span>
+              {{item.mobile}}
+            </div>
+            <div>{{item.province}} {{item.city}} {{item.area}}</div>
+            <div>{{item.address_detail}}</div>
+            <div class="default" v-if="item.is_default">默认</div>
           </div>
-          <div>{{item.province}} {{item.city}} {{item.area}}</div>
-          <div>{{item.address_detail}}</div>
-          <div class="default" v-if="item.is_default">默认</div>
+          <div>
+            <img src="../../assets/image/delete.png" alt @click.stop="deleteAddress(item.id)" />
+            <img @click.stop="edit(item)" src="../../assets/image/edit.png" alt />
+          </div>
         </div>
-        <div>
-          <img src="../../assets/image/delete.png" alt @click.stop="deleteAddress(item.id)" />
-          <img @click.stop="edit(item)" src="../../assets/image/edit.png" alt />
-        </div>
-      </div>
+      </template>
+      <template v-else>
+        <v-empyt></v-empyt>
+      </template>
     </div>
     <div class="save" @click="add()">添加新地址</div>
   </div>
@@ -25,6 +30,8 @@
 
 <script>
 import Header from "@/common/_header.vue";
+import { Toast } from "mint-ui";
+import Empyt from "@/common/_empty.vue";
 export default {
   data() {
     return {
@@ -65,7 +72,8 @@ export default {
     }
   },
   components: {
-    "v-header": Header
+    "v-header": Header,
+    "v-empyt": Empyt
   }
 };
 </script>

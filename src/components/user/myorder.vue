@@ -3,63 +3,28 @@
     <v-header></v-header>
     <div class="content">
       <mt-navbar v-model="selected">
-        <mt-tab-item id @click="orderList()">全部</mt-tab-item>
-        <mt-tab-item id="1" @click="orderList()">待支付</mt-tab-item>
-        <mt-tab-item id="2" @click="orderList()">待发货</mt-tab-item>
-        <mt-tab-item id="3" @click="orderList()">待收货</mt-tab-item>
-        <mt-tab-item id="4" @click="orderList()">已完成</mt-tab-item>
+        <mt-tab-item id>全部</mt-tab-item>
+        <mt-tab-item id="1">待支付</mt-tab-item>
+        <mt-tab-item id="2">待发货</mt-tab-item>
+        <mt-tab-item id="3">待收货</mt-tab-item>
+        <mt-tab-item id="4">已完成</mt-tab-item>
+        <mt-tab-item id="5">售后</mt-tab-item>
       </mt-navbar>
 
       <!-- tab-container -->
       <mt-tab-container v-model="selected">
-        <mt-tab-container-item id>
-          <div class="list" v-for="(item,index) in list" :key="index">
-            <div>
-              <div class="list-color">订单编号：{{item.orderNo}}</div>
-              <div>{{item.orderStatus | Status}}</div>
-            </div>
-            <template v-for="(item2,index2) in item.orderItem">
-              <div :key="index2">
-                <div class="list-image">
-                  <img :src="item2.imageUrl" alt />
-                </div>
-                <div class="list-detail">
-                  <div>{{item2.productName}}</div>
-                  <div>编号{{item2.productSn}}</div>
-                  <div>
-                    <span>尺寸：</span>
-                    <template v-for="(item3,index3) in item2.productDesc['尺寸']">
-                      <span :key="index3">{{item3}}</span>
-                    </template>
-                  </div>
-                  <div>￥ {{item2.salePrice}} x {{item2.productNum}}</div>
-                </div>
-              </div>
-            </template>
-            <div>
-              <div>共计1件商品，运费￥{{item.policyPrice}}</div>
-              <div>合计: ￥ {{item.finalPrice}}</div>
-            </div>
-            <template v-if="item.orderStatus === 1">
-              <div class="list-pay">
-                <div @click="cancelOrder(item)">取消订单</div>
-                <div @click="payOrder(item)">立即支付</div>
-              </div>
-            </template>
-          </div>
-        </mt-tab-container-item>
-
-        <mt-tab-container-item id="1">
-          <template v-for="(item,index) in list">
-            <div class="list" :key="index" v-if="item.orderStatus === 1">
+        <mt-tab-container-item :id="selected">
+          <template v-if="list.length>0">
+            <div
+              class="list"
+              v-for="(item,index) in list"
+              :key="index"
+              @click="gotoMyorderDetail(item)"
+            >
               <div>
                 <div class="list-color">订单编号：{{item.orderNo}}</div>
                 <div>{{item.orderStatus | Status}}</div>
               </div>
-
-              <!-- <div>
-              <div class="list-color">参考编码：2019112810293810248</div>
-              </div>-->
               <template v-for="(item2,index2) in item.orderItem">
                 <div :key="index2">
                   <div class="list-image">
@@ -82,123 +47,16 @@
                 <div>共计1件商品，运费￥{{item.policyPrice}}</div>
                 <div>合计: ￥ {{item.finalPrice}}</div>
               </div>
-
-              <div class="list-pay">
-                <div @click="cancelOrder(item)">取消订单</div>
-                <div @click="payOrder(item)">立即支付</div>
-              </div>
+              <template v-if="item.orderStatus === 1">
+                <div class="list-pay">
+                  <div @click="cancelOrder(item)">取消订单</div>
+                  <div @click="payOrder(item)">立即支付</div>
+                </div>
+              </template>
             </div>
           </template>
-        </mt-tab-container-item>
-
-        <mt-tab-container-item id="2">
-          <template v-for="(item,index) in list">
-            <div class="list" :key="index" v-if="item.orderStatus === 2">
-              <div>
-                <div class="list-color">订单编号：{{item.orderNo}}</div>
-                <div>{{item.orderStatus | Status}}</div>
-              </div>
-
-              <!-- <div>
-              <div class="list-color">参考编码：2019112810293810248</div>
-              </div>-->
-              <template v-for="(item2,index2) in item.orderItem">
-                <div :key="index2">
-                  <div class="list-image">
-                    <img :src="item2.imageUrl" alt />
-                  </div>
-                  <div class="list-detail">
-                    <div>{{item2.productName}}</div>
-                    <div>编号{{item2.productSn}}</div>
-                    <div>
-                      <span>尺寸：</span>
-                      <template v-for="(item3,index3) in item2.productDesc['尺寸']">
-                        <span :key="index3">{{item3}}</span>
-                      </template>
-                    </div>
-                    <div>￥ {{item2.salePrice}} x {{item2.productNum}}</div>
-                  </div>
-                </div>
-              </template>
-              <div>
-                <div>共计1件商品，运费￥{{item.policyPrice}}</div>
-                <div>合计: ￥ {{item.finalPrice}}</div>
-              </div>
-            </div>
-          </template>
-        </mt-tab-container-item>
-
-        <mt-tab-container-item id="3">
-          <template v-for="(item,index) in list">
-            <div class="list" :key="index" v-if="item.orderStatus === 3">
-              <div>
-                <div class="list-color">订单编号：{{item.orderNo}}</div>
-                <div>{{item.orderStatus | Status}}</div>
-              </div>
-
-              <!-- <div>
-              <div class="list-color">参考编码：2019112810293810248</div>
-              </div>-->
-              <template v-for="(item2,index2) in item.orderItem">
-                <div :key="index2">
-                  <div class="list-image">
-                    <img :src="item2.imageUrl" alt />
-                  </div>
-                  <div class="list-detail">
-                    <div>{{item2.productName}}</div>
-                    <div>编号{{item2.productSn}}</div>
-                    <div>
-                      <span>尺寸：</span>
-                      <template v-for="(item3,index3) in item2.productDesc['尺寸']">
-                        <span :key="index3">{{item3}}</span>
-                      </template>
-                    </div>
-                    <div>￥ {{item2.salePrice}} x {{item2.productNum}}</div>
-                  </div>
-                </div>
-              </template>
-              <div>
-                <div>共计1件商品，运费￥{{item.policyPrice}}</div>
-                <div>合计: ￥ {{item.finalPrice}}</div>
-              </div>
-            </div>
-          </template>
-        </mt-tab-container-item>
-
-        <mt-tab-container-item id="4">
-          <template v-for="(item,index) in list">
-            <div class="list" :key="index" v-if="item.orderStatus === 4">
-              <div>
-                <div class="list-color">订单编号：{{item.orderNo}}</div>
-                <div>{{item.orderStatus | Status}}</div>
-              </div>
-
-              <!-- <div>
-              <div class="list-color">参考编码：2019112810293810248</div>
-              </div>-->
-              <template v-for="(item2,index2) in item.orderItem">
-                <div :key="index2">
-                  <div class="list-image">
-                    <img :src="item2.imageUrl" alt />
-                  </div>
-                  <div class="list-detail">
-                    <div>{{item2.productName}}</div>
-                    <div>编号{{item2.productSn}}</div>
-                    <div>
-                      <span>尺寸：</span>
-                      <template v-for="(item3,index3) in item2.productDesc['尺寸']">
-                        <span :key="index3">{{item3}}</span>
-                      </template>
-                    </div>
-                    <div>￥ {{item2.salePrice}} x {{item2.productNum}}</div>
-                  </div>
-                </div>
-              </template>
-              <div>
-                <div>共计1件商品，运费￥{{item.policyPrice}}</div>
-                <div>合计: ￥ {{item.finalPrice}}</div>
-              </div>
-            </div>
+          <template v-else>
+            <v-empyt></v-empyt>
           </template>
         </mt-tab-container-item>
       </mt-tab-container>
@@ -208,11 +66,13 @@
 
 <script>
 import Header from "@/common/_header.vue";
+import Empyt from "@/common/_empty.vue";
 export default {
   data() {
     return {
       selected: "1",
-      list: []
+      list: [],
+      listAll: []
     };
   },
   filters: {
@@ -268,7 +128,8 @@ export default {
     }
   },
   components: {
-    "v-header": Header
+    "v-header": Header,
+    "v-empyt": Empyt
   },
   methods: {
     async cancelOrder(item) {
@@ -282,19 +143,23 @@ export default {
     },
     async orderList(status) {
       const data = {
-        status: this.selected,
+        status: "",
         page: 1,
         list_rows: 99
       };
       const res = await this.$axios.orderList(data);
       if (res.status === "20000") {
-        this.list = res.data.list;
+        this.listAll = res.data.list;
       }
+      console.log(this.list);
     },
     payOrder(item) {
       localStorage.order_no = item.orderNo;
       localStorage.price = item.finalPrice;
       this.$router.push("/payView");
+    },
+    gotoMyorderDetail(item) {
+      this.$router.push(`/myorder/detail/${item.orderNo}`);
     }
   },
   mounted() {
@@ -303,6 +168,22 @@ export default {
       this.selected = "";
     }
     this.orderList();
+  },
+  watch: {
+    selected(val) {
+      let list = [];
+      if (val == 5) {
+        list = this.listAll.filter(res => {
+          const bool = [6,7,8,9].includes(res.orderStatus);
+          return bool;
+        });
+      } else {
+        list = this.listAll.filter(res => {
+          return res.orderStatus == val;
+        });
+      }
+      this.list = [...list];
+    }
   }
 };
 </script>
@@ -312,6 +193,9 @@ export default {
   /deep/ .is-selected {
     color: #9b9b9b;
     border-color: #9b9b9b;
+  }
+  /deep/ .mint-navbar {
+    margin-bottom: 4px;
   }
   width: 100%;
   height: 100%;

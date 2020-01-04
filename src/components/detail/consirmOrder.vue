@@ -61,17 +61,22 @@
     <mt-popup v-model="popupVisible" position="right">
       <div class="popupVisible-div">
         <div class="main-content">
-          <template v-for="(item,index) in enableCoupon">
-            <div class="main-content-list" :key="index" @click="selectCoupon(item)">
-              <div class="main-content-list-top">
-                <div style="font-size: 14px;color:black;">¥ {{item.couponPrice}}</div>
-                <div v-if="item.select">已选</div>
+          <template v-if="enableCoupon.length >0">
+            <template v-for="(item,index) in enableCoupon">
+              <div class="main-content-list" :key="index" @click="selectCoupon(item)">
+                <div class="main-content-list-top">
+                  <div style="font-size: 14px;color:black;">¥ {{item.couponPrice}}</div>
+                  <div v-if="item.select">已选</div>
+                </div>
+                <div>
+                  <div>满{{item.fillPrice}}使用</div>
+                  <!-- <div>{{item.receivedAt | date}} - {{item.maturityAt | date}}</div> -->
+                </div>
               </div>
-              <div>
-                <div>满{{item.fillPrice}}使用</div>
-                <!-- <div>{{item.receivedAt | date}} - {{item.maturityAt | date}}</div> -->
-              </div>
-            </div>
+            </template>
+          </template>
+          <template v-else>
+            <v-empyt></v-empyt>
           </template>
         </div>
       </div>
@@ -83,6 +88,7 @@
 import Header from "@/common/_header.vue";
 import { Toast } from "mint-ui";
 import { mapState } from "vuex";
+import Empyt from "@/common/_empty.vue";
 export default {
   computed: {
     ...mapState({
@@ -107,7 +113,8 @@ export default {
     }
   },
   components: {
-    "v-header": Header
+    "v-header": Header,
+    "v-empyt": Empyt
   },
   methods: {
     // 创建订单

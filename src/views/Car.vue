@@ -5,7 +5,6 @@
       <v-header></v-header>
       <!-- 根据购物车是否有商品加载不同的组件 -->
       <v-something v-if="true"/>
-      <v-nothing v-else/>
       <v-footer/>
     </div>
 </template>

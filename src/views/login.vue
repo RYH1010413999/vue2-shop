@@ -206,7 +206,7 @@ export default {
   },
   mounted() {
     const ua = navigator.userAgent.toLowerCase();
-    this.wxBrowser = ua.match(/MicroMessenger/i) == "micromessenger";
+    this.wxBrowser = ua.includes('micromessenger');
   }
 };
 </script>

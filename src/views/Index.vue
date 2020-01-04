@@ -49,12 +49,7 @@ export default {
         section2: {},
         section3: {},
         section4: {},
-        swiper: [
-          { imgPath: require("@/assets/image/banner1.png") },
-          { imgPath: require("@/assets/image/banner2.png") }
-          // { imgPath: require("@/assets/image/banner3.png") },
-          // { imgPath: require("@/assets/image/banner4.png") }
-        ],
+        swiper: [],
         commodityType: []
       },
       loading: true
@@ -65,6 +60,11 @@ export default {
     const spectrum = await this.$axios.spectrum({});
     if (spectrum.status === "20000") {
       this.datas.commodityType = spectrum.data;
+    }
+
+    const res = await this.$axios.shopBanner({});
+    if (res.status === "20000") {
+      this.datas.swiper = res.data;
     }
   },
 

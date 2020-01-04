@@ -6,23 +6,32 @@
       <!-- <div class="main-search">
         <img src="../assets/image/search.png" alt />
         <input type="text" placeholder="请输入搜索内容" />
-      </div> -->
-      <div class="main-banner" :class="bannerClass" v-if="type === 'spectrum'"> 
+      </div>-->
+      <div class="main-banner" :class="bannerClass" v-if="type === 'spectrum'">
         <!-- <div>Planet</div> -->
       </div>
       <div class="main-all">
-        <template v-for="(item, i) in list">
-          <div class="main-all-list" @click="gotoDetail(item.productSn)" v-bind:key="i">
-            <!-- <img class="main-all-list-item1" src="../assets/image/like.png" alt /> -->
-            <img class="main-all-list-item2" :src="item.headImageUrl" alt />
-            <div class="main-all-list-item3">{{item.spectrum}}-{{item.title}}</div>
-            <div class="main-all-list-item4">型号：{{item.productSn}}</div>
+        <template v-if="list.length>0">
+          <template v-for="(item, i) in list">
             <div
-              class="main-all-list-item5"
-              v-if="item.maxPrice === item.minPrice"
-            >¥ {{item.maxPrice}}</div>
-            <div class="main-all-list-item5" v-else>¥{{item.minPrice}} - ¥ {{item.maxPrice}}</div>
-          </div>
+              class="main-all-list"
+              @click="gotoDetail(item.productSn,item.onSale)"
+              v-bind:key="i"
+            >
+              <!-- <img class="main-all-list-item1" src="../assets/image/like.png" alt /> -->
+              <img class="main-all-list-item2" :src="item.headImageUrl" alt />
+              <div class="main-all-list-item3">{{item.spectrum}}-{{item.title}}</div>
+              <div class="main-all-list-item4">型号：{{item.productSn}}</div>
+              <div
+                class="main-all-list-item5"
+                v-if="item.maxPrice === item.minPrice"
+              >¥ {{item.maxPrice}}</div>
+              <div class="main-all-list-item5" v-else>¥{{item.minPrice}} - ¥ {{item.maxPrice}}</div>
+            </div>
+          </template>
+        </template>
+        <template v-else>
+          <v-empyt></v-empyt>
         </template>
       </div>
     </div>
@@ -31,25 +40,32 @@
 
 <script>
 import Header from "@/common/_headerHome.vue";
+import Empyt from "@/common/_empty.vue";
+import { Toast } from "mint-ui";
 export default {
   data() {
     return {
       list: [],
-      bannerClass:'',
-      type:''
+      bannerClass: "",
+      type: ""
     };
   },
   components: {
-    "v-header": Header
+    "v-header": Header,
+    "v-empyt": Empyt
   },
   methods: {
-    gotoDetail(id) {
-      this.$router.push(`/detail/${id}`);
+    gotoDetail(id, onSale) {
+      if (onSale) {
+        this.$router.push(`/detail/${id}`);
+      } else {
+        Toast("该产品暂不可售，请联系客服了解详情！");
+      }
     }
   },
   async mounted() {
     this.bannerClass = `main-banner${this.$route.params.id}`;
-    this.type = this.$route.params.type
+    this.type = this.$route.params.type;
     if (this.type === "all") {
       const data = {
         page: "1",
@@ -117,9 +133,9 @@ export default {
   &-banner {
     width: 100%;
     height: 105px;
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
     background-image: url(../assets/image/commodityType1.png);
-    background-size:100%;
+    background-size: 100%;
     font-size: 15px;
     color: #ffffff;
     text-align: center;

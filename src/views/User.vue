@@ -29,7 +29,7 @@
           <img src="../assets/image/user_shopping4.png" alt />
           <div>已完成</div>
         </div>
-        <div class="main-all-list-shopping">
+        <div class="main-all-list-shopping" @click="gotomyorder('5')">
           <img src="../assets/image/user_shopping5.png" alt />
           <div>售后</div>
         </div>
