@@ -1,9 +1,14 @@
 <template>
   <div class="header">
     <div class="header-basics">
-      <img src="../../assets/image/nevigation.png" alt @click="showAll(true)" />
+      <img
+        src="../../assets/image/nevigation.png"
+        class="header-all-left"
+        alt
+        @click="showAll(true)"
+      />
       <img class="header-center" src="../../assets/image/logo_white.png" alt />
-      <img src="../../assets/image/shopping_cart_white.png" alt @click="gitoCar" />
+      <img src="../../assets/image/shopping_cart_white.png" alt @click="gotoCar" />
     </div>
     <div class="header-all" v-if="show">
       <div class="header-basics">
@@ -14,7 +19,23 @@
           @click="showAll(false)"
         />
         <img class="header-all-center" src="../../assets/image/logo_center.png" alt />
-        <img src="../../assets/image/shopping_cart_black.png" alt @click="gitoCar" />
+        <div class="header-basics-img">
+          <div>{{number}}</div>
+          <img
+            class="icon-go"
+            v-if="number>0"
+            src="../../assets/image/shopping_cart_black.png"
+            @click="gotoCar"
+            alt
+          />
+          <img
+            class="icon-go"
+            v-else
+            src="../../assets/image/shopping_cart_empty.png"
+            @click="gotoCar"
+            alt
+          />
+        </div>
       </div>
       <div class="header-all-bottom">
         <div class="header-all-bottom-search">
@@ -70,7 +91,8 @@ export default {
   },
   data() {
     return {
-      show: false
+      show: false,
+      number: 0
     };
   },
   methods: {
@@ -80,11 +102,19 @@ export default {
     gotoUser(path) {
       this.$router.push({ path: path });
     },
-    gitoCar() {
+    gotoCar() {
       this.$router.push({ name: "购物车页" });
     },
     gitoSearch(type, id) {
       this.$router.push({ path: `/search/${type}/${id}` });
+    }
+  },
+  async mounted() {
+    if (localStorage.login) {
+      const res = await this.$axios.cartList({});
+      if (res.status === "20000") {
+        this.number = res.data.list.length;
+      }
     }
   }
 };
@@ -105,6 +135,25 @@ export default {
     justify-content: space-between;
     align-items: center;
 
+    &-img {
+      position: relative;
+      div {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        color: white;
+        font-size: 12px;
+        line-height: 36px;
+      }
+      img {
+        width: 32px;
+        height: 32px;
+        float: left;
+        display: block;
+      }
+    }
+
     & > img {
       width: 32px;
       height: 32px;
@@ -123,8 +172,8 @@ export default {
     }
 
     & > .header-all-left {
-      width: 22px;
-      height: 18px;
+      width: 32px;
+      height: 32px;
     }
   }
 

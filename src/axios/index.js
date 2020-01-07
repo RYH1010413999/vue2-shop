@@ -55,6 +55,7 @@ const axiosGet = (url, data) => {
             duration: 2000
           });
           if(res.data.status === '40106'){
+            localStorage.login = false;
             router.replace('/login');
           }
         }
@@ -86,6 +87,7 @@ const axiosPost = (url, data) => {
             duration: 2000
           });
           if(res.data.status === '40106'){
+            localStorage.login = false;
             router.replace('/login');
           }
         }
@@ -118,6 +120,7 @@ const axiosDel = (url, data) => {
             duration: 2000
           });
           if(res.data.status === '40106'){
+            localStorage.login = false;
             router.replace('/login');
           }
         }

@@ -144,7 +144,10 @@ export default {
     },
 
     selectImg(index, item2) {
-      this.image_big = item2.image;
+      if (item2.active) {
+      } else {
+        this.image_big = item2.image;
+      }
       this.select(index, item2.id);
     },
 
@@ -152,8 +155,14 @@ export default {
       const obj = [];
       let intersection = [];
       this.first = false;
-      this.select_sku[index] = id;
-      this.select_sku.forEach((res,res_index) => {
+      if (this.select_sku[index] === id) {
+        delete this.select_sku[index];
+      } else {
+        this.select_sku[index] = id;
+      }
+      console.log(this.select_sku);
+
+      this.select_sku.forEach((res, res_index) => {
         const used_keys = [];
         this.used_keys.forEach(res2 => {
           if (res2[res_index] === res) {
@@ -170,11 +179,13 @@ export default {
           intersection = arry.filter(v => intersection.includes(v));
         }
       });
-
-      intersection.forEach(res => {
-        obj[`${res}`] = true;
-      });
-      this.obj = obj;
+      // 一个都没选中
+      if (intersection.length > 0) {
+        intersection.forEach(res => {
+          obj[`${res}`] = true;
+        });
+        this.obj = obj;
+      }
 
       // 选中状态
       this.detail.specs.forEach((el, elIndex) => {
@@ -190,7 +201,9 @@ export default {
       const select_sku = [];
       this.detail.specs = [...this.detail.specs];
       this.select_sku.forEach(res => {
-        select_sku.push(res);
+        if (res) {
+          select_sku.push(res);
+        }
       });
       if (select_sku.length < this.detail.specs.length) {
         return;
@@ -199,6 +212,10 @@ export default {
     },
 
     async addShoppingCart() {
+      if (!this.price.salePrice) {
+        Toast("请选择商品属性");
+        return;
+      }
       const data = {
         product_sku_key: JSON.parse(localStorage.productSkuKey)[0]
           .product_sku_key
@@ -345,7 +362,6 @@ export default {
             & > img {
               width: 50px;
               height: 50px;
-              border: 1px solid #928e8e;
             }
           }
 

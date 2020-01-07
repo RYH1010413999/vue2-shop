@@ -150,6 +150,7 @@ export default {
       const res = await this.$axios.orderList(data);
       if (res.status === "20000") {
         this.listAll = res.data.list;
+        this.list = res.data.list;
       }
       console.log(this.list);
     },
@@ -172,9 +173,11 @@ export default {
   watch: {
     selected(val) {
       let list = [];
-      if (val == 5) {
+      if (val == "") {
+        list = this.listAll;
+      } else if (val == 5) {
         list = this.listAll.filter(res => {
-          const bool = [6,7,8,9].includes(res.orderStatus);
+          const bool = [6, 7, 8, 9].includes(res.orderStatus);
           return bool;
         });
       } else {

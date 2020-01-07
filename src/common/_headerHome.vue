@@ -2,7 +2,11 @@
   <header>
     <img class="icon-go-left" src="../assets/image/home.png" @click="gotoHome" alt />
     <img src="../assets/image/logo.png" alt />
-    <img class="icon-go" src="../assets/image/shopping_cart_black.png" @click="gotoCar" alt />
+    <div>
+      <div>{{number}}</div>
+      <img class="icon-go" v-if="number>0" src="../assets/image/shopping_cart_black.png" @click="gotoCar" alt />
+      <img class="icon-go" v-else src="../assets/image/shopping_cart_empty.png" @click="gotoCar" alt />
+    </div>
   </header>
 </template>
 
@@ -16,6 +20,18 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
+  & > div {
+    position: relative;
+    div {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      color: white;
+      font-size: 12px;
+      line-height: 36px;
+    }
+  }
   img {
     width: 125px;
     height: 14px;
@@ -34,12 +50,25 @@ header {
 
 <script>
 export default {
+  data() {
+    return {
+      number: 0
+    };
+  },
   methods: {
     gotoCar() {
       this.$router.push({ name: "购物车页" });
     },
     gotoHome() {
       this.$router.push({ name: "首页" });
+    }
+  },
+  async mounted() {
+    if (localStorage.login) {
+      const res = await this.$axios.cartList({});
+      if (res.status === "20000") {
+        this.number = res.data.list.length;
+      }
     }
   }
 };
