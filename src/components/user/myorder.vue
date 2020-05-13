@@ -49,8 +49,8 @@
               </div>
               <template v-if="item.orderStatus === 1">
                 <div class="list-pay">
-                  <div @click="cancelOrder(item)">取消订单</div>
-                  <div @click="payOrder(item)">立即支付</div>
+                  <div @click.stop="cancelOrder(item)">取消订单</div>
+                  <div @click.stop="payOrder(item)">立即支付</div>
                 </div>
               </template>
             </div>
@@ -150,9 +150,8 @@ export default {
       const res = await this.$axios.orderList(data);
       if (res.status === "20000") {
         this.listAll = res.data.list;
-        this.list = res.data.list;
+        this.selectedFun(status);
       }
-      console.log(this.list);
     },
     payOrder(item) {
       localStorage.order_no = item.orderNo;
@@ -161,17 +160,9 @@ export default {
     },
     gotoMyorderDetail(item) {
       this.$router.push(`/myorder/detail/${item.orderNo}`);
-    }
-  },
-  mounted() {
-    this.selected = this.$route.params.type;
-    if (this.selected === "0") {
-      this.selected = "";
-    }
-    this.orderList();
-  },
-  watch: {
-    selected(val) {
+    },
+
+    selectedFun(val) {
       let list = [];
       if (val == "") {
         list = this.listAll;
@@ -186,6 +177,18 @@ export default {
         });
       }
       this.list = [...list];
+    }
+  },
+  mounted() {
+    this.selected = this.$route.params.type;
+    if (this.selected === "0") {
+      this.selected = "";
+    }
+    this.orderList(this.selected);
+  },
+  watch: {
+    selected(val) {
+      this.selectedFun(val);
     }
   }
 };

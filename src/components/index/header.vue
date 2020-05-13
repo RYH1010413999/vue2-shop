@@ -19,20 +19,18 @@
           @click="showAll(false)"
         />
         <img class="header-all-center" src="../../assets/image/logo_center.png" alt />
-        <div class="header-basics-img">
+        <div class="header-basics-img" @click="gotoCar">
           <div>{{number}}</div>
           <img
             class="icon-go"
             v-if="number>0"
             src="../../assets/image/shopping_cart_black.png"
-            @click="gotoCar"
             alt
           />
           <img
             class="icon-go"
             v-else
             src="../../assets/image/shopping_cart_empty.png"
-            @click="gotoCar"
             alt
           />
         </div>
@@ -52,7 +50,7 @@
           <template v-for="(item,index) in list">
             <div @click="gitoSearch('spectrum',item.id)" :key="index">
               <div>
-                <img :src="require('@/assets/image/all_list'+(index + 2) +'.png')" alt />
+                <img :src="list_icon[index].image" alt />
               </div>
               <div>{{item.spectrum}}</div>
             </div>
@@ -73,7 +71,7 @@
           </div>
         </div>
       </div>
-      <div class="header-all-service">拨打客服中心</div>
+      <!-- <div class="header-all-service">拨打客服中心</div> -->
     </div>
     <div class="header-all-shadow" v-if="show" @click="showAll(false)"></div>
   </div>
@@ -83,6 +81,12 @@
 export default {
   props: {
     list: {
+      type: Array,
+      default: function() {
+        return [];
+      }
+    },
+    list_icon: {
       type: Array,
       default: function() {
         return [];
@@ -110,7 +114,8 @@ export default {
     }
   },
   async mounted() {
-    if (localStorage.login) {
+    console.log(this.list_icon);
+    if (localStorage.login === "true") {
       const res = await this.$axios.cartList({});
       if (res.status === "20000") {
         this.number = res.data.list.length;
@@ -245,35 +250,8 @@ export default {
 
           & > img {
             width: 20px;
-            height: 15px;
+            height: 20px;
           }
-        }
-
-        & > div:nth-child(3) > div > img {
-          width: 18px;
-          height: 22px;
-        }
-
-        & > div:nth-child(4) > div > img {
-          width: 14px;
-          height: 22px;
-        }
-
-        & > div:nth-child(5) > div > img {
-          width: 16px;
-          height: 16px;
-        }
-
-        & > div:nth-child(6) > div > img {
-          width: 18px;
-          height: 19px;
-        }
-
-        & > div:nth-child(7) > div > img {
-          width: 28px;
-          height: 28px;
-          position: relative;
-          right: 5px;
         }
       }
     }

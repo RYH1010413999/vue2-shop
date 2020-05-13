@@ -72,6 +72,17 @@
             <div @click="payOrder()">立即支付</div>
           </div>
         </div>
+        <div class="list" v-if="saleAfterApply.includes(orderDetail.order_status)">
+          <div class="list-pay">
+            <div @click="afterMarket()">申请售后</div>
+          </div>
+        </div>
+        <div class="list" v-if="saleAfter.includes(orderDetail.order_status)">
+          <div class="list-pay">
+            <div>取消申请</div>
+            <div>申请售后</div>
+          </div>
+        </div>
         <div class="list"></div>
       </div>
     </div>
@@ -80,13 +91,16 @@
 
 <script>
 import Header from "@/common/_header.vue";
+import { Toast } from "mint-ui";
 export default {
   data() {
     return {
       orderDetail: {
         address: {}
       },
-      personalExpress: {}
+      personalExpress: {},
+      saleAfter: [6, 7, 8, 9],
+      saleAfterApply: [2, 3]
     };
   },
   methods: {
@@ -96,33 +110,47 @@ export default {
       };
       const res = await this.$axios.cancelOrder(data);
       if (res.status === "20000") {
-        this.orderList(this.selected);
+        this.initFun();
       }
     },
     payOrder() {
       localStorage.order_no = this.orderDetail.order_no;
       localStorage.price = this.orderDetail.final_price;
       this.$router.push("/payView");
+    },
+    async afterMarket() {
+      const data = {
+        order_no: this.orderDetail.order_no,
+        status: this.orderDetail.order_status,
+        description: "售后申请"
+      };
+      const res = await this.$axios.afterMarket(data);
+      if (res.status === "20000") {
+        Toast("申请售后成功，客服将在24小时内与您联系！");
+      }
+    },
+    async initFun() {
+      const data = {
+        order_no: this.$route.params.id
+      };
+      const res = await this.$axios.orderDetail(data);
+      if (res.status === "20000") {
+        this.orderDetail = res.data;
+      }
+      if (this.orderDetail.express_id) {
+        const res2 = await this.$axios.personalExpress(
+          `personal/${this.orderDetail.express_id}/express/`,
+          {}
+        );
+        if (res2.status === "20000") {
+          this.personalExpress = res2.data;
+          console.log(this.personalExpress);
+        }
+      }
     }
   },
   async mounted() {
-    const data = {
-      order_no: this.$route.params.id
-    };
-    const res = await this.$axios.orderDetail(data);
-    if (res.status === "20000") {
-      this.orderDetail = res.data;
-    }
-    if (this.orderDetail.express_id) {
-      const res2 = await this.$axios.personalExpress(
-        `personal/${this.orderDetail.express_id}/express/`,
-        {}
-      );
-      if (res2.status === "20000") {
-        this.personalExpress = res2.data;
-        console.log(this.personalExpress);
-      }
-    }
+    this.initFun();
   },
   components: {
     "v-header": Header

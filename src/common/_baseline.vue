@@ -13,9 +13,25 @@
       </div>
     </div>
 
-    <div>
+    <div class="bottom_list">
       <img src="../assets/image/ins.png" alt />
       <span>Ins : horus1924</span>
+    </div>
+
+    <div class="bottom_list">
+      <span>官网：</span>
+      <span>
+        <a href="http://www.horus1924.com">www.horus1924.com</a>
+      </span>
+    </div>
+
+    <div class="bottom_list">
+      <span>展厅：杭州市西湖区留和路139号东信.和创园23幢</span>
+    </div>
+
+    <div class="bottom_list">
+      <span>电子邮箱：</span>
+      <span>info@horus1924.com</span>
     </div>
   </div>
 </template>
@@ -35,15 +51,15 @@ export default {};
   font-size: 15px;
   border-top: 1px solid #000000;
   margin-top: 40px;
-  &>div{
+  & > div {
     display: flex;
     align-items: center;
-    justify-content:center;
-    &>img{
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-  }
+    justify-content: center;
+    & > img {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
   }
 
   &-list {
@@ -67,6 +83,10 @@ export default {};
     height: 17px;
     margin-top: 10px;
     margin-bottom: 30px;
+  }
+  .bottom_list{
+    margin-bottom: 10px;
+    font-size: 12px;
   }
 }
 </style>

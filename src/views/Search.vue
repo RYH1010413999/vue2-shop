@@ -7,8 +7,8 @@
         <img src="../assets/image/search.png" alt />
         <input type="text" placeholder="请输入搜索内容" />
       </div>-->
-      <div class="main-banner" :class="bannerClass" v-if="type === 'spectrum'">
-        <!-- <div>Planet</div> -->
+      <div class="main-banner" v-if="type === 'spectrum'">
+        <img :src="spectrumBanner" alt />
       </div>
       <div class="main-all">
         <template v-if="list.length>0">
@@ -45,8 +45,8 @@ import { Toast } from "mint-ui";
 export default {
   data() {
     return {
+      spectrumBanner: "", //banner
       list: [],
-      bannerClass: "",
       type: ""
     };
   },
@@ -64,8 +64,8 @@ export default {
     }
   },
   async mounted() {
-    this.bannerClass = `main-banner${this.$route.params.id}`;
     this.type = this.$route.params.type;
+
     if (this.type === "all") {
       const data = {
         page: "1",
@@ -82,6 +82,12 @@ export default {
         list_rows: "99",
         spectrum: this.$route.params.id
       };
+      // 获取banner
+      const path = `sales/${this.$route.params.id}/spectrum/`;
+      const spectrumBanner = await this.$axios.spectrumBanner(path, {});
+      if (spectrumBanner.status === "20000") {
+        this.spectrumBanner = spectrumBanner.data.image;
+      }
       const res = await this.$axios.productsSpectrum(data);
       if (res.status === "20000") {
         this.list = res.data.list;
@@ -133,22 +139,14 @@ export default {
   &-banner {
     width: 100%;
     height: 105px;
-    background-repeat: no-repeat;
-    background-image: url(../assets/image/commodityType1.png);
-    background-size: 100%;
     font-size: 15px;
     color: #ffffff;
     text-align: center;
-    padding-top: 75px;
-  }
-  &-banner2 {
-    background-image: url(../assets/image/commodityType2.png);
-  }
-  &-banner3 {
-    background-image: url(../assets/image/commodityType3.png);
-  }
-  &-banner4 {
-    background-image: url(../assets/image/commodityType4.png);
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
   &-all {
     background-color: #f0f0f0;

@@ -23,7 +23,7 @@
           <div class="something-right">
             <p>
               {{item.title}}
-              <span>({{item.productSpecsStatus === 0?"已失效":""}})</span>
+              <span v-if="item.productSpecsStatus === 0">已失效</span>
             </p>
             <template v-for="item2 in item.productSpecsDesc">
               <template v-for="(item3,index3) in item2">

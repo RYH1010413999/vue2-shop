@@ -2,10 +2,10 @@
   <header>
     <img class="icon-go-left" src="../assets/image/home.png" @click="gotoHome" alt />
     <img src="../assets/image/logo.png" alt />
-    <div>
+    <div @click="gotoCar">
       <div>{{number}}</div>
-      <img class="icon-go" v-if="number>0" src="../assets/image/shopping_cart_black.png" @click="gotoCar" alt />
-      <img class="icon-go" v-else src="../assets/image/shopping_cart_empty.png" @click="gotoCar" alt />
+      <img class="icon-go" v-if="number>0" src="../assets/image/shopping_cart_black.png"  alt />
+      <img class="icon-go" v-else src="../assets/image/shopping_cart_empty.png"  alt />
     </div>
   </header>
 </template>
@@ -57,6 +57,7 @@ export default {
   },
   methods: {
     gotoCar() {
+      console.log(1111);
       this.$router.push({ name: "购物车页" });
     },
     gotoHome() {
@@ -64,7 +65,8 @@ export default {
     }
   },
   async mounted() {
-    if (localStorage.login) {
+    console.log(localStorage.login);
+    if (localStorage.login === "true") {
       const res = await this.$axios.cartList({});
       if (res.status === "20000") {
         this.number = res.data.list.length;

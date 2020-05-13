@@ -1,7 +1,7 @@
 <template lang="html">
   <!-- 在首页父组件发送http请求,后将数据通过props传递给子组件,可减少请求次数,减少服务器压力 -->
   <div class="index">
-    <v-header :list="datas.commodityType"/>
+    <v-header :list="datas.commodityType" :list_icon="datas.navlist"/>
     <v-swiper :swiperData="datas.swiper"/>
     <v-classification/>
     <v-commodityType :commodityTypeData="datas.commodityType"/>
@@ -40,7 +40,7 @@ export default {
     // 'v-section3': Section3,
     // 'v-section4': Section4,
     "v-footer": Footer,
-    "v-customerServer": CustomerServer
+    "v-customerServer": CustomerServer,
   },
   data() {
     return {
@@ -50,7 +50,8 @@ export default {
         section3: {},
         section4: {},
         swiper: [],
-        commodityType: []
+        commodityType: [],
+        navlist:[]
       },
       loading: true
     };
@@ -58,8 +59,13 @@ export default {
 
   async beforeCreate() {
     const spectrum = await this.$axios.spectrum({});
+    const navlist = await this.$axios.navlist({});
     if (spectrum.status === "20000") {
       this.datas.commodityType = spectrum.data;
+    }
+
+    if (navlist.status === "20000") {
+      this.datas.navlist = navlist.data;
     }
 
     const res = await this.$axios.shopBanner({});

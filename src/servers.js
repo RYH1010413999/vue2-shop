@@ -33,6 +33,10 @@ const orderConfirm = (data) => axios.axiosPost(`consume/order/confirm/`, data); 
 const shopBanner = (data) => axios.axiosPost(`shop/banner/`, data); // banner
 const orderDetail = (data) => axios.axiosPost(`personal/order/detail/`, data); // 订单详情
 const personalExpress = (path,data) => axios.axiosPost(path, data); // 物流查询
+const afterMarket = (data) => axios.axiosPost(`personal/after/market/`, data); // 申请售后
+const navlist = (data) => axios.axiosPost(`nav/list/`, data); // 获取系列icon
+const spectrumBanner = (path,data) => axios.axiosPost(path, data); // 获取系列banner
+
 export default {
   sendRegisterCode,
   register,
@@ -67,5 +71,8 @@ export default {
   orderConfirm,
   shopBanner,
   orderDetail,
-  personalExpress
+  personalExpress,
+  afterMarket,
+  navlist,
+  spectrumBanner
 }
