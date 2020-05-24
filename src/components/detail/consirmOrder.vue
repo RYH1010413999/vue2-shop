@@ -43,7 +43,18 @@
         </div>
         <div @click="popupVisible = true">
           <div>优惠券</div>
-          <div>- {{price.coupon_price}}</div>
+          <div>
+            <span>-</span>
+            <span v-if="this.useType === '1'">{{price.coupon_price}}</span>
+          </div>
+        </div>
+        <div>
+          <div>优惠码</div>
+          <div>
+            <span>-</span>
+            <span v-if="this.useType === '2'">{{price.coupon_price}}</span>
+            <input type="text" v-model="discountCode" @blur="useDiscountCode()" />
+          </div>
         </div>
         <div>
           <div>合计</div>
@@ -104,7 +115,9 @@ export default {
       price: {},
       couponCode: "",
       popupVisible: false, //优惠券窗口,
-      enableCoupon: []
+      enableCoupon: [],
+      useType: "2", // 1优惠券， 2优惠码
+      discountCode: "" // 优惠码
     };
   },
   filters: {
@@ -150,6 +163,7 @@ export default {
       }
     },
 
+    // 选择优惠券
     selectCoupon(item) {
       this.couponCode = item.couponCode;
       this.enableCoupon.forEach(element => {
@@ -160,20 +174,44 @@ export default {
       this.checkOrder();
     },
 
+    // 计算优惠券 之后的价格
     async checkOrder() {
+      this.useType = "1";
+      this.discountCode = "";
       const data = {
         order_no: localStorage.order_no,
         coupon_code: this.couponCode
       };
       const res = await this.$axios.orderCalculate(data);
-      console.log(res);
       if (res.status === "20000") {
         this.price = res.data;
         localStorage.price = res.data.final_price;
       }
     },
 
-    // 计算优惠券 之后的价格
+    // 使用优惠码
+    async useDiscountCode() {
+      this.useType = "2";
+      const data = {
+        order_no: localStorage.order_no,
+        coupon_mark: this.discountCode
+      };
+      const res = await this.$axios.orderCalculate(data);
+      if (res.status === "20000") {
+        this.enableCoupon.forEach(element => {
+          element.select = false;
+        });
+        this.price = res.data;
+        localStorage.price = res.data.final_price;
+      }
+      if (res.status === "41780") {
+        this.enableCoupon.forEach(element => {
+          element.select = false;
+        });
+        this.price = res.data;
+        localStorage.price = res.data.final_price;
+      }
+    },
 
     gotoAddressList() {
       this.$router.push("/addressList/order");
@@ -187,6 +225,9 @@ export default {
         coupon_code: this.couponCode,
         address_id: this.address.id
       };
+      if (this.useType === 2) {
+        data.coupon_mark = this.discountCode;
+      }
       const res = await this.$axios.orderConfirm(data);
       if (res.status === "20000") {
         localStorage.order_no = res.data.order_no;
@@ -236,6 +277,11 @@ export default {
       img {
         width: 80px;
         height: 80px;
+      }
+      input {
+        border: 1px solid #9b9b9b;
+        border-radius: 5px;
+        padding-left: 5px;
       }
     }
   }
