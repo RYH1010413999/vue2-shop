@@ -49,17 +49,16 @@ export default {
   created() {
     //判断是否是IOS设备
     // IOS分享时的页面是首页，也就是进入页而不是当前页。所有可以采用刷新当前页，让进入页的链接改成当前页，再在页面卸载时删除缓存数据。
-    let agent = navigator.userAgent;
-    let isIOS = !!agent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); // ios终端
-    if (isIOS && !sessionStorage.getItem("isShareState")) {
-      sessionStorage.setItem("isShareState", true);
-      console.log(this.$route.path);
-      // this.$router.go(0);
-      location.assign(`${window.location.origin}#${this.$route.path}`);
-    }
+    // let agent = navigator.userAgent;
+    // let isIOS = !!agent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); // ios终端
+    // if (isIOS && !sessionStorage.getItem("isShareState")) {
+    //   sessionStorage.setItem("isShareState", true);
+    //   console.log(this.$route.path);
+    //   location.assign(`${window.location.origin}#${this.$route.path}`);
+    // }
   },
   destroyed() {
-    sessionStorage.removeItem("isShareState");
+    // sessionStorage.removeItem("isShareState");
   }
 };
 </script>

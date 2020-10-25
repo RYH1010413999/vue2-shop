@@ -5,7 +5,7 @@
            <img :src="item">
         </mt-swipe-item>
       </mt-swipe>
-      <div class="back" @click="$router.go(-1)">
+      <div class="back" @click="goBack()">
         <span class="icon-go"></span>
       </div>
     </div>
@@ -22,11 +22,15 @@ export default {
       }
     }
   },
-  data(){
-    return{
+  data() {
+    return {};
+  },
+  methods: {
+    goBack() {
+      history.back();
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -59,7 +63,7 @@ export default {
     span {
       display: inline-block;
       line-height: 7vw;
-      .fz(font-size,40);
+      .fz(font-size, 40);
       transform: rotate(-180deg);
       &::before {
         color: #fff;

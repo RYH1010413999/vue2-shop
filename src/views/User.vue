@@ -6,6 +6,7 @@
         <img :src="userInfo.avatar" alt />
       </div>
       <div>{{userInfo.nick_name}}</div>
+      <div class="main-head-grade">积分：{{userInfo.grade}}</div>
     </div>
     <div class="main-all">
       <div class="main-all-list" @click="gotomyorder('0')">
@@ -96,10 +97,22 @@ export default {
         localStorage.login = false;
         this.$router.push(`/login`);
       }
+    },
+
+    async getUserInfoFun() {
+      const data = {
+        user_code:this.userInfo.user_code
+      }
+      const res = await this.$axios.postUserinfo(data);
+      if (res.status === "20000") {
+        this.userInfo = res.data;
+        console.log(res);
+      }
     }
   },
   mounted() {
     this.userInfo = JSON.parse(localStorage.userInfo);
+    this.getUserInfoFun();
   }
 };
 </script>
@@ -114,6 +127,11 @@ export default {
     display: flex;
     align-items: center;
     margin-top: 35px;
+    &-grade{
+      font-size: 12px;
+      margin-left: 20px;
+      color: #9b9b9b;
+    }
     &-img {
       width: 60px;
       height: 60px;

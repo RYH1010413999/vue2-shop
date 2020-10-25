@@ -19,8 +19,12 @@
               v-bind:key="i"
             >
               <!-- <img class="main-all-list-item1" src="../assets/image/like.png" alt /> -->
+              
               <img class="main-all-list-item2" :src="item.headImageUrl" alt />
-              <div class="main-all-list-item3">{{item.spectrum}}-{{item.title}}</div>
+              <div class="main-all-list-item3">  
+                <img  :src="item.activity" alt />
+                {{item.spectrum}}-{{item.title}}
+              </div>
               <div class="main-all-list-item4">型号：{{item.productSn}}</div>
               <div
                 class="main-all-list-item5"
@@ -57,7 +61,8 @@ export default {
   methods: {
     gotoDetail(id, onSale) {
       if (onSale) {
-        this.$router.push(`/detail/${id}`);
+        // this.$router.push(`/detail/${id}`);
+        location.assign(`${window.location.origin}#/detail/${id}`);
       } else {
         Toast("该产品暂不可售，请联系客服了解详情！");
       }
@@ -69,7 +74,7 @@ export default {
     if (this.type === "all") {
       const data = {
         page: "1",
-        list_rows: "99"
+        list_rows: "999"
       };
       const res = await this.$axios.productsAll(data);
       if (res.status === "20000") {
@@ -79,7 +84,7 @@ export default {
     if (this.type === "spectrum") {
       const data = {
         page: "1",
-        list_rows: "99",
+        list_rows: "999",
         spectrum: this.$route.params.id
       };
       // 获取banner
@@ -96,10 +101,11 @@ export default {
     if (this.type === "category") {
       const data = {
         page: "1",
-        list_rows: "99",
+        list_rows: "999",
         category: this.$route.params.id
       };
       const res = await this.$axios.productsCategory(data);
+      console.log(1111)
       if (res.status === "20000") {
         this.list = res.data.list;
       }
@@ -178,6 +184,13 @@ export default {
       &-item3 {
         font-size: 14px;
         margin-top: 18px;
+        &>img{
+          width: 15px;
+          height: 15px;
+          margin-right: 2px;
+          position: relative;
+          bottom: 2px;
+        }
       }
 
       &-item4 {

@@ -36,6 +36,7 @@ const personalExpress = (path,data) => axios.axiosPost(path, data); // 物流查
 const afterMarket = (data) => axios.axiosPost(`personal/after/market/`, data); // 申请售后
 const navlist = (data) => axios.axiosPost(`nav/list/`, data); // 获取系列icon
 const spectrumBanner = (path,data) => axios.axiosPost(path, data); // 获取系列banner
+const postUserinfo = (data) => axios.axiosPost(`user/info/`, data); // 获取用户详情
 
 export default {
   sendRegisterCode,
@@ -74,5 +75,6 @@ export default {
   personalExpress,
   afterMarket,
   navlist,
-  spectrumBanner
+  spectrumBanner,
+  postUserinfo
 }

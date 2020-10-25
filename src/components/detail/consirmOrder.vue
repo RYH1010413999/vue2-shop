@@ -48,15 +48,17 @@
             <span v-if="this.useType === '1'">{{price.coupon_price}}</span>
           </div>
         </div>
-        <div>
-          <div>优惠码</div>
+        <div class="discountCode">
           <div>
-            <span>-</span>
-            <span v-if="this.useType === '2'">{{price.coupon_price}}</span>
-            <input type="text" v-model="discountCode" @blur="useDiscountCode()" />
+            <input type="text" v-model="discountCode" />
+            <div @click="useDiscountCode()">{{isClear?'清除':'确定'}}</div>
           </div>
         </div>
-        <div>
+        <div v-if="this.useType === '2'">
+          <div>优惠码</div>
+          <div>- ¥ {{price.coupon_price}}</div>
+        </div>
+        <div style="margin-top:15px;">
           <div>合计</div>
           <div>¥ {{price.final_price}}</div>
         </div>
@@ -116,8 +118,9 @@ export default {
       couponCode: "",
       popupVisible: false, //优惠券窗口,
       enableCoupon: [],
-      useType: "2", // 1优惠券， 2优惠码
-      discountCode: "" // 优惠码
+      useType: "1", // 1优惠券， 2优惠码
+      discountCode: "", // 优惠码
+      isClear: false //清除优惠码
     };
   },
   filters: {
@@ -191,12 +194,19 @@ export default {
 
     // 使用优惠码
     async useDiscountCode() {
+      if (this.isClear) {
+        this.isClear = false;
+        this.discountCode = '';
+      }
       this.useType = "2";
       const data = {
         order_no: localStorage.order_no,
         coupon_mark: this.discountCode
       };
       const res = await this.$axios.orderCalculate(data);
+      if (this.discountCode) {
+        this.isClear = true;
+      }
       if (res.status === "20000") {
         this.enableCoupon.forEach(element => {
           element.select = false;
@@ -225,7 +235,7 @@ export default {
         coupon_code: this.couponCode,
         address_id: this.address.id
       };
-      if (this.useType === 2) {
+      if (this.useType === "2") {
         data.coupon_mark = this.discountCode;
       }
       const res = await this.$axios.orderConfirm(data);
@@ -277,11 +287,6 @@ export default {
       img {
         width: 80px;
         height: 80px;
-      }
-      input {
-        border: 1px solid #9b9b9b;
-        border-radius: 5px;
-        padding-left: 5px;
       }
     }
   }
@@ -366,6 +371,32 @@ export default {
         padding: 5px 0;
         padding-top: 7px;
       }
+    }
+  }
+}
+
+.main .list .discountCode {
+  width: 100%;
+  border: 1px solid #9b9b9b;
+  height: 28px;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  & > div {
+    width: 100%;
+    display: flex;
+    height: 100%;
+    & > div {
+      width: 50px;
+      height: 27px;
+      border-left: 1px solid #9b9b9b;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+    }
+    & > input {
+      flex-grow: 2;
+      padding-left: 10px;
     }
   }
 }
